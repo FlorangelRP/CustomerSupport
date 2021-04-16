@@ -1,20 +1,10 @@
-/*------------------------*/
-.s_header {
-    /*background: linear-gradient(-55deg , #ffa331, #fc6c54);*/
-    background: linear-gradient(-55deg , #fc6c54, #ffa331);
-}
-/*------------------------*/
-/*.ss_header .ss_menu li a:hover, .ss_subMenu li a:hover,*/
-.ss_header .ss_menu_two li a:hover, .ss_menu .ss_subMenu li a:hover,
-.ss_product_content h2:hover,.ss_product_content span,.ss_section_seven .ss_seven ul li i,
-a:hover,.ss_eight h2 span a,.ss_foot_news_one .ss_btn:hover, .promo_code .ss_btn:hover,.ss_section_footer a:hover,.ss_copywrite p a,.ss_copywrite p a:hover {
+.ss_header .ss_menu li a:hover, .ss_subMenu li a:hover,.ss_product_content h2:hover,.ss_product_content span,.ss_section_seven .ss_seven ul li i,a:hover,.ss_eight h2 span a,.ss_foot_news_one .ss_btn:hover, .promo_code .ss_btn:hover,.ss_section_footer a:hover,.ss_copywrite p a,.ss_copywrite p a:hover {
     color: #fc6c54;
 }
 .white_header .head_icon svg:hover,.ss_six_product a:hover, .ss_six_product a:hover svg,.social_share a:hover svg{
 	fill:#fc6c54;
 }
-.ss_btn:after, .white_btn:after,.ss_btn:hover, .ss_header .ss_menu li a.ss_btn:hover, .white_btn:hover,.ss_cart_list::-webkit-scrollbar-thumb, 
-.table-responsive::-webkit-scrollbar-thumb,h3:before,.ss_foot_news_one .ss_btn, .promo_code .ss_btn,.ss_six_product li a, .social_share li a {
+.ss_btn:after, .white_btn:after,.ss_btn:hover, .ss_header .ss_menu li a.ss_btn:hover, .white_btn:hover,.ss_cart_list::-webkit-scrollbar-thumb, .table-responsive::-webkit-scrollbar-thumb,h3:before,.ss_foot_news_one .ss_btn, .promo_code .ss_btn,.ss_six_product li a, .social_share li a {
     background: #fc6c54;
 }
 .ss_menu.ss_toggle ul::-webkit-scrollbar-thumb, .table-responsive::-webkit-scrollbar-thumb,.ss_product_content h2:before{

@@ -35,8 +35,7 @@ namespace CustomerSupport
                     "~/Content/assets/css/magnific-popup.css",
                     "~/Content/assets/css/swiper.min.css",
                     "~/Content/assets/css/animate.css",
-                    "~/Content/assets/css/style.css",
-                    "~/Content/assets/css/color3.css"));
+                    "~/Content/assets/css/style.css"));
         }
     }
 }
