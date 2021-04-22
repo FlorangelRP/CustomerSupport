@@ -5,20 +5,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="assets/images/logo/logo-icon.png">
-    <title>@ViewBag.Title - Customer Support</title>
+    <title>@ViewBag.Title - M&M Enterprise</title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body class="ss_index_one">
+<body>
 
-    @Html.Partial("_Navigation")
+        @Html.Partial("_Navigation")
 
-    @RenderBody()
+        @RenderBody()
 
-    @Html.Partial("_Footer")
+        @Html.Partial("_Footer")
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+
 </body>
 </html>

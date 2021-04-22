@@ -185,7 +185,7 @@ h3.ss_h3_center:before {
 /* ===ss_header=== */
 
 .ss_index_one{
-	background-image:url(../images/banner1.png),linear-gradient( -180deg, rgb(91,134,229) 0%, rgb(54,209,220) 100%);	
+	background-image:url(../images/banner1.png),linear-gradient( -180deg, rgb(91,134,229) 0%, rgb(54,209,220) 100%);
 }
 .ss_index_two{
 	background-image:url(../images/banner2.png);
@@ -2333,7 +2333,7 @@ a:hover .fa-pinterest-p {
     overflow: hidden;
 }
 .table td, .table th,.table thead th{
-	border:none;
+	/*border:none;*/
 }
 .cart_two {
     text-align: center;
