@@ -237,6 +237,7 @@
     <Content Include="Content\assets\images\svg\loader.svg" />
     <Content Include="Content\assets\images\svg\logo1.svg" />
     <Content Include="Content\assets\images\svg\main_logo.svg" />
+    <Content Include="Content\assets\images\svg\MM_Color.svg" />
     <Content Include="Content\assets\images\svg\MM_Icon.svg" />
     <Content Include="Content\assets\images\svg\MM_White_Small.svg" />
     <Content Include="Content\assets\images\svg\white_logo.svg" />
@@ -398,6 +399,7 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\User\ListUser.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

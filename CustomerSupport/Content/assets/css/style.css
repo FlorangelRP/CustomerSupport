@@ -1337,16 +1337,10 @@ h2.ss_foot_head {
 }
 /* ===login/signup css=== */
 
-.ss_login_bg{
+/* .ss_login_bg{
 	background:url("../images/ss_login_bg.jpg");
-}
+} */
 
-.s_login .ss_box_bg{
-	width:520px;
-    padding: 60px;
-	background-color: rgb(255, 255, 255);
-	box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.04);
-}
 .s_login {
     position: fixed;
     top: 0;
@@ -1356,6 +1350,15 @@ h2.ss_foot_head {
     display: flex;
     justify-content: center;
     align-items: center;
+	background-image:url(../images/banner1.png),linear-gradient( -180deg, rgb(6,23,54) 0%, rgb(51,61,96) 100%);
+}
+
+.s_login .ss_box_bg{
+	width:520px;
+    padding: 60px;
+	background-color: rgb(255, 255, 255);
+	box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.04);
+	
 }
 .s_login .s_heading{
 	margin:36px 0px 40px;
