@@ -214,7 +214,10 @@
     <Content Include="Content\assets\images\logo\Logo-1.png" />
     <Content Include="Content\assets\images\logo\Logo-Bataenergy.png" />
     <Content Include="Content\assets\images\logo\Logo-icon.png" />
+    <Content Include="Content\assets\images\logo\Logo.png" />
     <Content Include="Content\assets\images\logo\LogoSinRif-2.jpg" />
+    <Content Include="Content\assets\images\logo\MM_White.png" />
+    <Content Include="Content\assets\images\logo\MM_White_Small.png" />
     <Content Include="Content\assets\images\shape_dot.png" />
     <Content Include="Content\assets\images\ss-404.png" />
     <Content Include="Content\assets\images\ss_login_bg.jpg" />
@@ -234,6 +237,8 @@
     <Content Include="Content\assets\images\svg\loader.svg" />
     <Content Include="Content\assets\images\svg\logo1.svg" />
     <Content Include="Content\assets\images\svg\main_logo.svg" />
+    <Content Include="Content\assets\images\svg\MM_Icon.svg" />
+    <Content Include="Content\assets\images\svg\MM_White_Small.svg" />
     <Content Include="Content\assets\images\svg\white_logo.svg" />
     <Content Include="Content\assets\images\wave.png" />
     <Content Include="Content\assets\js\bootstrap.min.js" />

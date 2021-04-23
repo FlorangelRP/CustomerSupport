@@ -13,7 +13,7 @@
                 <br />
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Cliente</h3>
+                        <h3 class="card-title">Usuario</h3>
                     </div>
                     <div class="card-body">
 
@@ -21,14 +21,13 @@
                         <div class="row text-right">
                             <div class="col-md-12">
                                 <p class="text-right">
-                                    <button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-plus-square"></i>Agregar</button>
+                                    @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
+                                    <a href="location.href='@Url.Action("Create", "User")';return false;" class="white_btn">Agregar</a>
                                 </p>
                             </div>
                         </div>
                         <div class="table-responsive">
                             <div class="container">
-
-
                                 <table id="TUser" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
@@ -37,11 +36,12 @@
                                             <th>Codigo Cargo</th>
                                             <th>Login</th>
                                             <th>Estatus</th>
-                                            <th>Opciones</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                 </table>
-
                             </div>
                         </div>
                         @*</div>*@
@@ -90,7 +90,31 @@
                                     if (row.IdUser == null) {
                                         return '';
                                     } else {
-                                        return '<a class="btn"><i class="fas fa-edit"></i></a>|<a class="btn"><i class="fas fa-search"></i></a>|<a class="btn"><i class="far fa-trash-alt"></i></a>';
+                                        return '<a class="btn"><i class="fas fa-edit"></i></a>';
+                                    }
+                                }
+                            }, 'autowidth': true
+                        },
+                        {
+                            'data': null, render: function (data, type, row) {
+                                //debugger;
+                                if (data != null) {
+                                    if (row.IdUser == null) {
+                                        return '';
+                                    } else {
+                                        return '<a class="btn"><i class="fas fa-search"></i></a>';
+                                    }
+                                }
+                            }, 'autowidth': true
+                        },
+                        {
+                            'data': null, render: function (data, type, row) {
+                                //debugger;
+                                if (data != null) {
+                                    if (row.IdUser == null) {
+                                        return '';
+                                    } else {
+                                        return '<a class="btn"><i class="far fa-trash-alt"></i></a>';
                                     }
                                 }
                             }, 'autowidth': true
