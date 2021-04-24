@@ -31,6 +31,7 @@ namespace CustomerSupport.Controllers
             //                Status = d.Status
             //            }).ToList();
             //}
+
             return Json(list, JsonRequestBehavior.AllowGet); //View(list); //
             
         }
@@ -68,10 +69,30 @@ namespace CustomerSupport.Controllers
             }
         }
 
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        // GET: User/Edit/5int id
+        public ActionResult EditUser()
         {
-            return View();
+            Models.MUser mlUser = new Models.MUser();
+            using (MMEnterprisesEntities db = new MMEnterprisesEntities())
+            {
+                mlUser = (from d in db.Users
+                        select new Models.MUser
+                        {
+                            IdUser = d.IdUser,
+                            IdPerson = d.IdPerson,
+                            IdPosition = d.IdPosition,
+                            Position ="",
+                            Login = d.Login,
+                            Status = d.Status
+                        }).First();
+                mlUser.PersonEmployee = new MPerson();
+                mlUser.PersonEmployee.IdIdentificationType = 1;
+                mlUser.PersonEmployee.NumIdentification ="14270679";
+                mlUser.PersonEmployee.LastName = "Lucena";
+                mlUser.PersonEmployee.Name = "Lucena";
+            }
+
+            return View(mlUser);
         }
 
         // POST: User/Edit/5
