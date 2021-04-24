@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CustomerSupport.Models
 {
-    public class User
+    public class MUser
     {
         public int IdUser { get; set; }
         public int IdPerson { get; set; }
@@ -13,6 +13,7 @@ namespace CustomerSupport.Models
         public string Login { get; set; }
         public string Password { get; set; }
         public bool Status { get; set; }
+        public MPerson PersonEmployee { get; set; }
 
     }
 }

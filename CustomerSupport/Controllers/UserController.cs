@@ -18,19 +18,19 @@ namespace CustomerSupport.Controllers
 
         public ActionResult GetListUser()
         {
-            List<Models.User> list = new List<Models.User>();
-            using (MMEnterprisesEntities db = new MMEnterprisesEntities())
-            {
-                list = (from d in db.Users
-                        select new Models.User
-                        {
-                            IdUser = d.IdUser,
-                            IdPerson = d.IdPerson,
-                            IdPosition = d.IdPosition,
-                            Login = d.Login,
-                            Status = d.Status
-                        }).ToList();
-            }
+            List<Models.MUser> list = new List<Models.MUser>();
+            //using (MMEnterprisesEntities db = new MMEnterprisesEntities())
+            //{
+            //    list = (from d in db.Users
+            //            select new Models.User
+            //            {
+            //                IdUser = d.IdUser,
+            //                IdPerson = d.IdPerson,
+            //                IdPosition = d.IdPosition,
+            //                Login = d.Login,
+            //                Status = d.Status
+            //            }).ToList();
+            //}
             return Json(list, JsonRequestBehavior.AllowGet); //View(list); //
             
         }
