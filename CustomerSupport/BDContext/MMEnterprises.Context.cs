@@ -12,6 +12,8 @@ namespace CustomerSupport.BDContext
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class MMEnterprisesEntities : DbContext
     {
@@ -35,5 +37,24 @@ namespace CustomerSupport.BDContext
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserAcce> UserAcces { get; set; }
+        public virtual DbSet<VWListCatalog> VWListCatalogs { get; set; }
+    
+        public virtual ObjectResult<GNListPerson_Result> GNListPerson(Nullable<int> idPerson)
+        {
+            var idPersonParameter = idPerson.HasValue ?
+                new ObjectParameter("IdPerson", idPerson) :
+                new ObjectParameter("IdPerson", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPerson_Result>("GNListPerson", idPersonParameter);
+        }
+    
+        public virtual ObjectResult<GNListUser_Result> GNListUser(Nullable<int> idUser)
+        {
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUser_Result>("GNListUser", idUserParameter);
+        }
     }
 }

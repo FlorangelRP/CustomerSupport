@@ -35,6 +35,7 @@
         <AssociationConnector Association="MMEnterprisesModel.PersonTask" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.ServiceConstructionOption" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.ServiceRequestTask" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.VWListCatalog" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

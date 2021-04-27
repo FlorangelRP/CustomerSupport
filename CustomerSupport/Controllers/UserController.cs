@@ -17,22 +17,20 @@ namespace CustomerSupport.Controllers
         }
 
         public ActionResult GetListUser()
-        {
-            List<Models.MUser> list = new List<Models.MUser>();
-            //using (MMEnterprisesEntities db = new MMEnterprisesEntities())
-            //{
-            //    list = (from d in db.Users
-            //            select new Models.User
-            //            {
-            //                IdUser = d.IdUser,
-            //                IdPerson = d.IdPerson,
-            //                IdPosition = d.IdPosition,
-            //                Login = d.Login,
-            //                Status = d.Status
-            //            }).ToList();
-            //}
+        {            
+            List<MUser> ListUser = new List<MUser>();
+            MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            return Json(list, JsonRequestBehavior.AllowGet); //View(list); //
+            ListUser = (from result in db.GNListUser(null).ToList()
+                        select new MUser
+                        {
+                            IdUser = result.IdUser,
+                            IdPerson = result.IdPerson,
+                            Login = result.Login,
+                            Status = result.Status
+                        }).ToList();
+
+            return Json(ListUser, JsonRequestBehavior.AllowGet); 
             
         }
 

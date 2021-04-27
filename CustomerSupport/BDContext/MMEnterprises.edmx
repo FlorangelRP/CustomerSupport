@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Catalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -160,6 +160,25 @@
           <Property Name="Search" Type="bit" Nullable="false" />
           <Property Name="Edit" Type="bit" Nullable="false" />
           <Property Name="Delete" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VWListCatalog">
+          <Key>
+            <PropertyRef Name="IdCatalog" />
+            <PropertyRef Name="IdTable" />
+            <PropertyRef Name="IdCatalogDetail" />
+            <PropertyRef Name="IdTableDetail" />
+            <PropertyRef Name="DetailDesc" />
+            <PropertyRef Name="DetailStatus" />
+          </Key>
+          <Property Name="IdCatalog" Type="int" Nullable="false" />
+          <Property Name="IdTable" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TableDesc" Type="varchar" MaxLength="200" />
+          <Property Name="IdCatalogDetail" Type="int" Nullable="false" />
+          <Property Name="IdTableDetail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DetailDesc" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="DetailStatus" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_AssociatedMenu_OptionMenu">
           <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="0..1" />
@@ -437,6 +456,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GNListPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="MMEnterprisesModelStoreContainer">
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" Schema="dbo" store:Type="Tables" />
@@ -451,6 +476,17 @@
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAcces" EntityType="Self.UserAcces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VWListCatalog" EntityType="Self.VWListCatalog" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VWListCatalog].[IdCatalog] AS [IdCatalog], 
+    [VWListCatalog].[IdTable] AS [IdTable], 
+    [VWListCatalog].[TableDesc] AS [TableDesc], 
+    [VWListCatalog].[IdCatalogDetail] AS [IdCatalogDetail], 
+    [VWListCatalog].[IdTableDetail] AS [IdTableDetail], 
+    [VWListCatalog].[DetailDesc] AS [DetailDesc], 
+    [VWListCatalog].[DetailStatus] AS [DetailStatus]
+    FROM [dbo].[VWListCatalog] AS [VWListCatalog]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_AssociatedMenu_OptionMenu" Association="Self.FK_AssociatedMenu_OptionMenu">
             <End Role="OptionMenu" EntitySet="OptionMenu" />
             <End Role="OptionMenu1" EntitySet="OptionMenu" />
@@ -544,8 +580,7 @@
             <End Role="UserAcces" EntitySet="UserAcces" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MMEnterprisesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1028,7 +1063,57 @@
             <End Role="Person" EntitySet="People" />
             <End Role="Task" EntitySet="Tasks" />
           </AssociationSet>
+          <EntitySet Name="VWListCatalogs" EntityType="MMEnterprisesModel.VWListCatalog" />
+          <FunctionImport Name="GNListPerson" ReturnType="Collection(MMEnterprisesModel.GNListPerson_Result)">
+          <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
+        <EntityType Name="VWListCatalog">
+          <Key>
+            <PropertyRef Name="IdCatalog" />
+            <PropertyRef Name="IdTable" />
+            <PropertyRef Name="IdCatalogDetail" />
+            <PropertyRef Name="IdTableDetail" />
+            <PropertyRef Name="DetailDesc" />
+            <PropertyRef Name="DetailStatus" />
+          </Key>
+          <Property Name="IdCatalog" Type="Int32" Nullable="false" />
+          <Property Name="IdTable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TableDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IdCatalogDetail" Type="Int32" Nullable="false" />
+          <Property Name="IdTableDetail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DetailDesc" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DetailStatus" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="GNListPerson_Result">
+          <Property Type="Int32" Name="IdPerson" Nullable="false" />
+          <Property Type="Int32" Name="IdPersonType" Nullable="false" />
+          <Property Type="String" Name="PersonType" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdIdentificationType" Nullable="false" />
+          <Property Type="String" Name="IdentificationType" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="NumIdentification" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Birthday" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="IdContactType" Nullable="true" />
+          <Property Type="String" Name="ContactType" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdPosition" Nullable="true" />
+          <Property Type="String" Name="Position" Nullable="false" MaxLength="200" />
+          <Property Type="Boolean" Name="ClientPermission" Nullable="false" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListUser_Result">
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="Int32" Name="IdPerson" Nullable="false" />
+          <Property Type="String" Name="Login" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1200,6 +1285,53 @@
               <ScalarProperty Name="IdTask" ColumnName="IdTask" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="VWListCatalogs">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.VWListCatalog">
+              <MappingFragment StoreEntitySet="VWListCatalog">
+                <ScalarProperty Name="DetailStatus" ColumnName="DetailStatus" />
+                <ScalarProperty Name="DetailDesc" ColumnName="DetailDesc" />
+                <ScalarProperty Name="IdTableDetail" ColumnName="IdTableDetail" />
+                <ScalarProperty Name="IdCatalogDetail" ColumnName="IdCatalogDetail" />
+                <ScalarProperty Name="TableDesc" ColumnName="TableDesc" />
+                <ScalarProperty Name="IdTable" ColumnName="IdTable" />
+                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GNListPerson" FunctionName="MMEnterprisesModel.Store.GNListPerson">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPerson_Result">
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdPersonType" ColumnName="IdPersonType" />
+                <ScalarProperty Name="PersonType" ColumnName="PersonType" />
+                <ScalarProperty Name="IdIdentificationType" ColumnName="IdIdentificationType" />
+                <ScalarProperty Name="IdentificationType" ColumnName="IdentificationType" />
+                <ScalarProperty Name="NumIdentification" ColumnName="NumIdentification" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IdContactType" ColumnName="IdContactType" />
+                <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+                <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="ClientPermission" ColumnName="ClientPermission" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListUser" FunctionName="MMEnterprisesModel.Store.GNListUser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListUser_Result">
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

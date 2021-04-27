@@ -1,6 +1,7 @@
-﻿
+﻿@*@model IEnumerable<CustomerSupport.Models.MPerson>*@
+
 @{
-    ViewBag.Title = "Listado de Usuario";
+    ViewBag.Title = "Listado de Personas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,19 +17,21 @@
                 <div class="col-md-12">
                     <div class="text-right">
                         @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
-                        <a href="location.href='@Url.Action("Create", "User")';return false;" class="white_btn">Agregar</a>
+                        <a href="location.href='@Url.Action("Create", "Person")';return false;" class="white_btn">Agregar</a>
                     </div>
                 </div>
             </div>
             <div class="table-responsive">
                 <div class="container">
-                    <table id="TUser" class="table table-bordered table-striped">
+                    <table id="TPerson" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Codigo Usuario</th>
-                                <th>Codigo Persona</th>
-                                <th>Codigo Cargo</th>
-                                <th>Login</th>
+                                <th>Codigo</th>
+                                <th>Tipo</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Tipo de Identif.</th>
+                                <th>Nro. de Identif.</th>
                                 <th>Estatus</th>
                                 <th></th>
                                 <th></th>
@@ -43,7 +46,6 @@
 
     </div>
 </div>
-
 
 @section Scripts {
 
@@ -60,20 +62,22 @@
 
     <script>
 
-    var table = $('#TUser').DataTable({
+    var table = $('#TPerson').DataTable({
 
             'ajax': {
-                'url': '@Url.Action("GetListUser", "User")',
+                'url': '@Url.Action("GetListPerson", "Person")',
                 'type': 'GET',
                 'dataType': 'json',
                 'dataSrc': ''
             },
             'columns':
                 [
-                    { 'data': 'IdUser', 'autowidth': true },
                     { 'data': 'IdPerson', 'autowidth': true },
-                    { 'data': 'IdPosition', 'autowidth': true },
-                    { 'data': 'Login', 'autowidth': true },
+                    { 'data': 'PersonType', 'autowidth': true },
+                    { 'data': 'Name', 'autowidth': true },
+                    { 'data': 'LastName', 'autowidth': true },
+                    { 'data': 'IdentificationType', 'autowidth': true },
+                    { 'data': 'NumIdentification', 'autowidth': true },
                     { 'data': 'Status', 'autowidth': true },
                     {'data': null, render: function (data, type, row) {
                             //debugger;
