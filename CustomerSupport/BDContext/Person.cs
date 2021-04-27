@@ -34,11 +34,14 @@ namespace CustomerSupport.BDContext
         public string Address { get; set; }
         public string Email { get; set; }
         public Nullable<int> IdContactType { get; set; }
+        public Nullable<int> IdPosition { get; set; }
+        public bool ClientPermission { get; set; }
         public bool Status { get; set; }
     
         public virtual CatalogDetail CatalogDetail { get; set; }
         public virtual CatalogDetail CatalogDetail1 { get; set; }
         public virtual CatalogDetail CatalogDetail2 { get; set; }
+        public virtual CatalogDetail CatalogDetail3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonContact> PersonContacts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

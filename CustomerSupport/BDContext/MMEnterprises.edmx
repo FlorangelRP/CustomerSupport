@@ -57,6 +57,8 @@
           <Property Name="Address" Type="varchar" MaxLength="300" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IdContactType" Type="int" />
+          <Property Name="IdPosition" Type="int" />
+          <Property Name="ClientPermission" Type="bit" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonContact">
@@ -142,7 +144,6 @@
           </Key>
           <Property Name="IdUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdPerson" Type="int" Nullable="false" />
-          <Property Name="IdPosition" Type="int" Nullable="false" />
           <Property Name="Login" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
@@ -217,6 +218,18 @@
             </Principal>
             <Dependent Role="Person">
               <PropertyRef Name="IdPersonType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Position">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdPosition" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -400,18 +413,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Position">
-          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CatalogDetail">
-              <PropertyRef Name="IdCatalogDetail" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="IdPosition" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserAcces_OptionMenu">
           <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="1" />
           <End Role="UserAcces" Type="Self.UserAcces" Multiplicity="*" />
@@ -467,6 +468,10 @@
             <End Role="Person" EntitySet="Person" />
           </AssociationSet>
           <AssociationSet Name="FK_Person_PersonType" Association="Self.FK_Person_PersonType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Position" Association="Self.FK_Person_Position">
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
             <End Role="Person" EntitySet="Person" />
           </AssociationSet>
@@ -530,10 +535,6 @@
             <End Role="Person" EntitySet="Person" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Position" Association="Self.FK_User_Position">
-            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
-            <End Role="User" EntitySet="User" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserAcces_OptionMenu" Association="Self.FK_UserAcces_OptionMenu">
             <End Role="OptionMenu" EntitySet="OptionMenu" />
             <End Role="UserAcces" EntitySet="UserAcces" />
@@ -570,10 +571,10 @@
           <NavigationProperty Name="People" Relationship="Self.FK_Person_ContactType" FromRole="CatalogDetail" ToRole="Person" />
           <NavigationProperty Name="People1" Relationship="Self.FK_Person_IdentificationType" FromRole="CatalogDetail" ToRole="Person" />
           <NavigationProperty Name="People2" Relationship="Self.FK_Person_PersonType" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="People3" Relationship="Self.FK_Person_Position" FromRole="CatalogDetail" ToRole="Person" />
           <NavigationProperty Name="PersonContacts" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="CatalogDetail" ToRole="PersonContact" />
           <NavigationProperty Name="ServiceRequests" Relationship="Self.FK_ServiceRequest_PropertyType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
           <NavigationProperty Name="ServiceRequests1" Relationship="Self.FK_ServiceRequest_ServiceType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_User_Position" FromRole="CatalogDetail" ToRole="User" />
           <NavigationProperty Name="ServiceRequests2" Relationship="Self.ServiceConstructionOption" FromRole="CatalogDetail" ToRole="ServiceRequest" />
         </EntityType>
         <EntityType Name="Country">
@@ -614,10 +615,13 @@
           <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdContactType" Type="Int32" />
+          <Property Name="IdPosition" Type="Int32" />
+          <Property Name="ClientPermission" Type="Boolean" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_Person_ContactType" FromRole="Person" ToRole="CatalogDetail" />
           <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_Person_IdentificationType" FromRole="Person" ToRole="CatalogDetail" />
           <NavigationProperty Name="CatalogDetail2" Relationship="Self.FK_Person_PersonType" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail3" Relationship="Self.FK_Person_Position" FromRole="Person" ToRole="CatalogDetail" />
           <NavigationProperty Name="PersonContacts" Relationship="Self.FK_PersonContact_Person" FromRole="Person" ToRole="PersonContact" />
           <NavigationProperty Name="ServiceRequests" Relationship="Self.FK_ServiceRequest_Person" FromRole="Person" ToRole="ServiceRequest" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_Person" FromRole="Person" ToRole="User" />
@@ -694,11 +698,9 @@
           </Key>
           <Property Name="IdUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdPerson" Type="Int32" Nullable="false" />
-          <Property Name="IdPosition" Type="Int32" Nullable="false" />
           <Property Name="Login" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_User_Position" FromRole="User" ToRole="CatalogDetail" />
           <NavigationProperty Name="Person" Relationship="Self.FK_User_Person" FromRole="User" ToRole="Person" />
           <NavigationProperty Name="ServiceRequests" Relationship="Self.FK_ServiceRequest_User" FromRole="User" ToRole="ServiceRequest" />
           <NavigationProperty Name="Tasks" Relationship="Self.FK_Task_User" FromRole="User" ToRole="Task" />
@@ -767,6 +769,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Person_Position">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdPosition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PersonContact_PhoneNumberType">
           <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
           <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
@@ -800,18 +814,6 @@
             </Principal>
             <Dependent Role="ServiceRequest">
               <PropertyRef Name="IdServiceType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_User_Position">
-          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CatalogDetail">
-              <PropertyRef Name="IdCatalogDetail" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="IdPosition" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -962,6 +964,10 @@
             <End Role="CatalogDetail" EntitySet="CatalogDetails" />
             <End Role="Person" EntitySet="People" />
           </AssociationSet>
+          <AssociationSet Name="FK_Person_Position" Association="Self.FK_Person_Position">
+            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
           <AssociationSet Name="FK_PersonContact_PhoneNumberType" Association="Self.FK_PersonContact_PhoneNumberType">
             <End Role="CatalogDetail" EntitySet="CatalogDetails" />
             <End Role="PersonContact" EntitySet="PersonContacts" />
@@ -973,10 +979,6 @@
           <AssociationSet Name="FK_ServiceRequest_ServiceType" Association="Self.FK_ServiceRequest_ServiceType">
             <End Role="CatalogDetail" EntitySet="CatalogDetails" />
             <End Role="ServiceRequest" EntitySet="ServiceRequests" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_Position" Association="Self.FK_User_Position">
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
-            <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <AssociationSet Name="FK_PersonContact_Country" Association="Self.FK_PersonContact_Country">
             <End Role="Country" EntitySet="Countries" />
@@ -1088,6 +1090,8 @@
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="IdContactType" ColumnName="IdContactType" />
+                <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
+                <ScalarProperty Name="ClientPermission" ColumnName="ClientPermission" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1153,7 +1157,6 @@
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
                 <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
-                <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Status" ColumnName="Status" />

@@ -80,8 +80,8 @@ namespace CustomerSupport.Controllers
                         {
                             IdUser = d.IdUser,
                             IdPerson = d.IdPerson,
-                            IdPosition = d.IdPosition,
-                            Position ="",
+                            //IdPosition = d.IdPosition,
+                            //Position ="",
                             Login = d.Login,
                             Status = d.Status
                         }).First();
@@ -90,6 +90,7 @@ namespace CustomerSupport.Controllers
                 mlUser.PersonEmployee.NumIdentification ="14270679";
                 mlUser.PersonEmployee.LastName = "Lucena";
                 mlUser.PersonEmployee.Name = "Lucena";
+                
             }
 
             return View(mlUser);

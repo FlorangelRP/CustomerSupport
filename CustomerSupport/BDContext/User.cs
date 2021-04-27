@@ -24,12 +24,10 @@ namespace CustomerSupport.BDContext
     
         public int IdUser { get; set; }
         public int IdPerson { get; set; }
-        public int IdPosition { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public bool Status { get; set; }
     
-        public virtual CatalogDetail CatalogDetail { get; set; }
         public virtual Person Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ServiceRequest> ServiceRequests { get; set; }

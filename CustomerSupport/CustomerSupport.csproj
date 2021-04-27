@@ -129,49 +129,49 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BDContext\Catalog.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\CatalogDetail.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\Country.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\Model_MMEnterprises.Context.cs">
+    <Compile Include="BDContext\MMEnterprises.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model_MMEnterprises.Context.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\Model_MMEnterprises.cs">
+    <Compile Include="BDContext\MMEnterprises.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\Model_MMEnterprises.Designer.cs">
+    <Compile Include="BDContext\MMEnterprises.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model_MMEnterprises.edmx</DependentUpon>
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
     </Compile>
     <Compile Include="BDContext\OptionMenu.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\Person.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\PersonContact.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\ServiceRequest.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\Task.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\User.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\UserAcce.cs">
-      <DependentUpon>Model_MMEnterprises.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -185,15 +185,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BDContext\Model_MMEnterprises.Context.tt">
+    <Content Include="BDContext\MMEnterprises.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model_MMEnterprises.edmx</DependentUpon>
-      <LastGenOutput>Model_MMEnterprises.Context.cs</LastGenOutput>
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
+      <LastGenOutput>MMEnterprises.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="BDContext\Model_MMEnterprises.tt">
+    <Content Include="BDContext\MMEnterprises.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model_MMEnterprises.edmx</DependentUpon>
-      <LastGenOutput>Model_MMEnterprises.cs</LastGenOutput>
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
+      <LastGenOutput>MMEnterprises.cs</LastGenOutput>
     </Content>
     <Content Include="Content\assets\css\animate.css" />
     <Content Include="Content\assets\css\bootstrap.min.css" />
@@ -366,12 +366,12 @@
     <Content Include="Content\assets\webfonts\fa-solid-900.ttf" />
     <Content Include="Content\assets\webfonts\fa-solid-900.woff" />
     <Content Include="Content\assets\webfonts\fa-solid-900.woff2" />
-    <EntityDeploy Include="BDContext\Model_MMEnterprises.edmx">
+    <EntityDeploy Include="BDContext\MMEnterprises.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model_MMEnterprises.Designer.cs</LastGenOutput>
+      <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="BDContext\Model_MMEnterprises.edmx.diagram">
-      <DependentUpon>Model_MMEnterprises.edmx</DependentUpon>
+    <Content Include="BDContext\MMEnterprises.edmx.diagram">
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

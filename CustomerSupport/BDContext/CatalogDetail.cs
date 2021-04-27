@@ -20,10 +20,10 @@ namespace CustomerSupport.BDContext
             this.People = new HashSet<Person>();
             this.People1 = new HashSet<Person>();
             this.People2 = new HashSet<Person>();
+            this.People3 = new HashSet<Person>();
             this.PersonContacts = new HashSet<PersonContact>();
             this.ServiceRequests = new HashSet<ServiceRequest>();
             this.ServiceRequests1 = new HashSet<ServiceRequest>();
-            this.Users = new HashSet<User>();
             this.ServiceRequests2 = new HashSet<ServiceRequest>();
         }
     
@@ -41,13 +41,13 @@ namespace CustomerSupport.BDContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person> People2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Person> People3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonContact> PersonContacts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ServiceRequest> ServiceRequests { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ServiceRequest> ServiceRequests1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ServiceRequest> ServiceRequests2 { get; set; }
     }
