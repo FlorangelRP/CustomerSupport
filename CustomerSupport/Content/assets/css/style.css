@@ -69,8 +69,10 @@ input::placeholder,textarea::placeholder{
 	color:#b5b8c2;
 	font-size:14px;
 }
-textarea{
-	resize:none;
+textarea {
+	resize: none;
+	width: calc(100% - 0px);
+	height: 100px;
 }
 a:hover{
 	text-decoration:none;
@@ -2699,6 +2701,7 @@ div#thumbs_img ul{
 .page-item.active .page-link {
 	background-color:#333d60 !important;
 }
+
 
 /* ===responsive css=== */
 

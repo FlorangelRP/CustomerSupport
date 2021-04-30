@@ -56,7 +56,7 @@ namespace CustomerSupport.Controllers
         }
 
         // GET: Person/Create
-        public ActionResult Create()
+        public ActionResult AddPerson()
         {
             return View();
         }
@@ -78,7 +78,7 @@ namespace CustomerSupport.Controllers
         }
 
         // GET: Person/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult EditPerson(int id)
         {
             return View();
         }
