@@ -214,6 +214,7 @@
     <Content Include="Content\assets\css\fontawesome.min.css" />
     <Content Include="Content\assets\css\fonts.css" />
     <Content Include="Content\assets\css\graph.css" />
+    <Content Include="Content\assets\css\jquery.inputpicker.css" />
     <Content Include="Content\assets\css\magnific-popup.css" />
     <Content Include="Content\assets\css\style.css" />
     <Content Include="Content\assets\css\swiper.min.css" />
@@ -259,6 +260,7 @@
     <Content Include="Content\assets\js\bootstrap.min.js" />
     <Content Include="Content\assets\js\isotope.pkgd.min.js" />
     <Content Include="Content\assets\js\jquery.flot.min.js" />
+    <Content Include="Content\assets\js\jquery.inputpicker.js" />
     <Content Include="Content\assets\js\jquery.magnific-popup.min.js" />
     <Content Include="Content\assets\js\jquery.min.js" />
     <Content Include="Content\assets\js\script.js" />
@@ -417,6 +419,7 @@
     <Content Include="Views\User\EditUser.cshtml" />
     <Content Include="Views\Person\ListPerson.cshtml" />
     <Content Include="Views\Person\AddPerson.cshtml" />
+    <Content Include="Views\User\AddUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

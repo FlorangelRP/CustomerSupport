@@ -16,7 +16,8 @@
                 <div class="col-md-12">
                     <div class="text-right">
                         @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
-                        <a href="location.href='@Url.Action("Create", "User")';return false;" class="white_btn">Agregar</a>
+                        @*<a href="location.href='@Url.Action("AddUser", "User")';return false;" class="white_btn">Agregar</a>*@
+                        <button class="white_btn" onclick="location.href='@Url.Action("AddUser", "User")';return false;">Agregar</button>
                     </div>
                 </div>
             </div>
@@ -25,11 +26,10 @@
                     <table id="TUser" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Codigo Usuario</th>
-                                <th>Codigo Persona</th>
-                                <th>Codigo Cargo</th>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
                                 <th>Login</th>
-                                <th>Estatus</th>
+                                <th>Estado</th>
                                 <th></th>
                                 <th></th>
                                 <th></th>

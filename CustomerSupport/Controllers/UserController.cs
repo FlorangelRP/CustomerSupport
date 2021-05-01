@@ -46,7 +46,7 @@ namespace CustomerSupport.Controllers
         }
 
         // GET: User/Create
-        public ActionResult Create()
+        public ActionResult AddUser()
         {
             return View();
         }
@@ -70,26 +70,27 @@ namespace CustomerSupport.Controllers
         // GET: User/Edit/5int id
         public ActionResult EditUser()
         {
+
             Models.MUser mlUser = new Models.MUser();
-            using (MMEnterprisesEntities db = new MMEnterprisesEntities())
-            {
-                mlUser = (from d in db.Users
-                        select new Models.MUser
-                        {
-                            IdUser = d.IdUser,
-                            IdPerson = d.IdPerson,
-                            //IdPosition = d.IdPosition,
-                            //Position ="",
-                            Login = d.Login,
-                            Status = d.Status
-                        }).First();
-                mlUser.PersonEmployee = new MPerson();
-                mlUser.PersonEmployee.IdIdentificationType = 1;
-                mlUser.PersonEmployee.NumIdentification ="14270679";
-                mlUser.PersonEmployee.LastName = "Lucena";
-                mlUser.PersonEmployee.Name = "Lucena";
+            //using (MMEnterprisesEntities db = new MMEnterprisesEntities())
+            //{
+            //    mlUser = (from d in db.Users
+            //            select new Models.MUser
+            //            {
+            //                IdUser = d.IdUser,
+            //                IdPerson = d.IdPerson,
+            //                //IdPosition = d.IdPosition,
+            //                //Position ="",
+            //                Login = d.Login,
+            //                Status = d.Status
+            //            }).First();
+            //    mlUser.PersonEmployee = new MPerson();
+            //    mlUser.PersonEmployee.IdIdentificationType = 1;
+            //    mlUser.PersonEmployee.NumIdentification ="14270679";
+            //    mlUser.PersonEmployee.LastName = "Lucena";
+            //    mlUser.PersonEmployee.Name = "Lucena";
                 
-            }
+           
 
             return View(mlUser);
         }
