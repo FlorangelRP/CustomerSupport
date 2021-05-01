@@ -24,7 +24,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <div class="control-label">Codigo:</div>
-                                @Html.EditorFor(model => model.IdPerson, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.TextBoxFor(model => model.IdPerson, new { @class = "form-control" , @disabled = "disabled" })
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Tipo Persona:</div>
-                                @*@Html.EditorFor(model => model.IdPersonType, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
                                 @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
                                 <select name="personType" id="SelpersonType" class="form-control select2" style="width: 100%;">
                                     <option value="1">Empleado</option>
@@ -46,7 +46,7 @@
                         <div id="divPosition" class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Cargo:</div>
-                                @*@Html.EditorFor(model => model.IdPersonType, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
                                 @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
                                 <select name="personType" id="personType" class="form-control select2" style="width: 100%;">
                                     <option value="1">Presidente</option>
@@ -61,10 +61,10 @@
                             </div>
                         </div>
                         <div id="divClientPermission" class="col-md-3">
-                            <div class="form-group s_remember">
-                                <label>Permitir funcionalidad como cliente
-                                    @Html.CheckBoxFor(model => model.ClientPermission, new { htmlAttributes = new { @class = "form-control" } })
-                                    <span class="s_checkbox"></span>
+                            <div class="form-group s_status">
+                                <label>Permitir ver como cliente
+                                    @Html.CheckBoxFor(model => model.ClientPermission, new { @class = "form-control" })
+                                    <span class="s_st_checkbox"></span>
                                 </label>
                                 @Html.ValidationMessageFor(model => model.ClientPermission, "", new { @class = "text-danger" })
                             </div>
@@ -87,7 +87,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Numero de Identificacion:</div>
-                                @Html.EditorFor(model => model.NumIdentification, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.NumIdentification, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.NumIdentification, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -97,21 +97,21 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Nombres:</div>
-                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.Name, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Apellidos:</div>
-                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.LastName, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Fecha de Nacimiento:</div>
-                                @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                @Html.EditorFor(model => model.Birthday, new { @class = "form-control", @type = "date" })
                                 @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -154,7 +154,7 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <div class="control-label">Direccion:</div>
-                                @Html.TextAreaFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows=3, @cols=10 })
                                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -164,7 +164,7 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Email:</div>
-                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" , @type="email" , @placeholder="usuario@email.com" } })
+                                @Html.EditorFor(model => model.Email, new { @class = "form-control" , @type="email" , @placeholder="usuario@email.com" })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -182,13 +182,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group s_remember">
-                                <label>Estatus
-                                    @Html.CheckBoxFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                                    <span class="s_checkbox"></span>
+                        <div class="col-md-4">       
+                            <label class="control-label">Estatus:</label>
+                            <div class="s_status">  
+                                <label>
+                                    <span id="labEstatus"></span>
+                                    @Html.CheckBoxFor(model => model.Status, new { @class = "form-control", @id = "chkStatus" })
+                                    <span class="s_st_checkbox"></span>
                                 </label>
-                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })                                
                             </div>
                         </div>
                     </div>
@@ -379,6 +381,13 @@
 
         $(document).ready(function () {
 
+            // If the checkbox is checked, display the output text
+            if ($("#chkStatus").checked == true) {
+                $("#labEstatus").text("Activo");
+            } else {
+                $("#labEstatus").text("Inactivo");
+            }
+
             $("#SelpersonType").on('change', function () {
 
                 var selectValue = $(this).val();
@@ -390,14 +399,31 @@
                     case "1":
                         $("#divPosition").show();
                         $("#divClientPermission").show();
+                        break;
                     case "2":
                         $("#divPosition").hide();
                         $("#divClientPermission").hide();
-                    default:
+                        break;
+                    //default:
 
                 }
 
             });
+
+            $("#chkStatus").on('click', function () {
+
+                var IsSelected = $('#chkStatus').is(":checked");
+                 
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#labEstatus").text("Activo");
+                } else {
+                    $("#labEstatus").text("Inactivo");
+                }
+
+            });
+
+
         });
 
     </script>

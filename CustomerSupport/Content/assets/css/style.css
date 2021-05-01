@@ -1480,6 +1480,84 @@ input:checked ~ .s_checkbox:after {
 button.ss_btn:hover {
     transition: 0.3s;
 }
+
+/* ===Checkbox new css=== */
+
+.s_status {
+	margin: 26px 0px 20px;	
+	position: relative;
+	display: inline;
+}
+
+.s_status label {
+	font-size: 14px;
+}
+
+	.s_status .s_st_checkbox {
+		position: absolute;
+		/*display: inline;*/
+		top: 4px;
+		left: 5px; /*0;*/
+		border: 1px solid rgb(233, 237, 250);
+		border-radius: 4px;
+		background-color: rgb(248, 249, 253);
+		box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.04);
+		width: 17px;
+		height: 17px;
+	}
+
+.s_status input {
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+.s_status label {
+	padding-left: 30px;
+	cursor: pointer;
+}
+
+.s_st_checkbox:after {
+	content: "";
+	position: absolute; /*absolute*/
+	display: none; /*none*/
+}
+
+input:checked ~ .s_st_checkbox:after {
+	display: block; /*block*/
+}
+
+.s_st_checkbox:after {	
+	left: 6px;
+	top: 2px;
+	width: 5px;
+	height: 10px;
+	border: solid #061736;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.s_status a {
+	color: #7d818f;
+	font-size: 14px;
+	float: right;
+	transition: 0.3s;
+	-webkit-transition: 0.3s;
+	-moz-transition: 0.3s;
+}
+
+.s_status a:hover {
+	color: #061736;
+	text-decoration: none;
+}
+
+.s_status {
+	margin: 0;
+}
+
 /* ===contact us=== */
 .ss_contact_left{
 	background: linear-gradient(-55deg , #fff450, #061736);
@@ -2701,7 +2779,6 @@ div#thumbs_img ul{
 .page-item.active .page-link {
 	background-color:#333d60 !important;
 }
-
 
 /* ===responsive css=== */
 
