@@ -1,0 +1,155 @@
+﻿@model CustomerSupport.Models.MPerson
+
+<div class="accordion border" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseCard" aria-expanded="true" aria-controls="collapseOne">
+                    Datos del Cliente
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseCard" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label">Codigo:</div>
+                            @Html.TextBoxFor(model => model.IdPerson, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="control-label">Tipo de Identificacion:</div>
+                            @*@Html.EditorFor(model => model.IdIdentificationType, new { htmlAttributes = new { @class = "form-control" } })*@
+                            @*@Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })*@
+                            <select name="identificationType" id="identificationType" class="form-control select2" style="width: 100%;">
+                                <option value="1">Doc. Identidad</option>
+                                <option value="2">Seguro Social</option>
+                                <option value="2">Pasaporte</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="control-label">Numero de Identificacion:</div>
+                            @Html.TextBoxFor(model => model.NumIdentification, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NumIdentification, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label">Nombres:</div>
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label">Apellidos:</div>
+                            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label">Fecha de Nacimiento:</div>
+                            @Html.TextBoxFor(model => model.Birthday, new { @class = "form-control", @type = "date" })
+                            @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="control-label">Telefonos de contacto:</div>
+                            <div class="table-responsive">
+                                <div class="container">
+                                    <table id="TPersonContact" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Tipo</th>
+                                                <th>Codigo Area Pais</th>
+                                                <th>Numero de Telefono</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Movil</td>
+                                                <td>+1</td>
+                                                <td>234556790</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Casa</td>
+                                                <td>+1</td>
+                                                <td>222536780</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <div class="control-label">Direccion:</div>
+                            @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = 3, @cols = 10 })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="control-label">Email:</div>
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "email", @placeholder = "usuario@email.com" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label">Via de Contacto:</div>
+                            <select name="personType" id="personType" class="form-control select2" style="width: 100%;">
+                                <option value="1">Instagram</option>
+                                <option value="2">Facebook</option>
+                                <option value="3">Videos Publicitarios</option>
+                                <option value="4">Recomendacion</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="control-label">Estatus:</label>
+                        <div class="s_status">
+                            <label>
+                                <span id="labEstatus"></span>
+                                @Html.CheckBoxFor(model => model.Status, new { @class = "form-control", @id = "chkStatus" })
+                                <span class="s_st_checkbox"></span>
+                            </label>
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

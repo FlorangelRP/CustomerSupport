@@ -1,0 +1,25 @@
+﻿@model CustomerSupport.Models.MTask
+
+<div class="col-md-3">
+    <div class="form-group">
+        <div class="control-label">Fecha:</div>
+        @Html.TextBoxFor(model => model.DateIni, new { @class = "form-control", @type = "date" })
+        @Html.ValidationMessageFor(model => model.DateIni, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="form-group">
+        <div class="control-label">Hora:</div>
+        @Html.TextBoxFor(model => model.HourIni, new { @class = "form-control", @type = "hour" })
+        @Html.ValidationMessageFor(model => model.HourIni, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group">
+        <div class="control-label">Direccion:</div>
+        @Html.TextAreaFor(model => model.Place, new { @class = "form-control", @rows = 3, @cols = 10 })
+        @Html.ValidationMessageFor(model => model.Place, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+
