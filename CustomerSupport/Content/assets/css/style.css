@@ -819,8 +819,11 @@ h3.ss_h3_center:before {
 	width:90px;
 	height:90px;
 }
-.ss_section_six,.ss_team,.ss_about_sec_five, .ss_section_seven,.ss_section_eight,.ss_trade_sec_two,.ss_section_five,.happy_clients,.ss_pv_one,.ss_pv_two {
+.ss_section_six,.ss_team,.ss_about_sec_five, .ss_section_seven,.ss_section_eight,.ss_trade_sec_two,.ss_section_five,.ss_pv_one,.ss_pv_two {
 	padding-top:96px;
+}
+.happy_clients {
+	padding-top:56px;
 }
 .ss_four_left .ss_box_bg {
     border: 2px solid transparent;
@@ -1784,11 +1787,14 @@ input:checked ~ .s_st_checkbox:after {
     padding-top: 2px;
 }
 .happy_clients{
-	background:linear-gradient(-55deg , #fff450, #061736);
+	background:linear-gradient(-55deg , #fff150, #ad8f00);	
+	/* background:linear-gradient(-55deg , #fff150, #ad8f00); */
 }
 
 .ss_about_counter{
-	background-color:#f6f9fe;
+	background:linear-gradient(-55deg , #000012, #333d60);
+	/*background-color:#333d60;*/  /*#f6f9fe;*/
+	padding-bottom: 20px;
 }
 .ss_about_counter .ss_count {
     text-align: center;
@@ -1796,7 +1802,7 @@ input:checked ~ .s_st_checkbox:after {
     font-size: 35px;
     z-index: 5;
     line-height: normal;
-    margin-top: 20px;
+    margin-top: 20px;	
 }
 .counter_div {
     padding: 50px 0;
@@ -1817,7 +1823,7 @@ input:checked ~ .s_st_checkbox:after {
 	color:#ffffff;
 }
 .happy_clients h1{
-	padding-bottom:140px;
+	padding-bottom:100px;
 }
 .happy_clients h3:before {
     background: #061736;
@@ -3349,8 +3355,11 @@ tr.hide-table-padding td {
 	.ss_five_right.pl-5.pr-5 {
 		padding: 16px 0px 0px!important;
 	}
-	.ss_section_six, .ss_team, .ss_section_seven, .ss_section_eight, .ss_trade_sec_two,.ss_section_five,.happy_clients,.ss_pv_one,.ss_pv_two {
+	.ss_section_six, .ss_team, .ss_section_seven, .ss_section_eight, .ss_trade_sec_two,.ss_section_five,.ss_pv_one,.ss_pv_two {
 		padding-top: 56px;
+	}
+	.happy_clients {
+		padding-top:16px;
 	}
 	.ss_section_six {
 		padding-bottom: 25px;

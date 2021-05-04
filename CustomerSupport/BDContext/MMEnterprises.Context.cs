@@ -39,13 +39,17 @@ namespace CustomerSupport.BDContext
         public virtual DbSet<UserAcce> UserAcces { get; set; }
         public virtual DbSet<VWListCatalog> VWListCatalogs { get; set; }
     
-        public virtual ObjectResult<GNListPerson_Result> GNListPerson(Nullable<int> idPerson)
+        public virtual ObjectResult<GNListPerson_Result> GNListPerson(Nullable<int> idPerson, Nullable<int> idPersonType)
         {
             var idPersonParameter = idPerson.HasValue ?
                 new ObjectParameter("IdPerson", idPerson) :
                 new ObjectParameter("IdPerson", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPerson_Result>("GNListPerson", idPersonParameter);
+            var idPersonTypeParameter = idPersonType.HasValue ?
+                new ObjectParameter("IdPersonType", idPersonType) :
+                new ObjectParameter("IdPersonType", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPerson_Result>("GNListPerson", idPersonParameter, idPersonTypeParameter);
         }
     
         public virtual ObjectResult<GNListUser_Result> GNListUser(Nullable<int> idUser)

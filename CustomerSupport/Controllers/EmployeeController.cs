@@ -22,7 +22,7 @@ namespace CustomerSupport.Controllers
             List<MPerson> ListPerson = new List<MPerson>();            
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            ListPerson = (from result in db.GNListPerson(null).ToList()
+            ListPerson = (from result in db.GNListPerson(null,2).ToList()
                         select new MPerson
                         {
                             IdPerson= result.IdPerson,

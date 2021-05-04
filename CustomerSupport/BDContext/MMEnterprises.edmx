@@ -169,8 +169,6 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <PropertyRef Name="IdTable" />
             <PropertyRef Name="IdCatalogDetail" />
             <PropertyRef Name="IdTableDetail" />
-            <PropertyRef Name="DetailDesc" />
-            <PropertyRef Name="DetailStatus" />
           </Key>
           <Property Name="IdCatalog" Type="int" Nullable="false" />
           <Property Name="IdTable" Type="varchar" MaxLength="50" Nullable="false" />
@@ -458,6 +456,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
         </Association>
         <Function Name="GNListPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="IdPersonType" Type="int" Mode="In" />
         </Function>
         <Function Name="GNListUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUser" Type="int" Mode="In" />
@@ -1065,10 +1064,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           </AssociationSet>
           <EntitySet Name="VWListCatalogs" EntityType="MMEnterprisesModel.VWListCatalog" />
           <FunctionImport Name="GNListPerson" ReturnType="Collection(MMEnterprisesModel.GNListPerson_Result)">
-          <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
-            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          <Parameter Name="IdUser" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="VWListCatalog">
@@ -1077,8 +1077,6 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <PropertyRef Name="IdTable" />
             <PropertyRef Name="IdCatalogDetail" />
             <PropertyRef Name="IdTableDetail" />
-            <PropertyRef Name="DetailDesc" />
-            <PropertyRef Name="DetailStatus" />
           </Key>
           <Property Name="IdCatalog" Type="Int32" Nullable="false" />
           <Property Name="IdTable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
