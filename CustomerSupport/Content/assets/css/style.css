@@ -112,7 +112,8 @@ img:focus{
 .ss_error_bg {
     padding-bottom: 93px;
 }
-.ss_box_bg{
+.ss_box_bg{	
+	z-index: 0 !important;
 	background: #fff;
     box-shadow: 0px 0px 20px 0px rgba(131, 149, 255, 0.14);
     padding: 25px;
@@ -241,32 +242,37 @@ h3.ss_h3_center:before {
     left: 0;
     border-radius: 10px;
 	padding: 15px 0px;
-	z-index: 5;
+	z-index:100 !important; /*5;*/
 	min-width: 130px;
 	opacity: 0;
     visibility: hidden;
-	background:#ffffff;
+	background:#e3bf09; /*Color fondo del cuadrito de submenu desplegable*/ /*background:#ffffff;*/
 }
 .ss_menuP:hover .ss_subMenu {
     opacity: 1;
     visibility: visible;
 	transition:0.3s;
-    top: 50px;
+    top: 25px; /*tope del cuadrito de submenu desplegable*/
 }
 .ss_menu li .ss_subMenu li a{
-    color: #666;
+    color: #333d60; /*Color letras cuando de menu desplegable*/ /* #666;*/
     text-align: left;
 }
-.ss_header .ss_menu li a:hover, .ss_subMenu li a:hover{
-    color: #fff450; /* #5b769e; */
+
+.ss_header .ss_menu li a:hover{
+    color: #e3bf09; /*Color letras cuando pasa el mouse encima de menu principal*/ /* #5b769e; */
 }
+.ss_header .ss_subMenu li a:hover{
+    color: #061736; /*Color letras cuando pasa el mouse encima de menu desplegable*/ /* #5b769e; */
+}
+
 .ss_menuP:hover .ss_subMenu:after {
     position: absolute;
     content: '';
     border-left: 25px solid #ff000000;
-    border-right: 0px solid #0000ff00;
-    border-bottom: 25px solid white;
-    top: -15px;
+    border-right: 0px solid #0000ff00;    
+	border-bottom: 25px solid #e3bf09; /*Color de la flechita del submenu desplegable*/ /*border-bottom: 25px solid white;*/
+    top: -5px; /*Tope de la flechita del submenu desplegable*/
     left: 1px;
 }
 .ss_subMenu li a:hover {
@@ -2417,9 +2423,9 @@ a:hover .fa-pinterest-p {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-.table td, .table th,.table thead th{
-	/*border:none;*/
-}
+/* .table td, .table th,.table thead th{
+	border:none;
+} */
 .cart_two {
     text-align: center;
     width: 150px;
@@ -2974,7 +2980,7 @@ tr.hide-table-padding td {
 	}
 	.ss_menu.ss_toggle .ss_menu_bar:after {
 		position: absolute;
-		content: 'Main Menu';
+		content: 'Menu';
 		font-size: 20px;
 		color: #ffffff;
 		left: -141px;
@@ -3007,6 +3013,7 @@ tr.hide-table-padding td {
 	.ss_search_main, .ss_cart_ico {
 		padding: 0px 10px;
 	}
+
 	.ss_menu ul.ss_subMenu {
 		position: absolute;
 		top: 70px;
@@ -3022,7 +3029,7 @@ tr.hide-table-padding td {
 	}
 	.ss_menuP:hover .ss_subMenu{
 		opacity: 0;
-		visibility: hidden;		
+		visibility: hidden;				
 	}
 	.ss_menu .show_subMenu ul.ss_subMenu{
 		position: inherit;
@@ -3036,6 +3043,10 @@ tr.hide-table-padding td {
 	.ss_menu li.show_subMenu .ss_subMenu li a{
 		color:#fff;
 	}
+	.ss_menu li.show_subMenu .ss_subMenu li a:hover{
+		color:#e3bf09; /*Color de las letras del submenu cuando se pasa el mouse encima*/
+	}
+
 	.ss_banner_left h2 {
 		font-size: 16px;
 		letter-spacing: 4px;
@@ -3062,6 +3073,7 @@ tr.hide-table-padding td {
 		left: -170px;
 		width: 210px;
 	}
+	
 	.ss_subMenu {
 		background: transparent;
 	}
