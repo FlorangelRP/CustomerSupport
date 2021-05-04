@@ -428,6 +428,7 @@
     <Content Include="Views\ServiceRequest\AddServiceRequest.cshtml" />
     <Content Include="Views\Shared\_PartialClient.cshtml" />
     <Content Include="Views\Shared\_PartialDetailTask.cshtml" />
+    <Content Include="Views\ServiceRequest\_PartialAddServiceBuy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
