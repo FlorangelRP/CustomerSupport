@@ -1,7 +1,7 @@
 ﻿@*@model IEnumerable<CustomerSupport.Models.MPerson>*@
 
 @{
-    ViewBag.Title = "Listado de Personas";
+    ViewBag.Title = "Listado de Clientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -18,7 +18,7 @@
                     <div class="text-right">
                         @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
                         @*<a href="location.href='@Url.Action("Create", "Person")';return false;" class="white_btn">Agregar</a>*@
-                        <button class="white_btn" onclick="location.href='@Url.Action("AddPerson", "Person")';return false;">Agregar</button>
+                        <button class="white_btn" onclick="location.href='@Url.Action("AddClient", "Client")';return false;">Agregar</button>
                     </div>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                         <thead>
                             <tr>
                                 <th>Codigo</th>
-                                <th>Tipo</th>
+                                @*<th>Tipo</th>*@
                                 <th>Nombres</th>
                                 <th>Apellidos</th>
                                 <th>Tipo de Identif.</th>
@@ -66,7 +66,7 @@
     var table = $('#TPerson').DataTable({
 
             'ajax': {
-                'url': '@Url.Action("GetListPerson", "Person")',
+                'url': '@Url.Action("GetListClient", "Client")',
                 'type': 'GET',
                 'dataType': 'json',
                 'dataSrc': ''
@@ -74,7 +74,7 @@
             'columns':
                 [
                     { 'data': 'IdPerson', 'autowidth': true },
-                    { 'data': 'PersonType', 'autowidth': true },
+                    /*{ 'data': 'PersonType', 'autowidth': true },*/
                     { 'data': 'Name', 'autowidth': true },
                     { 'data': 'LastName', 'autowidth': true },
                     { 'data': 'IdentificationType', 'autowidth': true },
