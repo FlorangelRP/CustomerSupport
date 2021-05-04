@@ -186,6 +186,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
+    <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -194,6 +195,7 @@
     <Compile Include="Models\MCatalogDetail.cs" />
     <Compile Include="Models\MPerson.cs" />
     <Compile Include="Models\MPersonContac.cs" />
+    <Compile Include="Models\MServiceRequest.cs" />
     <Compile Include="Models\MUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -420,6 +422,7 @@
     <Content Include="Views\Client\ListClient.cshtml" />
     <Content Include="Views\Employee\AddEmployee.cshtml" />
     <Content Include="Views\Employee\ListEmployee.cshtml" />
+    <Content Include="Views\ServiceRequest\ListServiceRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
