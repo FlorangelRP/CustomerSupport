@@ -429,6 +429,8 @@
     <Content Include="Views\Shared\_PartialClient.cshtml" />
     <Content Include="Views\Shared\_PartialDetailTask.cshtml" />
     <Content Include="Views\ServiceRequest\_PartialAddServiceBuy.cshtml" />
+    <Content Include="Views\ServiceRequest\_PartialAddRefinancing.cshtml" />
+    <Content Include="Views\ServiceRequest\_PartialAddLivingTrust.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

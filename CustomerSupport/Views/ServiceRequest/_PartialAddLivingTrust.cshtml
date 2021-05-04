@@ -1,0 +1,74 @@
+﻿@model CustomerSupport.Models.MServiceRequest
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="control-label">Tipo de Propiedad:</div>
+            @*@Html.EditorFor(model => model.IdIdentificationType, new { htmlAttributes = new { @class = "form-control" } })*@
+            @*@Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })*@
+            <select name="ProperyType" id="ProperyType" class="form-control select2" style="width: 100%;">
+                <option value="1">SRF (Single Family Resident)</option>
+                <option value="2">Condominio</option>
+                <option value="3">De 1 a 2 Unidades</option>
+                <option value="4">De 3 a 4 Unidades</option>
+                <option value="5">De 5 o mas Unidades</option>
+                <option value="6">Comercial</option>
+                <option value="7">Residencial</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="control-label">Que tipos de bienes desea agregar?</div>
+            @Html.TextAreaFor(model => model.Assets, new { @class = "form-control", @rows = 3, @cols = 10 })
+            @Html.ValidationMessageFor(model => model.Assets, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="control-label">Tiene Beneficiarios?</div>
+
+            <label class="ss_radioButton">
+                Si
+                <input type="radio" checked="checked" name="radio">
+                <span class="checkmark"></span>
+            </label>
+            <label class="ss_radioButton">
+                No
+                <input type="radio" name="radio">
+                <span class="checkmark"></span>
+            </label>
+
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="control-label">Beneficiarios:</div>
+            @Html.TextAreaFor(model => model.Beneficiaries, new { @class = "form-control", @rows = 3, @cols = 10 })
+            @Html.ValidationMessageFor(model => model.Beneficiaries, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="control-label">Explicacion breve del proceso:</div>
+            @Html.TextAreaFor(model => model.Process, new { @class = "form-control", @rows = 3, @cols = 10 })
+            @Html.ValidationMessageFor(model => model.Process, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="control-label">Desea que:</div>
+            @Html.TextAreaFor(model => model.Wish, new { @class = "form-control", @rows = 3, @cols = 10 })
+            @Html.ValidationMessageFor(model => model.Wish, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
