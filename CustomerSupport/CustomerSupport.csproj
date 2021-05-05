@@ -431,6 +431,7 @@
     <Content Include="Views\ServiceRequest\_PartialAddServiceBuy.cshtml" />
     <Content Include="Views\ServiceRequest\_PartialAddRefinancing.cshtml" />
     <Content Include="Views\ServiceRequest\_PartialAddLivingTrust.cshtml" />
+    <Content Include="Views\ServiceRequest\_PartialAddServiceBuilding.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
