@@ -86,7 +86,9 @@
                                                 @Html.Partial("_PartialAddRefinancing")
                                             </div>
                                             <div id="servicePrestamos">
-                                                <h1>servicePrestamos</h1>
+                                                <br>
+                                                <h1>En construccion ....</h1>
+                                                <br>
                                             </div>
                                             <div id="serviceLivingTrust">
                                                 @Html.Partial("_PartialAddLivingTrust")
@@ -242,6 +244,39 @@
                         $("#serviceLivingTrust").hide();
                         break;
 
+                }
+
+            });
+
+
+            // If the checkbox is checked, display the output text
+            if ($('#btnRadioSI').is(":checked") == true) {
+                //alert('SIIII');
+                $("#divBeneficiarios").show();
+            } else {
+                $("#divBeneficiarios").hide();
+            }
+
+
+            $("#btnRadioSI").on('click', function () {
+
+                var IsSelected = $('#btnRadioSI').is(":checked");
+                //alert('SIIII');
+
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#divBeneficiarios").show();
+                }
+
+            });
+            $("#btnRadioNO").on('click', function () {
+
+                var IsSelected = $('#btnRadioNO').is(":checked");
+                //alert('NOOO');
+
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#divBeneficiarios").hide();
                 }
 
             });
