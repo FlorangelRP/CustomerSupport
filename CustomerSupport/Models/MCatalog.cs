@@ -10,5 +10,6 @@ namespace CustomerSupport.Models
         public int IdCatalog { get; set; }
         public string IdTable { get; set; }
         public string Description { get; set; }
+        public List<MCatalogDetail> TableDetails { get; set; }
     }
 }

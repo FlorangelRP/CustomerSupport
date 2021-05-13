@@ -25,23 +25,24 @@ namespace CustomerSupport.Controllers
             ListPerson = (from result in db.GNListPerson(null,1).ToList()
                         select new MPerson
                         {
-                            IdPerson= result.IdPerson,
-                            IdPersonType= result.IdPersonType,
-                            PersonType= result.PersonType,
-                            IdIdentificationType= result.IdIdentificationType,
-                            IdentificationType= result.IdentificationType,
-                            NumIdentification= result.NumIdentification,
-                            Name= result.Name,
-                            LastName= result.LastName,
-                            Birthday= result.Birthday,
-                            Address= result.Address,
-                            Email= result.Email,
-                            IdContactType= result.IdContactType,
-                            ContactType= result.ContactType,
-                            IdPosition= result.IdPosition,
-                            Position= result.Position,
-                            ClientPermission= result.ClientPermission,
-                            Status= result.Status
+                            IdPerson = result.IdPerson,
+                            IdPersonType = result.IdPersonType,
+                            PersonType = result.PersonType,
+                            IdIdentificationType = result.IdIdentificationType,
+                            IdentificationType = result.IdentificationType,
+                            NumIdentification = result.NumIdentification,
+                            Name = result.Name,
+                            LastName = result.LastName,
+                            Birthday = result.Birthday,
+                            Address = result.Address,
+                            Email = result.Email,
+                            IdContactType = result.IdContactType,
+                            ContactType = result.ContactType,
+                            IdPosition = result.IdPosition,
+                            Position = result.Position,
+                            ClientPermission = result.ClientPermission,
+                            Status = result.Status,
+                            StatusDesc = result.Status==true ? "Activo" : "Inactivo"
                         }).ToList();
 
             return Json(ListPerson, JsonRequestBehavior.AllowGet); 

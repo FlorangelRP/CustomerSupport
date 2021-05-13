@@ -31,12 +31,13 @@
                                 @*<th>Tipo</th>*@
                                 <th>Nombres</th>
                                 <th>Apellidos</th>
-                                <th>Tipo de Identif.</th>
-                                <th>Nro. de Identif.</th>
+                                <th>Tipo Identificacion</th>
+                                <th>N° Identificacion</th>
+                                <th>Cargo</th>
                                 <th>Estado</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="text-center" colspan="3">Opciones</th>
+                                @*<th></th>*@
+                                @*<th></th>*@
                             </tr>
                         </thead>
                     </table>
@@ -79,14 +80,15 @@
                     { 'data': 'LastName', 'autowidth': true },
                     { 'data': 'IdentificationType', 'autowidth': true },
                     { 'data': 'NumIdentification', 'autowidth': true },
-                    { 'data': 'Status', 'autowidth': true },
+                    { 'data': 'Position', 'autowidth': true },
+                    { 'data': 'StatusDesc', 'autowidth': true },
                     {'data': null, render: function (data, type, row) {
                             //debugger;
                             if (data != null) {
                                 if (row.IdPerson == null) {
                                     return '';
                                 } else {
-                                    return '<a class="btn"><i class="fas fa-edit"></i></a>';
+                                    return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
                                 }
                             }
                         }, 'autowidth': true
@@ -98,7 +100,7 @@
                                 if (row.IdPerson == null) {
                                     return '';
                                 } else {
-                                    return '<a class="btn"><i class="fas fa-search"></i></a>';
+                                    return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
                                 }
                             }
                         }, 'autowidth': true
@@ -110,7 +112,7 @@
                                 if (row.IdPerson == null) {
                                     return '';
                                 } else {
-                                    return '<a class="btn"><i class="far fa-trash-alt"></i></a>';
+                                    return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
                                 }
                             }
                         }, 'autowidth': true

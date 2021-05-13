@@ -12,6 +12,6 @@ namespace CustomerSupport.Models
         public int IdCatalog { get; set; }
         public string Description { get; set; }
         public bool Status { get; set; }
-        public MCatalog CatalogHeader { get; set; }
+        public string StatusDesc { get; set; } //descripcion del estado (Activo/Inactivo)
     }
 }

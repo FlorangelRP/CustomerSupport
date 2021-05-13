@@ -24,6 +24,7 @@ namespace CustomerSupport.Models
         public string Position { get; set; } //descripcion del cargo, solo si es tipo de persona Empleado
         public bool ClientPermission { get; set; } //debe ser visible solo para tipo persona Empleado
         public bool Status { get; set; }
+        public string StatusDesc { get; set; } //descripcion del estado (Activo/Inactivo)
         public List<MPersonContac> listPersonContact { get; set; } //Numeros de telefono de contacto de la persona
     }
 }

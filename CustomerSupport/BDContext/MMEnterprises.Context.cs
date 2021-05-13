@@ -60,5 +60,18 @@ namespace CustomerSupport.BDContext
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUser_Result>("GNListUser", idUserParameter);
         }
+    
+        public virtual ObjectResult<GNListCountry_Result> GNListCountry(Nullable<int> idCountry, Nullable<int> idIsoCountry)
+        {
+            var idCountryParameter = idCountry.HasValue ?
+                new ObjectParameter("IdCountry", idCountry) :
+                new ObjectParameter("IdCountry", typeof(int));
+    
+            var idIsoCountryParameter = idIsoCountry.HasValue ?
+                new ObjectParameter("IdIsoCountry", idIsoCountry) :
+                new ObjectParameter("IdIsoCountry", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCountry_Result>("GNListCountry", idCountryParameter, idIsoCountryParameter);
+        }
     }
 }

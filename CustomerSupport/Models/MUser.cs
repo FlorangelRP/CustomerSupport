@@ -12,6 +12,7 @@ namespace CustomerSupport.Models
         public string Login { get; set; }
         public string Password { get; set; }
         public bool Status { get; set; }
+        public string StatusDesc { get; set; } //descripcion del estado (Activo/Inactivo)
         public MPerson PersonEmployee { get; set; }
 
     }

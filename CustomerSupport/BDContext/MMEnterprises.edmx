@@ -169,6 +169,8 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <PropertyRef Name="IdTable" />
             <PropertyRef Name="IdCatalogDetail" />
             <PropertyRef Name="IdTableDetail" />
+            
+            
           </Key>
           <Property Name="IdCatalog" Type="int" Nullable="false" />
           <Property Name="IdTable" Type="varchar" MaxLength="50" Nullable="false" />
@@ -454,6 +456,10 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GNListCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCountry" Type="int" Mode="In" />
+          <Parameter Name="IdIsoCountry" Type="int" Mode="In" />
+        </Function>
         <Function Name="GNListPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdPerson" Type="int" Mode="In" />
           <Parameter Name="IdPersonType" Type="int" Mode="In" />
@@ -1070,6 +1076,10 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
           <Parameter Name="IdUser" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GNListCountry" ReturnType="Collection(MMEnterprisesModel.GNListCountry_Result)">
+            <Parameter Name="IdCountry" Mode="In" Type="Int32" />
+            <Parameter Name="IdIsoCountry" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="VWListCatalog">
           <Key>
@@ -1110,6 +1120,13 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="Int32" Name="IdPerson" Nullable="false" />
           <Property Type="String" Name="Login" Nullable="false" MaxLength="20" />
           <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListCountry_Result">
+          <Property Type="Int32" Name="IdCountry" Nullable="false" />
+          <Property Type="String" Name="IdIsoCountry" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="Country" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="CountryAreaCode" Nullable="false" MaxLength="10" />
           <Property Type="Boolean" Name="Status" Nullable="false" />
         </ComplexType>
       </Schema>
@@ -1326,6 +1343,17 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListCountry" FunctionName="MMEnterprisesModel.Store.GNListCountry">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCountry_Result">
+                <ScalarProperty Name="IdCountry" ColumnName="IdCountry" />
+                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
               </ComplexTypeMapping>
             </ResultMapping>

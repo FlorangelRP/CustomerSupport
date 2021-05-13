@@ -137,6 +137,9 @@
     <Compile Include="BDContext\Country.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListCountry_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListPerson_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -182,11 +185,13 @@
     <Compile Include="BDContext\VWListCatalog.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\ServiceRequestController.cs" />
+    <Compile Include="Controllers\TableCatalogController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -198,6 +203,7 @@
     <Compile Include="Models\MPersonContac.cs" />
     <Compile Include="Models\MServiceRequest.cs" />
     <Compile Include="Models\MDetailTask.cs" />
+    <Compile Include="Models\MCountry.cs" />
     <Compile Include="Models\MUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -435,6 +441,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Country\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

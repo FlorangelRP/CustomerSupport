@@ -11,7 +11,7 @@
     </div>
     <div class="card-body">
 
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Create", "Employee", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
 
@@ -24,7 +24,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <div class="control-label">Codigo:</div>
-                                @Html.TextBoxFor(model => model.IdPerson, new { @class = "form-control" , @disabled = "disabled" })
+                                @Html.TextBoxFor(model => model.IdPerson, new { @class = "form-control", @disabled = "disabled" })
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -32,37 +32,19 @@
                     <hr>
 
                     <div class="row">
-                        <!--<div class="col-md-3">
-                            <div class="form-group">
-                                <div class="control-label">Tipo Persona:</div>-->
-                                @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
-                                @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
-                                <!--<select name="personType" id="SelpersonType" class="form-control select2" style="width: 100%;">
-                                    <option value="1">Empleado</option>
-                                    <option value="2">Cliente</option>
-                                </select>
-                            </div>
-                        </div>-->
                         <div id="divPosition" class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Cargo:</div>
                                 @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
                                 @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
-                                <select name="personType" id="personType" class="form-control select2" style="width: 100%;">
-                                    <option value="1">Presidente</option>
-                                    <option value="2">Asistente Ejecutivo</option>
-                                    <option value="3">Encargado de Ventas</option>
-                                    <option value="4">Encargado de Processing</option>
-                                    <option value="5">Encargado de Marketing</option>
-                                    <option value="6">Project Manager</option>
-                                    <option value="7">Procesador</option>
-                                    <option value="8">Operador</option>
+                                <select id="lst_Position" class="form-control select2" style="width: 100%;">
                                 </select>
                             </div>
                         </div>
                         <div id="divClientPermission" class="col-md-3">
                             <div class="form-group s_status">
-                                <label>Permitir ver como cliente
+                                <label>
+                                    Permitir ver como cliente
                                     @Html.CheckBoxFor(model => model.ClientPermission, new { @class = "form-control" })
                                     <span class="s_st_checkbox"></span>
                                 </label>
@@ -71,16 +53,13 @@
                         </div>
                     </div>
 
-                    <div class="row">                        
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Tipo de Identificacion:</div>
                                 @*@Html.EditorFor(model => model.IdIdentificationType, new { htmlAttributes = new { @class = "form-control" } })*@
                                 @*@Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })*@
-                                <select name="identificationType" id="identificationType" class="form-control select2" style="width: 100%;">
-                                    <option value="1">Doc. Identidad</option>
-                                    <option value="2">Seguro Social</option>
-                                    <option value="2">Pasaporte</option>
+                                <select id="lst_IdentificationType" class="form-control select2" style="width: 100%;">
                                 </select>
                             </div>
                         </div>
@@ -117,44 +96,90 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="control-label">Telefonos de contacto:</div>
-                                <div class="table-responsive">
-                                    <div class="container">
-                                        <table id="TPersonContact" class="table table-bordered table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Tipo</th>
-                                                    <th>Codigo Area Pais</th>
-                                                    <th>Numero de Telefono</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Movil</td>
-                                                    <td>+1</td>
-                                                    <td>234556790</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Casa</td>
-                                                    <td>+1</td>
-                                                    <td>222536780</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                    <div class="row pt-2 pb-3">
+
+                        <div class="col-md-12">
+
+                            <div class="accordion border" id="accordionContact">
+                                <div class="card collapsed-card">
+                                    <div class="card-header" id="headingContact">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardContact" aria-expanded="false" aria-controls="collapseContact">
+                                                Teléfonos de Contacto
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseCardContact" class="collapse" aria-labelledby="headingContact" data-parent="#accordionContact">
+
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Tipo:</div>
+                                                        <select id="lst_PhoneNumberType" class="form-control select2" style="width: 100%;">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Código de Area:</div>
+                                                        <select id="lst_CountryAreaCode" class="form-control select2" style="width: 100%;">                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Número:</div>
+                                                        <input class="form-control" type="text" id="inpPhoneNumber" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row pt-3">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div class="table-responsive">
+                                                            <div class="container">
+                                                                <table id="TPersonContact" class="table table-bordered table-striped">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Id Tipo telefono</th>
+                                                                            <th>Tipo</th>
+                                                                            <th>Codigo Pais</th>
+                                                                            <th>Código Area</th>
+                                                                            <th>Número</th>
+                                                                            <th colspan="2" class="text-center">Opciones</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
 
                     <div class="row">
                         <div class="col-md-10">
                             <div class="form-group">
                                 <div class="control-label">Direccion:</div>
-                                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows=3, @cols=10 })
+                                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = 3, @cols = 10 })
                                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -164,46 +189,35 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Email:</div>
-                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" , @type="email" , @placeholder="usuario@email.com" })
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "email", @placeholder = "usuario@email.com" })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        @*<div class="col-md-3">
-                            <div class="form-group">
-                                <div class="control-label">Via de Contacto:</div>
-                                <select name="personType" id="personType" class="form-control select2" style="width: 100%;">
-                                    <option value="1">Instagram</option>
-                                    <option value="2">Facebook</option>
-                                    <option value="3">Videos Publicitarios</option>
-                                    <option value="4">Recomendacion</option>
-                                </select>
-                            </div>
-                        </div>*@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">       
+                        <div class="col-md-4">
                             <label class="control-label">Estatus:</label>
-                            <div class="s_status">  
+                            <div class="s_status">
                                 <label>
                                     <span id="labEstatus"></span>
                                     @Html.CheckBoxFor(model => model.Status, new { @class = "form-control", @id = "chkStatus" })
                                     <span class="s_st_checkbox"></span>
                                 </label>
-                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })                                
+                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-offset-2 col-md-10">
-                            <div class="form-group">                                
+                            <div class="form-group">
                                 <div class="text-center">
                                     <a href="location.href='@Url.Action("Create", "Employee")';return false;" class="white_btn">Grabar</a>
-                                </div>                           
+                                </div>
                             </div>
                         </div>
-                    </div>   
+                    </div>
 
                 </div>
 
@@ -267,7 +281,7 @@
             $("#chkStatus").on('click', function () {
 
                 var IsSelected = $('#chkStatus').is(":checked");
-                 
+
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
                     $("#labEstatus").text("Activo");
@@ -277,7 +291,237 @@
 
             });
 
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"POSITION",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
 
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("");
+                    $("#lst_Position").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_Position").append(option);
+                    });
+
+                    document.getElementById('lst_Position').value = "";
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de cargos");
+                }
+
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"IDENTIFICATIONTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("");
+                    $("#lst_IdentificationType").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_IdentificationType").append(option);
+                    });
+
+                    document.getElementById('lst_IdentificationType').value = "";
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de tipos de identificacion");
+                }
+
+            });
+
+        });
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PHONENUMBERTYPE",
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+
+                var option = $(document.createElement('option'));
+                option.text("Seleccione");
+                option.val("");
+                $("#lst_PhoneNumberType").append(option);
+
+                $(msg).each(function () {
+                    var option = $(document.createElement('option'));
+                    option.text(this.DetailDesc);
+                    option.val(this.IdCatalogDetail); //Identity
+
+                    $("#lst_PhoneNumberType").append(option);
+                });
+
+                document.getElementById('lst_PhoneNumberType').value = "";
+            },
+            error: function (msg) {
+                $("#error > span").text("Error al llenar lista de tipos de telefono contacto");
+            }
+
+        });
+
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetListCountry", "Country")',
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+
+                var option = $(document.createElement('option'));
+                option.text("Seleccione");
+                option.val("");
+                $("#lst_CountryAreaCode").append(option);
+
+                $(msg).each(function () {
+                    var option = $(document.createElement('option'));
+                    option.text(this.CountryAreaCode);
+                    option.val(this.IdIsoCountry); //Identity
+
+                    $("#lst_CountryAreaCode").append(option);
+                });
+
+                document.getElementById('lst_CountryAreaCode').value = "";
+            },
+            error: function (msg) {
+                $("#error > span").text("Error al llenar lista de Paises");
+            }
+
+        });
+
+
+        var tabPersonContact = $('#TPersonContact').DataTable({
+                                'columns':
+                                    [
+                                        { 'name':'IdPhoneNumberType' , 'autowidth': true },
+                                        { 'name':'PhoneNumberType' ,'autowidth': true },
+                                        { 'name':'IdIsoCountryCode' ,'autowidth': true },
+                                        { 'name':'CountryAreaCode' ,'autowidth': true },
+                                        { 'name':'PhoneNumber' ,'autowidth': true },
+                                        {
+                                            render: function (data, type, row) {
+                                                if (data != null) {
+                                                    return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
+                                                }
+                                            }, 'autowidth': true
+                                        },
+                                        {
+                                            render: function (data, type, row) {
+                                                if (data != null) {
+                                                    return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
+                                                }
+                                            }, 'autowidth': true
+                                        }
+                                    ],
+                                "columnDefs": [
+                                    { "targets": 0, "bVisible": false, "orderable": false },
+                                    { "targets": 2, "bVisible": false, "orderable": false },
+                                    { "targets": 5, "className": 'dt-body-nowrap' },
+                                    { "targets": 6, "className": 'dt-body-nowrap' }
+                                 ],
+                                "bAutoWidth": false,
+                                "bInfo": false,
+                                "language": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "No existen Registros",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            });
+
+        $('#addRow').on('click', function () {
+
+            var strIdPhoneNumberType = $("#lst_PhoneNumberType").val();
+            var strPhoneNumberType = $('select[id="lst_PhoneNumberType"] option:selected').text();
+            var strIdIsoCountry = $("#lst_CountryAreaCode").val();
+            var strCountryAreaCode = $('select[id="lst_CountryAreaCode"] option:selected').text();
+            var strPhoneNumber = $("#inpPhoneNumber").val();
+
+            var oldNode = tabPersonContact.$("td:contains('" + strPhoneNumber + "')").parent('tr');
+            tabPersonContact.row(oldNode).remove();
+            tabPersonContact.row(oldNode).invalidate();
+
+            //debugger;
+            if (strPhoneNumber != "" && strIdIsoCountry != "" && strIdPhoneNumberType != "") {
+                tabPersonContact.row.add([
+                    strIdPhoneNumberType,
+                    strPhoneNumberType,
+                    strIdIsoCountry,
+                    strCountryAreaCode,
+                    strPhoneNumber,
+                    '',
+                    ''
+                ]).draw(false);
+
+                document.getElementById('lst_PhoneNumberType').value = "";
+                document.getElementById('lst_CountryAreaCode').value = "";
+                document.getElementById('inpPhoneNumber').value = "";
+            }
+
+        });
+
+        $('#TPersonContact').on('click', '.editRow', function () {
+            debugger;
+            var pageTable = $('#dataTable').DataTable();
+            var tableRow = pageTable.row($(this).parents('tr'));
+            var DataRow = pageTable.row($(this).parents('tr')).data();
+
+            //var rData = [
+            //    test1,
+            //    test1,
+            //    '',
+            //    ''
+            //];
+            //pageTable
+            //    .row(tableRow)
+            //    .data(rData)
+            //    .draw();
+        });
+
+        $('#TPersonContact').on('click', 'a.deleteRow', function () {
+            var pageTable = $('#TPersonContact').DataTable();
+            var tableRow = pageTable.row($(this).parents('tr'));
+            pageTable.row(tableRow).remove().draw();
         });
 
     </script>

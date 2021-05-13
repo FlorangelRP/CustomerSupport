@@ -6,63 +6,49 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-
 namespace CustomerSupport.Controllers
 {
-    public class EmployeeController : Controller
+    public class CountryController : Controller
     {
-        // GET: Employee
-        public ActionResult ListEmployee()
+        // GET: Country
+        public ActionResult ListCountry()
         {
             return View();
         }
 
-        public ActionResult GetListEmployee()
+        public ActionResult GetListCountry()
         {
-            List<MPerson> ListPerson = new List<MPerson>();            
+            List<MCountry> ListCountry = new List<MCountry>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            ListPerson = (from result in db.GNListPerson(null,2).ToList()
-                        select new MPerson
+            ListCountry = (from result in db.GNListCountry(null,null).ToList()
+                        select new MCountry
                         {
-                            IdPerson= result.IdPerson,
-                            IdPersonType= result.IdPersonType,
-                            PersonType= result.PersonType,
-                            IdIdentificationType= result.IdIdentificationType,
-                            IdentificationType= result.IdentificationType,
-                            NumIdentification= result.NumIdentification,
-                            Name= result.Name,
-                            LastName= result.LastName,
-                            Birthday= result.Birthday,
-                            Address= result.Address,
-                            Email= result.Email,
-                            IdContactType= result.IdContactType,
-                            ContactType= result.ContactType,
-                            IdPosition= result.IdPosition,
-                            Position= result.Position,
-                            ClientPermission= result.ClientPermission,
-                            Status= result.Status,
+                            IdCountry = result.IdCountry,
+                            IdIsoCountry = result.IdIsoCountry,
+                            Country = result.Country,
+                            CountryAreaCode = result.CountryAreaCode,
+                            Status = result.Status,
                             StatusDesc = result.Status == true ? "Activo" : "Inactivo"
                         }).ToList();
 
-            return Json(ListPerson, JsonRequestBehavior.AllowGet); 
+            return Json(ListCountry, JsonRequestBehavior.AllowGet);
 
         }
 
-        // GET: Employee/Details/5
+        // GET: Country/Details/5
         public ActionResult Details(int id)
         {
-
             return View();
         }
 
-        // GET: Employee/Create
-        public ActionResult AddEmployee()
+        // GET: Country/Create
+        public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Employee/Create
+        // POST: Country/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -78,13 +64,13 @@ namespace CustomerSupport.Controllers
             }
         }
 
-        // GET: Employee/Edit/5
-        public ActionResult EditEmployee(int id)
+        // GET: Country/Edit/5
+        public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Employee/Edit/5
+        // POST: Country/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -100,13 +86,13 @@ namespace CustomerSupport.Controllers
             }
         }
 
-        // GET: Employee/Delete/5
+        // GET: Country/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Employee/Delete/5
+        // POST: Country/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

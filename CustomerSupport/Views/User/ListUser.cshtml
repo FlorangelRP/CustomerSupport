@@ -27,12 +27,14 @@
                         <thead>
                             <tr>
                                 <th>Codigo</th>
-                                <th>Nombre</th>
-                                <th>Login</th>
+                                <th>Usuario</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Cargo</th>
                                 <th>Estado</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="text-center" colspan="3">Opciones</th>
+                                @*<th></th>*@
+                                @*<th></th>*@
                             </tr>
                         </thead>
                     </table>
@@ -71,16 +73,18 @@
             'columns':
                 [
                     { 'data': 'IdUser', 'autowidth': true },
-                    { 'data': 'IdPerson', 'autowidth': true },
                     { 'data': 'Login', 'autowidth': true },
-                    { 'data': 'Status', 'autowidth': true },
+                    { 'data': 'PersonEmployee.Name', 'autowidth': true },
+                    { 'data': 'PersonEmployee.LastName', 'autowidth': true },
+                    { 'data': 'PersonEmployee.Position', 'autowidth': true },
+                    { 'data': 'StatusDesc', 'autowidth': true },
                     {'data': null, render: function (data, type, row) {
                             //debugger;
                             if (data != null) {
                                 if (row.IdUser == null) {
                                     return '';
                                 } else {
-                                    return '<a class="btn"><i class="fas fa-edit"></i></a>';
+                                    return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
                                 }
                             }
                         }, 'autowidth': true
@@ -92,7 +96,7 @@
                                 if (row.IdUser == null) {
                                     return '';
                                 } else {
-                                    return '<a class="btn"><i class="fas fa-search"></i></a>';
+                                    return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
                                 }
                             }
                         }, 'autowidth': true
@@ -104,7 +108,7 @@
                                 if (row.IdUser == null) {
                                     return '';
                                 } else {
-                                    return '<a class="btn"><i class="far fa-trash-alt"></i></a>';
+                                    return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
                                 }
                             }
                         }, 'autowidth': true
