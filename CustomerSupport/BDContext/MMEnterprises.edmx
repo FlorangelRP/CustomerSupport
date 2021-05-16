@@ -161,8 +161,8 @@
           <Property Name="Edit" Type="bit" Nullable="false" />
           <Property Name="Delete" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="VWListCatalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -458,7 +458,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
         </Association>
         <Function Name="GNListCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdCountry" Type="int" Mode="In" />
-          <Parameter Name="IdIsoCountry" Type="int" Mode="In" />
+          <Parameter Name="IdIsoCountry" Type="varchar" Mode="In" />
         </Function>
         <Function Name="GNListPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdPerson" Type="int" Mode="In" />
@@ -466,6 +466,10 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
         </Function>
         <Function Name="GNListUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUser" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListUserAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="IdAssociated" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="MMEnterprisesModelStoreContainer">
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
@@ -1078,7 +1082,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           </FunctionImport>
           <FunctionImport Name="GNListCountry" ReturnType="Collection(MMEnterprisesModel.GNListCountry_Result)">
             <Parameter Name="IdCountry" Mode="In" Type="Int32" />
-            <Parameter Name="IdIsoCountry" Mode="In" Type="Int32" />
+            <Parameter Name="IdIsoCountry" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GNListUserAcces" ReturnType="Collection(MMEnterprisesModel.GNListUserAcces_Result)">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="VWListCatalog">
@@ -1128,6 +1136,15 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="String" Name="Country" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="CountryAreaCode" Nullable="false" MaxLength="10" />
           <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListUserAcces_Result">
+          <Property Type="Int32" Name="IdOption" Nullable="false" />
+          <Property Type="String" Name="OptionName" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="Visible" Nullable="true" />
+          <Property Type="Boolean" Name="Create" Nullable="true" />
+          <Property Type="Boolean" Name="Search" Nullable="true" />
+          <Property Type="Boolean" Name="Edit" Nullable="true" />
+          <Property Type="Boolean" Name="Delete" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1355,6 +1372,19 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListUserAcces" FunctionName="MMEnterprisesModel.Store.GNListUserAcces">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListUserAcces_Result">
+                <ScalarProperty Name="IdOption" ColumnName="IdOption" />
+                <ScalarProperty Name="OptionName" ColumnName="OptionName" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Create" ColumnName="Create" />
+                <ScalarProperty Name="Search" ColumnName="Search" />
+                <ScalarProperty Name="Edit" ColumnName="Edit" />
+                <ScalarProperty Name="Delete" ColumnName="Delete" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

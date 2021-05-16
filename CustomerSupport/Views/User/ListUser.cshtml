@@ -114,10 +114,10 @@
                         }, 'autowidth': true
                     }
                 ],
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false
-                }],
+        "columnDefs":
+            [
+                { "targets": 0, "bVisible": false, "orderable": false }
+            ],
             "bAutoWidth": false,
             "bInfo": false,
             "language": {
@@ -147,5 +147,14 @@
 
     });
 
+        //var consultar = function (tbody, table) {
+        $('#TUser').on("click", "a.searchRow", function () {
+                //debugger;
+                var data = table.row($(this).parents("tr")).data();
+                $(".searchRow").attr("href", '@Url.Action("DetailUser", "User")?id=' + data.IdUser);
+            });
+        //}
+
+        //consultar("#TUser tbody", table);
     </script>
 }
