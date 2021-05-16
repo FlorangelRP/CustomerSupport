@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CustomerSupport.Models
 {
-    public class MPersonContac
+    public class MPersonContact
     {
         public int IdContact { get; set; }
         public int IdPerson { get; set; }

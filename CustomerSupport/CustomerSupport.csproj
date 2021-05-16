@@ -200,7 +200,7 @@
     <Compile Include="Models\MCatalogDetail.cs" />
     <Compile Include="Models\MTask.cs" />
     <Compile Include="Models\MPerson.cs" />
-    <Compile Include="Models\MPersonContac.cs" />
+    <Compile Include="Models\MPersonContact.cs" />
     <Compile Include="Models\MServiceRequest.cs" />
     <Compile Include="Models\MDetailTask.cs" />
     <Compile Include="Models\MCountry.cs" />

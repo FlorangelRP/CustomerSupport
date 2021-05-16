@@ -3,6 +3,7 @@ using CustomerSupport.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -59,24 +60,60 @@ namespace CustomerSupport.Controllers
         // GET: Employee/Create
         public ActionResult AddEmployee()
         {
-            return View();
+            var model = new MPerson();
+            return View(model);
         }
 
-        // POST: Employee/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public string AddEmployee(MPerson objPerson)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return "HOLA SOY UNA PERSONA";
         }
+
+
+        //// POST: Employee/Create
+        //[HttpPost]
+        //public string Create(MPerson objPersonEmployee, FormCollection objForm)
+        //{   //, string[][] objContact  , List<MPersonContac> TPersonContact
+
+        //    var TPersonContact = new StringBuilder();
+        //    try
+        //    {
+        //        if (objPersonEmployee!=null)
+        //        {
+        //           var result= objForm.AllKeys.Where(k => k.Contains("listPersonContact")).ToArray<string>();
+        //            objPersonEmployee.IdPersonType = 2; //set por defecto tipo "Empleado"
+
+        //            foreach (var key in objForm.AllKeys.Where(k => k.Contains("listPersonContact")).ToArray<string>()) 
+        //            {
+        //                var valor = objForm[key];
+        //            }
+
+        //            if (TPersonContact != null)
+        //            {
+        //                //foreach (var item in TPersonContact)
+        //                //{
+        //                //    objPersonEmployee.listPersonContact.Add(new MPersonContac
+        //                //    {
+        //                //        IdContact = 0,
+        //                //        IdPerson = 0,
+        //                //        IdPhoneNumberType = int.Parse(item[0]),
+        //                //        IdIsoCountry = item[2],
+        //                //        PhoneNumber = item[4],
+        //                //        Status = true
+        //                //    });
+        //                //}
+        //            }
+        //        }
+
+        //        //return RedirectToAction("AddEmployee");
+        //        return TPersonContact.ToString(); //Json(true);
+        //    }
+        //    catch
+        //    {
+        //        return TPersonContact.ToString(); //Json(false);
+        //    }
+        //}
 
         // GET: Employee/Edit/5
         public ActionResult EditEmployee(int id)

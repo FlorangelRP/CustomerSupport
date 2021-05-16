@@ -7,6 +7,10 @@ namespace CustomerSupport.Models
 {
     public class MPerson
     {
+        public MPerson() 
+        {
+            listPersonContact = new List<MPersonContact>();
+        }
         public int IdPerson { get; set; }
         public int IdPersonType { get; set; }
         public string PersonType { get; set; } //descripcion del tipo de persona
@@ -25,6 +29,6 @@ namespace CustomerSupport.Models
         public bool ClientPermission { get; set; } //debe ser visible solo para tipo persona Empleado
         public bool Status { get; set; }
         public string StatusDesc { get; set; } //descripcion del estado (Activo/Inactivo)
-        public List<MPersonContac> listPersonContact { get; set; } //Numeros de telefono de contacto de la persona
+        public List<MPersonContact> listPersonContact { get; set; } //Numeros de telefono de contacto de la persona
     }
 }

@@ -1,4 +1,5 @@
-﻿@model CustomerSupport.Models.MPerson
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MPerson
 
 @{
     ViewBag.Title = "Crear Empleado";
@@ -11,10 +12,10 @@
     </div>
     <div class="card-body">
 
-        @using (Html.BeginForm("Create", "Employee", FormMethod.Post))
+        @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-
+         
             <div class="m-0 row justify-content-center">
                 <div class="form-horizontal col-md-10">
 
@@ -26,6 +27,9 @@
                                 <div class="control-label">Codigo:</div>
                                 @Html.TextBoxFor(model => model.IdPerson, new { @class = "form-control", @disabled = "disabled" })
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
+
+                                @Html.HiddenFor(model => model.IdPersonType, new { @class = "form-control" })
+                                @Html.HiddenFor(model => model.IdContactType, new { @class = "form-control" })
                             </div>
                         </div>
                     </div>
@@ -35,10 +39,10 @@
                         <div id="divPosition" class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Cargo:</div>
-                                @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
-                                @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
                                 <select id="lst_Position" class="form-control select2" style="width: 100%;">
                                 </select>
+                                @Html.ValidationMessageFor(model => model.IdPosition, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.IdPosition, new { @id = "inpIdPosition" })
                             </div>
                         </div>
                         <div id="divClientPermission" class="col-md-3">
@@ -57,10 +61,10 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Tipo de Identificacion:</div>
-                                @*@Html.EditorFor(model => model.IdIdentificationType, new { htmlAttributes = new { @class = "form-control" } })*@
-                                @*@Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })*@
                                 <select id="lst_IdentificationType" class="form-control select2" style="width: 100%;">
                                 </select>
+                                @Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.IdIdentificationType, new { @id = "inpIdIdentificationType" })
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -125,7 +129,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <div class="control-label">Código de Area:</div>
-                                                        <select id="lst_CountryAreaCode" class="form-control select2" style="width: 100%;">                                                            
+                                                        <select id="lst_CountryAreaCode" class="form-control select2" style="width: 100%;">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -137,7 +141,8 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>
+                                                        @*<div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>*@
+                                                        <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -147,18 +152,24 @@
                                                     <div class="form-group">
                                                         <div class="table-responsive">
                                                             <div class="container">
-                                                                <table id="TPersonContact" class="table table-bordered table-striped">
+
+                                                                <table id="TPersonContact" class="display table table-bordered table-striped">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>Id Tipo telefono</th>
-                                                                            <th>Tipo</th>
-                                                                            <th>Codigo Pais</th>
-                                                                            <th>Código Area</th>
-                                                                            <th>Número</th>
-                                                                            <th colspan="2" class="text-center">Opciones</th>
+                                                                            <td>Index</td>
+                                                                            <td>Id Tipo telefono</td>
+                                                                            <td>Tipo</td>
+                                                                            <td>Codigo Pais</td>
+                                                                            <td>Código Area</td>
+                                                                            <td>Hidden Número</td>
+                                                                            <td>Número</td>
+                                                                            <td>Opciones</td>
                                                                         </tr>
                                                                     </thead>
+                                                                    <tbody id="BodyPersonContact">
+                                                                    </tbody>
                                                                 </table>
+                       
                                                             </div>
                                                         </div>
                                                     </div>
@@ -213,7 +224,8 @@
                         <div class="col-md-offset-2 col-md-10">
                             <div class="form-group">
                                 <div class="text-center">
-                                    <a href="location.href='@Url.Action("Create", "Employee")';return false;" class="white_btn">Grabar</a>
+                                    @*<a href="location.href='@Url.Action("Create", "Employee")';return false;" class="white_btn">Grabar</a>*@
+                                    <button class="white_btn" type="submit">Grabar</button>
                                 </div>
                             </div>
                         </div>
@@ -247,6 +259,61 @@
 
     <script>
 
+        var tabPersonContact = $('#TPersonContact').DataTable({
+            'columns':
+                [
+                    { "name": "IdRow", "width": "10%" },
+                    { "name": "IdPhoneNumberType", "width": "10%" },
+                    { "name": "PhoneNumberType", "width": "10%" },
+                    { "name": "IdIsoCountryCode", "width": "10%" },
+                    { "name": "CountryAreaCode", "width": "10%" },
+                    { "name": "hiddenPhoneNumber", "width": "10%" },
+                    { "name": "PhoneNumber", "width": "10%" },
+                    {
+                        "name": "buttonDelete", render: function (data, type, row) {
+                            if (data != null) {
+                                return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
+                            }
+                        }, "width": "10%"
+                    }
+                ],
+            //"columnDefs": [
+            //    { "targets": 0, "bVisible": false, "orderable": false },
+            //    { "targets": 1, "bVisible": false, "orderable": false },
+            //    { "targets": 3, "bVisible": false, "orderable": false },
+            //    { "targets": 5, "bVisible": false, "orderable": false },
+            //    ////{ "targets": 6, "className": "dt-center" }
+            //    //{ "targets": 7, "className": 'dt-body-nowrap' }
+            //],
+            "className": "dt-center",
+            "bAutoWidth": false,
+            "bInfo": false,
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "No existen Registros",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+
         $(document).ready(function () {
 
             // If the checkbox is checked, display the output text
@@ -256,26 +323,14 @@
                 $("#labEstatus").text("Inactivo");
             }
 
-            $("#SelpersonType").on('change', function () {
-
+            $("#lst_Position").on('change', function () {
                 var selectValue = $(this).val();
-                //var selecDesc = $('select[id="SelpersonType"] option:selected').text()
-                //alert(selectValue);
-                //debugger;
+                $("#inpIdPosition").val(selectValue);
+            });
 
-                switch (selectValue) {
-                    case "1":
-                        $("#divPosition").show();
-                        $("#divClientPermission").show();
-                        break;
-                    case "2":
-                        $("#divPosition").hide();
-                        $("#divClientPermission").hide();
-                        break;
-                    //default:
-
-                }
-
+            $("#lst_IdentificationType").on('change', function () {
+                var selectValue = $(this).val();
+                $("#inpIdIdentificationType").val(selectValue);
             });
 
             $("#chkStatus").on('click', function () {
@@ -350,179 +405,138 @@
 
             });
 
-        });
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PHONENUMBERTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
 
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PHONENUMBERTYPE",
-            data: "{}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (msg) {
-
-                var option = $(document.createElement('option'));
-                option.text("Seleccione");
-                option.val("");
-                $("#lst_PhoneNumberType").append(option);
-
-                $(msg).each(function () {
                     var option = $(document.createElement('option'));
-                    option.text(this.DetailDesc);
-                    option.val(this.IdCatalogDetail); //Identity
-
+                    option.text("Seleccione");
+                    option.val("");
                     $("#lst_PhoneNumberType").append(option);
-                });
 
-                document.getElementById('lst_PhoneNumberType').value = "";
-            },
-            error: function (msg) {
-                $("#error > span").text("Error al llenar lista de tipos de telefono contacto");
-            }
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
 
-        });
+                        $("#lst_PhoneNumberType").append(option);
+                    });
 
+                    document.getElementById('lst_PhoneNumberType').value = "";
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de tipos de telefono contacto");
+                }
 
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("GetListCountry", "Country")',
-            data: "{}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (msg) {
+            });
 
-                var option = $(document.createElement('option'));
-                option.text("Seleccione");
-                option.val("");
-                $("#lst_CountryAreaCode").append(option);
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetListCountry", "Country")',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
 
-                $(msg).each(function () {
                     var option = $(document.createElement('option'));
-                    option.text(this.CountryAreaCode);
-                    option.val(this.IdIsoCountry); //Identity
-
+                    option.text("Seleccione");
+                    option.val("");
                     $("#lst_CountryAreaCode").append(option);
-                });
 
-                document.getElementById('lst_CountryAreaCode').value = "";
-            },
-            error: function (msg) {
-                $("#error > span").text("Error al llenar lista de Paises");
-            }
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.CountryAreaCode);
+                        option.val(this.IdIsoCountry); //Identity
+
+                        $("#lst_CountryAreaCode").append(option);
+                    });
+
+                    document.getElementById('lst_CountryAreaCode').value = "";
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Paises");
+                }
+
+            });
+
+
+            $('#TPersonContact').on('click', 'a.deleteRow', function () {
+                var pageTable = $('#TPersonContact').DataTable();
+                var tableRow = pageTable.row($(this).parents('tr'));
+                pageTable.row(tableRow).remove().draw();
+            });
 
         });
 
 
-        var tabPersonContact = $('#TPersonContact').DataTable({
-                                'columns':
-                                    [
-                                        { 'name':'IdPhoneNumberType' , 'autowidth': true },
-                                        { 'name':'PhoneNumberType' ,'autowidth': true },
-                                        { 'name':'IdIsoCountryCode' ,'autowidth': true },
-                                        { 'name':'CountryAreaCode' ,'autowidth': true },
-                                        { 'name':'PhoneNumber' ,'autowidth': true },
-                                        {
-                                            render: function (data, type, row) {
-                                                if (data != null) {
-                                                    return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
-                                                }
-                                            }, 'autowidth': true
-                                        },
-                                        {
-                                            render: function (data, type, row) {
-                                                if (data != null) {
-                                                    return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
-                                                }
-                                            }, 'autowidth': true
-                                        }
-                                    ],
-                                "columnDefs": [
-                                    { "targets": 0, "bVisible": false, "orderable": false },
-                                    { "targets": 2, "bVisible": false, "orderable": false },
-                                    { "targets": 5, "className": 'dt-body-nowrap' },
-                                    { "targets": 6, "className": 'dt-body-nowrap' }
-                                 ],
-                                "bAutoWidth": false,
-                                "bInfo": false,
-                                "language": {
-                                    "sProcessing": "Procesando...",
-                                    "sLengthMenu": "Mostrar _MENU_ registros",
-                                    "sZeroRecords": "No se encontraron resultados",
-                                    "sEmptyTable": "No existen Registros",
-                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                                    "sInfoPostFix": "",
-                                    "sSearch": "Buscar:",
-                                    "sUrl": "",
-                                    "sInfoThousands": ",",
-                                    "sLoadingRecords": "Cargando...",
-                                    "oPaginate": {
-                                        "sFirst": "Primero",
-                                        "sLast": "Último",
-                                        "sNext": "Siguiente",
-                                        "sPrevious": "Anterior"
-                                    },
-                                    "oAria": {
-                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                                    }
-                                }
-                            });
+        function addRow() {
 
-        $('#addRow').on('click', function () {
+            @{ 
+                Model.listPersonContact.Add(new MPersonContact());
+            }
 
+            //obtenemos los valores a insertar
             var strIdPhoneNumberType = $("#lst_PhoneNumberType").val();
             var strPhoneNumberType = $('select[id="lst_PhoneNumberType"] option:selected').text();
             var strIdIsoCountry = $("#lst_CountryAreaCode").val();
             var strCountryAreaCode = $('select[id="lst_CountryAreaCode"] option:selected').text();
             var strPhoneNumber = $("#inpPhoneNumber").val();
 
+            //Si el numero a insertar ya existe lo elimina para luego volver a insertarlo y asi evitar duplicados
             var oldNode = tabPersonContact.$("td:contains('" + strPhoneNumber + "')").parent('tr');
             tabPersonContact.row(oldNode).remove();
             tabPersonContact.row(oldNode).invalidate();
 
+
             //debugger;
             if (strPhoneNumber != "" && strIdIsoCountry != "" && strIdPhoneNumberType != "") {
+
+
+                //-------------------------
+
+                var index = $("#BodyPersonContact").children("tr").length;
+                alert(index);
+
+                var col_indexCell = "<td style='display:none'><input name='listPersonContact.Index' type = 'hidden' value = '" + index + "' /></td > ";
+
+                var col_IdPhoneNumberType = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].IdPhoneNumberType' type='text' value='" + strIdPhoneNumberType + "' /></td> ";
+                var colPhoneNumberType = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumberType' type='text' value='" + strPhoneNumberType + "' /></td> ";
+                var col_IdIsoCountry = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].IdIsoCountry' type = 'text' value = '" + strIdIsoCountry + "' /></td> ";
+                var colCountryAreaCode = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].CountryAreaCode' type = 'text' value = '" + strCountryAreaCode + "' /></td> ";
+                var col_PhoneNumber = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumber' type = 'text' value = '" + strPhoneNumber + "' /></td> ";
+                var colPhoneNumber = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumber' type = 'text' value = '" + strPhoneNumber + "' /></td> ";
+                var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+
+                //var newRow = "<tr id='trContact" + index + "'>" + col_indexCell + col_IdContact + col_IdPerson + col_IdPhoneNumberType + col_IdIsoCountry + col_PhoneNumber + col_Status + "</tr>";
+                //$("#TListContact").append(newRow);
+
+                //--------------------------
+
+
+                //insertamos los valores en la tabla
                 tabPersonContact.row.add([
-                    strIdPhoneNumberType,
-                    strPhoneNumberType,
-                    strIdIsoCountry,
-                    strCountryAreaCode,
-                    strPhoneNumber,
-                    '',
-                    ''
+                    col_indexCell,
+                    col_IdPhoneNumberType, //strIdPhoneNumberType,
+                    colPhoneNumberType,
+                    col_IdIsoCountry, //strIdIsoCountry,
+                    colCountryAreaCode,
+                    col_PhoneNumber, //strPhoneNumber,
+                    colPhoneNumber,
+                    colDelete
                 ]).draw(false);
 
+                //limpiamos los valores ya agregados
                 document.getElementById('lst_PhoneNumberType').value = "";
                 document.getElementById('lst_CountryAreaCode').value = "";
                 document.getElementById('inpPhoneNumber').value = "";
             }
 
-        });
-
-        $('#TPersonContact').on('click', '.editRow', function () {
-            debugger;
-            var pageTable = $('#dataTable').DataTable();
-            var tableRow = pageTable.row($(this).parents('tr'));
-            var DataRow = pageTable.row($(this).parents('tr')).data();
-
-            //var rData = [
-            //    test1,
-            //    test1,
-            //    '',
-            //    ''
-            //];
-            //pageTable
-            //    .row(tableRow)
-            //    .data(rData)
-            //    .draw();
-        });
-
-        $('#TPersonContact').on('click', 'a.deleteRow', function () {
-            var pageTable = $('#TPersonContact').DataTable();
-            var tableRow = pageTable.row($(this).parents('tr'));
-            pageTable.row(tableRow).remove().draw();
-        });
+        }
 
     </script>
 }
