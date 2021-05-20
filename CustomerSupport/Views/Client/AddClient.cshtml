@@ -1,4 +1,5 @@
-﻿@model CustomerSupport.Models.MPerson
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MPerson
 
 @{
     ViewBag.Title = "Crear Cliente";
@@ -24,7 +25,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <div class="control-label">Codigo:</div>
-                                @Html.TextBoxFor(model => model.IdPerson, new { @class = "form-control" , @disabled = "disabled" })
+                                @Html.TextBoxFor(model => model.IdPerson, new { @class = "form-control", @disabled = "disabled" })
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -32,23 +33,23 @@
                     <hr>
 
                     <!--<div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <div class="control-label">Tipo Persona:</div>-->
-                                @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
-                                @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
-                                <!--<select name="personType" id="SelpersonType" class="form-control select2" style="width: 100%;">
-                                    <option value="1">Empleado</option>
-                                    <option value="2">Cliente</option>
-                                </select>
-                            </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label">Tipo Persona:</div>-->
+                    @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
+                    @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
+                    <!--<select name="personType" id="SelpersonType" class="form-control select2" style="width: 100%;">
+                                <option value="1">Empleado</option>
+                                <option value="2">Cliente</option>
+                            </select>
                         </div>
-                        <div id="divPosition" class="col-md-4">
-                            <div class="form-group">
-                                <div class="control-label">Cargo:</div>-->
-                                @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
-                                @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
-                                <!--<select name="personType" id="personType" class="form-control select2" style="width: 100%;">
+                    </div>
+                    <div id="divPosition" class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label">Cargo:</div>-->
+                    @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
+                    @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
+                    <!--<select name="personType" id="personType" class="form-control select2" style="width: 100%;">
                                     <option value="1">Presidente</option>
                                     <option value="2">Asistente Ejecutivo</option>
                                     <option value="3">Encargado de Ventas</option>
@@ -71,7 +72,7 @@
                         </div>
                     </div>-->
 
-                    <div class="row">                        
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Tipo de Identificacion:</div>
@@ -117,44 +118,153 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="control-label">Telefonos de contacto:</div>
-                                <div class="table-responsive">
-                                    <div class="container">
-                                        <table id="TPersonContact" class="table table-bordered table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Tipo</th>
-                                                    <th>Codigo Area Pais</th>
-                                                    <th>Numero de Telefono</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Movil</td>
-                                                    <td>+1</td>
-                                                    <td>234556790</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Casa</td>
-                                                    <td>+1</td>
-                                                    <td>222536780</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                    <div class="row pt-2 pb-3">
+
+                        <div class="col-md-12">
+
+                            <div class="accordion border" id="accordionContact">
+                                <div class="card collapsed-card">
+                                    <div class="card-header" id="headingContact">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardContact" aria-expanded="false" aria-controls="collapseContact">
+                                                Teléfonos de Contacto
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseCardContact" class="collapse" aria-labelledby="headingContact" data-parent="#accordionContact">
+
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Tipo:</div>
+                                                        <select id="lst_PhoneNumberType" class="form-control select2" style="width: 100%;">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Código de Area:</div>
+                                                        <select id="lst_CountryAreaCode" class="form-control select2" style="width: 100%;">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Número:</div>
+                                                        <input class="form-control" type="text" id="inpPhoneNumber" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        @*<div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>*@
+                                                        <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*<hr>*@
+                                            <div class="row pt-3">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div class="table-responsive">
+                                                            <div class="container">
+
+                                                                <table id="TPersonContact" class="table table-bordered table-striped">
+                                                                    <thead class="font-weight-bold">
+                                                                        <tr>
+                                                                            <td style="display:none;">colHid_indexCell</td>
+                                                                            <td style="display:none;">colHid_IdPhoneNumberType</td>
+                                                                            <td style="display:none;">colHid_IdIsoCountry</td>
+                                                                            <td style="display:none;">colHid_PhoneNumber</td>
+                                                                            <td style="display:none;">colHid_PhoneNumberType</td>
+                                                                            <td style="display:none;">colHid_CountryAreaCode</td>
+                                                                            <td>Tipo</td>
+                                                                            <td>Código Area</td>
+                                                                            <td>Número</td>
+                                                                            <td>Opciones</td>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="BodyPersonContact">
+                                                                        @if (Model != null)
+                                                                        {
+                                                                            if (Model.listPersonContact != null)
+                                                                            {
+                                                                                for (var i = 0; i < Model.listPersonContact.Count; i++)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value="'@i'" /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].IdPhoneNumberType" type="hidden" value='@Model.listPersonContact[i].IdPhoneNumberType' /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].IdIsoCountry" type="hidden" value='@Model.listPersonContact[i].IdIsoCountry' /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].PhoneNumber" type="hidden" value='@Model.listPersonContact[i].PhoneNumber' /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].PhoneNumberType" type="hidden" value='@Model.listPersonContact[i].PhoneNumberType' /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].CountryAreaCode" type="hidden" value='@Model.listPersonContact[i].CountryAreaCode' /></td>
+                                                                                        <td>@Model.listPersonContact[i].PhoneNumberType</td>
+                                                                                        <td>@Model.listPersonContact[i].CountryAreaCode</td>
+                                                                                        <td name="PhoneNumber_'@i'">@Model.listPersonContact[i].PhoneNumber</td>
+                                                                                        <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                                    </tr>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
+
+                    @*<div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="control-label">Telefonos de contacto:</div>
+                                    <div class="table-responsive">
+                                        <div class="container">
+                                            <table id="TPersonContact" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tipo</th>
+                                                        <th>Codigo Area Pais</th>
+                                                        <th>Numero de Telefono</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Movil</td>
+                                                        <td>+1</td>
+                                                        <td>234556790</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Casa</td>
+                                                        <td>+1</td>
+                                                        <td>222536780</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
 
                     <div class="row">
                         <div class="col-md-10">
                             <div class="form-group">
                                 <div class="control-label">Direccion:</div>
-                                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows=3, @cols=10 })
+                                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = 3, @cols = 10 })
                                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -164,7 +274,7 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Email:</div>
-                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" , @type="email" , @placeholder="usuario@email.com" })
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "email", @placeholder = "usuario@email.com" })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -182,25 +292,26 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">       
+                        <div class="col-md-4">
                             <label class="control-label">Estatus:</label>
-                            <div class="s_status">  
+                            <div class="s_status">
                                 <label>
                                     <span id="labEstatus"></span>
                                     @Html.CheckBoxFor(model => model.Status, new { @class = "form-control", @id = "chkStatus" })
                                     <span class="s_st_checkbox"></span>
                                 </label>
-                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })                                
+                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-offset-2 col-md-10">
-                            <div class="form-group">                                
+                            <div class="form-group">
                                 <div class="text-center">
-                                    <a href="location.href='@Url.Action("Create", "Client")';return false;" class="white_btn">Grabar</a>
-                                </div>                           
+                                    @*<a href="location.href='@Url.Action("Create", "Client")';return false;" class="white_btn">Grabar</a>*@
+                                    <button class="white_btn" type="submit">Grabar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -267,7 +378,7 @@
             $("#chkStatus").on('click', function () {
 
                 var IsSelected = $('#chkStatus').is(":checked");
-                 
+
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
                     $("#labEstatus").text("Activo");
@@ -281,4 +392,64 @@
         });
 
     </script>
+
+    function deleteRow(id) {
+    var controlToBeRemoved = "#trContact" + id;
+    $(controlToBeRemoved).remove();
+    }
+
+    function addRow() {
+
+    @{
+        Model.listPersonContact.Add(new MPersonContact());
+    }
+
+    //obtenemos los valores a insertar
+    var strIdPhoneNumberType = $("#lst_PhoneNumberType").val();
+    var strPhoneNumberType = $('select[id="lst_PhoneNumberType"] option:selected').text();
+    var strIdIsoCountry = $("#lst_CountryAreaCode").val();
+    var strCountryAreaCode = $('select[id="lst_CountryAreaCode"] option:selected').text();
+    var strPhoneNumber = $("#inpPhoneNumber").val();
+
+    //debugger;
+    if (strPhoneNumber != "" && strIdIsoCountry != "" && strIdPhoneNumberType != "") {
+
+    //-------------------------
+
+    var index = document.getElementById('TPersonContact').rows.length;
+    //alert(index);
+
+    var colHid_indexCell = "<td style='display:none'><input name='listPersonContact.Index' type='hidden' value='" + index + "' /></td> ";
+    var colHid_IdPhoneNumberType = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].IdPhoneNumberType' type='hidden' value='" + strIdPhoneNumberType + "' /></td> ";
+    var colHid_IdIsoCountry = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].IdIsoCountry' type='hidden' value='" + strIdIsoCountry + "' /></td> ";
+    var colHid_PhoneNumber = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].PhoneNumber' type='hidden' value='" + strPhoneNumber + "' /></td> ";
+    var colHid_PhoneNumberType = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].PhoneNumberType' type='hidden' value='" + strPhoneNumberType + "' /></td> ";
+    var colHid_CountryAreaCode = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].CountryAreaCode' type='hidden' value='" + strCountryAreaCode + "' /></td> ";
+
+    var colPhoneNumberType = "<td>" + strPhoneNumberType + "</td> ";
+    var colCountryAreaCode = "<td>" + strCountryAreaCode + "</td> ";
+    var colPhoneNumber = "<td name='PhoneNumber_" + index + "'>" + strPhoneNumber + "</td> ";
+    var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+    //Si el numero a insertar ya existe lo elimina para luego volver a insertarlo y asi evitar duplicados
+    var isFound = doSearchForDelete(strPhoneNumber, "PhoneNumber_");
+    //alert(isFound);
+
+    //insertamos los valores en la tabla
+    var newRow = "<tr id='trContact" + index + "'>
+        " +
+        colHid_indexCell + colHid_IdPhoneNumberType + colHid_IdIsoCountry + colHid_PhoneNumber + colHid_PhoneNumberType + colHid_CountryAreaCode +
+        colPhoneNumberType + colCountryAreaCode + colPhoneNumber + colDelete + "
+    </tr>";
+    $("#TPersonContact").append(newRow);
+
+    //--------------------------
+
+    //limpiamos los valores ya agregados
+    document.getElementById('lst_PhoneNumberType').value = "";
+    document.getElementById('lst_CountryAreaCode').value = "";
+    document.getElementById('inpPhoneNumber').value = "";
+    }
+
+    }
 }

@@ -34,11 +34,12 @@ namespace CustomerSupport
                     "~/Content/assets/css/magnific-popup.css",
                     "~/Content/assets/css/swiper.min.css",
                     "~/Content/assets/css/animate.css",
-                    "~/Content/assets/css/style.css",
+                    
                     "~/Content/assets/css/bootstrap.css",
                      "~/Content/assets/css/dataTables/demo_table.css",
                     "~/Content/assets/css/dataTables/demo_table_jui.css",
-                    "~/Content/assets/css/dataTables.bootstrap4.min"));
+                    "~/Content/assets/css/dataTables.bootstrap4.min",
+                    "~/Content/assets/css/style.css"));
 
             //"~/Content/assets/css/dataTables/demo_page.css",
             //         "~/Content/assets/css/dataTables/demo_table.css",

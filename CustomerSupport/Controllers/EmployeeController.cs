@@ -53,7 +53,6 @@ namespace CustomerSupport.Controllers
         // GET: Employee/Details/5
         public ActionResult Details(int id)
         {
-
             return View();
         }
 
@@ -65,11 +64,11 @@ namespace CustomerSupport.Controllers
         }
 
         [HttpPost]
-        public string AddEmployee(MPerson objPerson)
+        public ActionResult AddEmployee(MPerson objPersonEmployee)
         {
-            return "HOLA SOY UNA PERSONA";
+            //string variable= "HOLA SOY UNA PERSONA";
+            return View(objPersonEmployee);
         }
-
 
         //// POST: Employee/Create
         //[HttpPost]
