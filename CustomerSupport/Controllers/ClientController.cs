@@ -56,27 +56,40 @@ namespace CustomerSupport.Controllers
             return View();
         }
 
-        // GET: Client/Create
         public ActionResult AddClient()
         {
-            return View();
+            var model = new MPerson();
+            return View(model);
         }
 
-        // POST: Client/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult AddClient(MPerson objPersonClient)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            //string variable= "HOLA SOY UNA PERSONA";
+            return View(objPersonClient);
         }
+
+        //// GET: Client/Create
+        //public ActionResult AddClient()
+        //{
+        //    return View();
+        //}
+
+        //// POST: Client/Create
+        //[HttpPost]
+        //public ActionResult Create(FormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add insert logic here
+
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         // GET: Client/Edit/5
         public ActionResult EditClient(int id)

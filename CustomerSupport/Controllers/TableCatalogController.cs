@@ -27,6 +27,17 @@ namespace CustomerSupport.Controllers
             
         }
 
+        public String GetDescDetailTableCatalog(string idTable, int idDetail)
+        {
+            string DetailDesc;
+            MMEnterprisesEntities db = new MMEnterprisesEntities();
+
+            DetailDesc = db.VWListCatalogs.Where(t => t.IdTable == idTable && t.IdCatalogDetail== idDetail).First().DetailDesc;
+
+            return DetailDesc;
+
+        }
+
         // GET: TableCatalog/Details/5
         public ActionResult Details(int id)
         {

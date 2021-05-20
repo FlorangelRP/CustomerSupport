@@ -146,27 +146,50 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <hr>
+                                            @*<hr>*@
                                             <div class="row pt-3">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <div class="table-responsive">
                                                             <div class="container">
 
-                                                                <table id="TPersonContact" class="display table table-bordered table-striped">
-                                                                    <thead>
+                                                                <table id="TPersonContact" class="table table-bordered table-striped">
+                                                                    <thead class="font-weight-bold">
                                                                         <tr>
-                                                                            <td>Index</td>
-                                                                            <td>Id Tipo telefono</td>
+                                                                            <td style="display:none;">colHid_indexCell</td>
+                                                                            <td style="display:none;">colHid_IdPhoneNumberType</td>
+                                                                            <td style="display:none;">colHid_IdIsoCountry</td>
+                                                                            <td style="display:none;">colHid_PhoneNumber</td>
+                                                                            <td style="display:none;">colHid_PhoneNumberType</td>
+                                                                            <td style="display:none;">colHid_CountryAreaCode</td>
                                                                             <td>Tipo</td>
-                                                                            <td>Codigo Pais</td>
                                                                             <td>Código Area</td>
-                                                                            <td>Hidden Número</td>
                                                                             <td>Número</td>
                                                                             <td>Opciones</td>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody id="BodyPersonContact">
+                                                                        @if (Model != null)
+                                                                        {
+                                                                            if (Model.listPersonContact != null)
+                                                                            {
+                                                                                for (var i = 0; i < Model.listPersonContact.Count; i++)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value="'@i'" /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].IdPhoneNumberType" type="hidden" value='@Model.listPersonContact[i].IdPhoneNumberType' /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].IdIsoCountry" type="hidden" value='@Model.listPersonContact[i].IdIsoCountry' /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].PhoneNumber" type="hidden" value='@Model.listPersonContact[i].PhoneNumber' /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].PhoneNumberType" type="hidden" value='@Model.listPersonContact[i].PhoneNumberType' /></td>
+                                                                                        <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].CountryAreaCode" type="hidden" value='@Model.listPersonContact[i].CountryAreaCode' /></td>
+                                                                                        <td>@Model.listPersonContact[i].PhoneNumberType</td>
+                                                                                        <td>@Model.listPersonContact[i].CountryAreaCode</td>
+                                                                                        <td name="PhoneNumber_'@i'">@Model.listPersonContact[i].PhoneNumber</td>
+                                                                                        <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                                    </tr>
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     </tbody>
                                                                 </table>
                        
@@ -259,61 +282,6 @@
 
     <script>
 
-        var tabPersonContact = $('#TPersonContact').DataTable({
-            'columns':
-                [
-                    { "name": "IdRow", "width": "10%" },
-                    { "name": "IdPhoneNumberType", "width": "10%" },
-                    { "name": "PhoneNumberType", "width": "10%" },
-                    { "name": "IdIsoCountryCode", "width": "10%" },
-                    { "name": "CountryAreaCode", "width": "10%" },
-                    { "name": "hiddenPhoneNumber", "width": "10%" },
-                    { "name": "PhoneNumber", "width": "10%" },
-                    {
-                        "name": "buttonDelete", render: function (data, type, row) {
-                            if (data != null) {
-                                return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
-                            }
-                        }, "width": "10%"
-                    }
-                ],
-            //"columnDefs": [
-            //    { "targets": 0, "bVisible": false, "orderable": false },
-            //    { "targets": 1, "bVisible": false, "orderable": false },
-            //    { "targets": 3, "bVisible": false, "orderable": false },
-            //    { "targets": 5, "bVisible": false, "orderable": false },
-            //    ////{ "targets": 6, "className": "dt-center" }
-            //    //{ "targets": 7, "className": 'dt-body-nowrap' }
-            //],
-            "className": "dt-center",
-            "bAutoWidth": false,
-            "bInfo": false,
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "No existen Registros",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        });
-
         $(document).ready(function () {
 
             // If the checkbox is checked, display the output text
@@ -325,12 +293,14 @@
 
             $("#lst_Position").on('change', function () {
                 var selectValue = $(this).val();
-                $("#inpIdPosition").val(selectValue);
+                //$("#inpIdPosition").val(selectValue);
+                changeCodeInputHiddenList("lst_Position", "inpIdPosition", selectValue);
             });
 
             $("#lst_IdentificationType").on('change', function () {
                 var selectValue = $(this).val();
-                $("#inpIdIdentificationType").val(selectValue);
+                //$("#inpIdIdentificationType").val(selectValue);
+                changeCodeInputHiddenList("lst_IdentificationType", "inpIdIdentificationType", selectValue);
             });
 
             $("#chkStatus").on('click', function () {
@@ -368,6 +338,8 @@
                     });
 
                     document.getElementById('lst_Position').value = "";
+
+                    changeCodeInputHiddenList("lst_Position", "inpIdPosition", "");
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de cargos");
@@ -398,6 +370,9 @@
                     });
 
                     document.getElementById('lst_IdentificationType').value = "";
+
+                    changeCodeInputHiddenList("lst_IdentificationType", "inpIdIdentificationType", "");
+
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de tipos de identificacion");
@@ -463,19 +438,30 @@
 
             });
 
-
-            $('#TPersonContact').on('click', 'a.deleteRow', function () {
-                var pageTable = $('#TPersonContact').DataTable();
-                var tableRow = pageTable.row($(this).parents('tr'));
-                pageTable.row(tableRow).remove().draw();
-            });
-
         });
 
+        function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
+
+            if (valCode === "") {
+                var CodeAntSelected = document.getElementById(idInputHidden).value;
+                $("#" + idDropDownList + " option[value='" + CodeAntSelected + "']").attr("selected", true);
+
+                $("#" + idInputHidden).val(CodeAntSelected);
+            }
+            else {
+                $("#" + idInputHidden).val(valCode);
+            }
+
+        }
+
+        function deleteRow(id) {
+            var controlToBeRemoved = "#trContact" + id;
+            $(controlToBeRemoved).remove();
+        }
 
         function addRow() {
 
-            @{ 
+            @{
                 Model.listPersonContact.Add(new MPersonContact());
             }
 
@@ -486,49 +472,37 @@
             var strCountryAreaCode = $('select[id="lst_CountryAreaCode"] option:selected').text();
             var strPhoneNumber = $("#inpPhoneNumber").val();
 
-            //Si el numero a insertar ya existe lo elimina para luego volver a insertarlo y asi evitar duplicados
-            var oldNode = tabPersonContact.$("td:contains('" + strPhoneNumber + "')").parent('tr');
-            tabPersonContact.row(oldNode).remove();
-            tabPersonContact.row(oldNode).invalidate();
-
-
             //debugger;
             if (strPhoneNumber != "" && strIdIsoCountry != "" && strIdPhoneNumberType != "") {
 
-
                 //-------------------------
 
-                var index = $("#BodyPersonContact").children("tr").length;
-                alert(index);
+                var index = document.getElementById('TPersonContact').rows.length;
+                //alert(index);
 
-                var col_indexCell = "<td style='display:none'><input name='listPersonContact.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                var colHid_indexCell = "<td style='display:none'><input name='listPersonContact.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                var colHid_IdPhoneNumberType = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].IdPhoneNumberType' type='hidden' value='" + strIdPhoneNumberType + "' /></td> ";
+                var colHid_IdIsoCountry = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].IdIsoCountry' type = 'hidden' value = '" + strIdIsoCountry + "' /></td> ";
+                var colHid_PhoneNumber = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumber' type = 'hidden' value = '" + strPhoneNumber + "' /></td> ";
+                var colHid_PhoneNumberType = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumberType' type = 'hidden' value = '" + strPhoneNumberType + "' /></td> ";
+                var colHid_CountryAreaCode = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].CountryAreaCode' type = 'hidden' value = '" + strCountryAreaCode + "' /></td> ";
 
-                var col_IdPhoneNumberType = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].IdPhoneNumberType' type='text' value='" + strIdPhoneNumberType + "' /></td> ";
-                var colPhoneNumberType = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumberType' type='text' value='" + strPhoneNumberType + "' /></td> ";
-                var col_IdIsoCountry = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].IdIsoCountry' type = 'text' value = '" + strIdIsoCountry + "' /></td> ";
-                var colCountryAreaCode = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].CountryAreaCode' type = 'text' value = '" + strCountryAreaCode + "' /></td> ";
-                var col_PhoneNumber = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumber' type = 'text' value = '" + strPhoneNumber + "' /></td> ";
-                var colPhoneNumber = "<td><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumber' type = 'text' value = '" + strPhoneNumber + "' /></td> ";
-                var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow'><i class='far fa-trash-alt'></i></a></div></td> ";
+                var colPhoneNumberType = "<td>" + strPhoneNumberType + "</td> ";
+                var colCountryAreaCode = "<td>" + strCountryAreaCode + "</td> ";
+                var colPhoneNumber = "<td name = 'PhoneNumber_" + index + "'>" + strPhoneNumber + "</td> ";
+                var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
 
-
-                //var newRow = "<tr id='trContact" + index + "'>" + col_indexCell + col_IdContact + col_IdPerson + col_IdPhoneNumberType + col_IdIsoCountry + col_PhoneNumber + col_Status + "</tr>";
-                //$("#TListContact").append(newRow);
-
-                //--------------------------
-
+                //Si el numero a insertar ya existe lo elimina para luego volver a insertarlo y asi evitar duplicados
+                var isFound = doSearchForDelete(strPhoneNumber, "PhoneNumber_");
+                //alert(isFound);
 
                 //insertamos los valores en la tabla
-                tabPersonContact.row.add([
-                    col_indexCell,
-                    col_IdPhoneNumberType, //strIdPhoneNumberType,
-                    colPhoneNumberType,
-                    col_IdIsoCountry, //strIdIsoCountry,
-                    colCountryAreaCode,
-                    col_PhoneNumber, //strPhoneNumber,
-                    colPhoneNumber,
-                    colDelete
-                ]).draw(false);
+                var newRow = "<tr id='trContact" + index + "'>" +
+                    colHid_indexCell + colHid_IdPhoneNumberType + colHid_IdIsoCountry + colHid_PhoneNumber + colHid_PhoneNumberType + colHid_CountryAreaCode +
+                    colPhoneNumberType + colCountryAreaCode + colPhoneNumber + colDelete + "</tr>";
+                $("#TPersonContact").append(newRow);
+
+                //--------------------------
 
                 //limpiamos los valores ya agregados
                 document.getElementById('lst_PhoneNumberType').value = "";
@@ -536,6 +510,40 @@
                 document.getElementById('inpPhoneNumber').value = "";
             }
 
+        }
+
+        function doSearchForDelete(searchText, colName) {
+
+            const tableReg = document.getElementById('TPersonContact');
+            let position = 0;
+            let found = false;
+
+            // Recorremos todas las filas con contenido de la tabla
+            for (let i = 1; i < tableReg.rows.length; i++) {
+
+                const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                let searchCol = colName + i.toString();
+                const compareWith = cellsOfRow[searchCol].innerHTML.toLowerCase();
+
+                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
+                if (compareWith.indexOf(searchText) > -1) {
+                    found = true;
+                    position = i;
+                    break;
+                }
+
+            }
+            //si lo encontro, se elimina
+            if (found) { document.getElementById('TPersonContact').deleteRow(position); }
+
+            return found;
+        }
+
+        function searchDescription(code, idList) {
+            debugger;
+            var Description = $("#" + idList + " option[value='" + code + "']").text();
+            alert(Description);
+            return Description;
         }
 
     </script>
