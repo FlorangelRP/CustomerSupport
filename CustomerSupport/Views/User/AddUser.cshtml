@@ -75,253 +75,58 @@
                         </div>
                     </div>
 
+
                     <br />
+
                     <div class="row">
-                        <div class="table-responsive">
-                            <div class="accordion" id="accordionExample">
-                                <div class="card">
-                                    <div class="card-header" id="headingOne">
-                                        <h2 class="mb-0">
-                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseCard" aria-expanded="true" aria-controls="collapseOne">
-                                                Opciones de Usuario
-                                            </button>
-                                        </h2>
-                                    </div>
+                        <div class="col-md-10">
+                            <div id="demo">
+                                <div class="table-responsive">
+                                    <div class="container">
+                                        <table id="TMenuOptions" class="display table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>
+                                                        Opción
+                                                    </th>
+                                                    @*<th class="w-20">
+                                                            Visible
+                                                        </th>
+                                                        <th>
+                                                            Crear
+                                                        </th>
+                                                        <th>
+                                                            Buscar
+                                                        </th>
+                                                        <th>
+                                                            Editar
+                                                        </th>
+                                                        <th>
+                                                            Eliminar
+                                                        </th>*@
+                                                </tr>
+                                            </thead>
 
-                                    <div id="collapseCard" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col"></th>
-                                                        <th scope="col">Opción</th>
-                                                        <th scope="col">Crear</th>
-                                                        <th scope="col">Consultar</th>
-                                                        <th scope="col">Modificar</th>
-                                                        <th scope="col">Eliminar</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-                                                        <td class="expand-button"></td>
-                                                        <td>Mantenimiento</td>
-                                                        <td>
-                                                            <div class="s_status">
-                                                                <input type="checkbox">
-                                                                <span class="s_st_checkbox"></span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="s_status">
-                                                                <input type="checkbox">
-                                                                <span class="s_st_checkbox"></span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="s_status">
-                                                                <input type="checkbox">
-                                                                <span class="s_st_checkbox"></span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="s_status">
-                                                                <input type="checkbox">
-                                                                <span class="s_st_checkbox"></span>
-                                                            </div>
-                                                        </td>
+                                            @foreach (var item in Model.UserAcces)
+                                            {
+                                                <tr>
+                                                    <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@item.IdOption" /></td>
+                                                    <td>
+                                                        @item.OptionName
+                                                    </td>
 
-                                                    </tr>
-                                                    <tr class="hide-table-padding">
-                                                        <td></td>
-                                                        <td colspan="3">
-                                                            <div id="collapseOne" class="collapse in p-3">
-                                                                <div class="row">
-                                                                    <div class="col-2">Persona</div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                </tr>
+                                            }
 
-                                                                <div class="row">
-                                                                    <div class="col-2">Usuario</div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row">
-                                                                    <div class="col-2">Servicio</div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row">
-                                                                    <div class="col-2">Cliente</div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="accordion-toggle collapsed" id="accordion2" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                                                        <td class="expand-button"></td>
-                                                        <td>Transacciones</td>
-                                                        <td>
-                                                            <div class="s_status">
-                                                                <input type="checkbox">
-                                                                <span class="s_st_checkbox"></span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="s_status">
-                                                                <input type="checkbox">
-                                                                <span class="s_st_checkbox"></span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="s_status">
-                                                                <input type="checkbox">
-                                                                <span class="s_st_checkbox"></span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="s_status">
-                                                                <input type="checkbox">
-                                                                <span class="s_st_checkbox"></span>
-                                                            </div>
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr class="hide-table-padding">
-                                                        <td></td>
-                                                        <td colspan="4">
-                                                            <div id="collapseTwo" class="collapse in p-3">
-                                                                <div class="row">
-                                                                    <div class="col-2">Persona</div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div class="s_status">
-                                                                            <input type="checkbox">
-                                                                            <span class="s_st_checkbox"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        </table>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
                     </div>
+
                     <br />
 
                     <div class="row">
@@ -345,30 +150,42 @@
     </div>
 </div>
 @section Scripts {
-<script type="text/javascript">
 
-    $('#LisPerson').inputpicker({
-        data: [
-            { IdPerson: "1", IdentificationType: "Pasaporte", IdentificationNumber: "12345672", Name: "Pedro", LastName: "Perez", Position: "Operador" },
-            { IdPerson: "2", IdentificationType: "Pasaporte", IdentificationNumber: "14270679", Name: "Ana", LastName: "Lucena", Position: "Encargado de Vtas" },
-            { IdPerson: "3", IdentificationType: "Pasaporte", IdentificationNumber: "88888888", Name: "Jose", LastName: "Rojas", Position: "Procesador" }
-        ],
-        fields: [
-            { name: 'IdPerson', text: 'Codigo' },
-            { name: 'IdentificationType', text: 'Tipo Identificación' },
-            { name: 'IdentificationNumber', text: 'Identificación' },
-            { name: 'Name', text: 'Nombre' },
-            { name: 'LastName', text: 'Apellido' },
-            { name: 'Position', text: 'Cargo' }
-        ],
-        headShow: true,
-        fieldText: 'IdentificationNumber',
-        fieldValue: 'Name',
-        filterOpen: true,
-        selectMode: null,
-        pagination: false,
-        responsive: true
-    });
+    <script src="~/Content/assets/js/jquery.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script type="text/javascript">
+
+    //$('#LisPerson').inputpicker({
+    //    data: [
+    //        { IdPerson: "1", IdentificationType: "Pasaporte", IdentificationNumber: "12345672", Name: "Pedro", LastName: "Perez", Position: "Operador" },
+    //        { IdPerson: "2", IdentificationType: "Pasaporte", IdentificationNumber: "14270679", Name: "Ana", LastName: "Lucena", Position: "Encargado de Vtas" },
+    //        { IdPerson: "3", IdentificationType: "Pasaporte", IdentificationNumber: "88888888", Name: "Jose", LastName: "Rojas", Position: "Procesador" }
+    //    ],
+    //    fields: [
+    //        { name: 'IdPerson', text: 'Codigo' },
+    //        { name: 'IdentificationType', text: 'Tipo Identificación' },
+    //        { name: 'IdentificationNumber', text: 'Identificación' },
+    //        { name: 'Name', text: 'Nombre' },
+    //        { name: 'LastName', text: 'Apellido' },
+    //        { name: 'Position', text: 'Cargo' }
+    //    ],
+    //    headShow: true,
+    //    fieldText: 'IdentificationNumber',
+    //    fieldValue: 'Name',
+    //    filterOpen: true,
+    //    selectMode: null,
+    //    pagination: false,
+    //    responsive: true
+    //});
 
     $(document).ready(function () {
 
@@ -392,7 +209,121 @@
 
         });
 
+                    $('#TMenuOptions tbody td img').click(function () {
+                var nTr = this.parentNode.parentNode;
+                var objtable = "<table class='display table table-bordered table - striped' >";
+                objtable += "<tr><th></th><th>Opcion</th><th>Visible</th><th>Crear</th><th>Buscar</th><th>Editar</th><th>Eliminar</th></tr>";
+
+                if (this.src.match('details_close')) {
+                    /* This row is already open - close it */
+                    this.src = "/Content/assets/images/details_open.png";
+                    oTable.fnClose(nTr);
+                }
+                else {
+                    /* Open this row */
+                    this.src = "/Content/assets/images/details_close.png";
+                    var OptionId = $(this).attr("rel");
+                    var IdUser = $("#IdUser").val();
+                    var existe = 0;
+                    var params = {
+                        IdUser: IdUser,
+                        IdAssociated: OptionId
+                    };
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("DetailMenuOption", "User")',
+                        data: params,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        dataSrc: '',
+                        success: function (data) {
+
+                            $.each(data, function (index, item) {
+                                objtable += "<tr><td colspan='2'>" + item.OptionName + "</td>";
+
+                                if (item.Visible.toString() == "true") {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+                                else {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+
+                                if (item.Create.toString() == "true") {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' ><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+                                else {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+
+                                if (item.Search.toString() == "true") {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+                                else {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+
+                                if (item.Edit.toString() == "true") {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' ><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+                                else {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+
+                                if (item.Delete.toString() == "true") {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' ><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+                                else {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+
+                                existe = 1;
+                            });
+                            if (existe == 1)
+                                objtable += "</table>";
+                            else
+                                objtable = "";
+
+                            oTable.fnOpen(nTr, objtable, 'details');
+
+                        }
+                    });
+                }
+            });
+
+            /* Initialize table and make first column non-sortable*/
+            oTable = $('#TMenuOptions').dataTable({
+                "bJQueryUI": true,
+                "Columns": [{ "bSortable": false, "bSearchable": false,"Width":"5%" },
+                   null
+                ],
+                "bAutoWidth": false,
+                "bInfo": false,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No existen Registros",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
 
     });
-</script>
+    </script>
 }

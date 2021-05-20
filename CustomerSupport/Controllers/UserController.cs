@@ -120,7 +120,22 @@ namespace CustomerSupport.Controllers
         // GET: User/Create
         public ActionResult AddUser()
         {
-            return View();
+            MUser ObjUser = new MUser();
+            MMEnterprisesEntities db = new MMEnterprisesEntities();
+
+            ObjUser.UserAcces = (from result3 in db.GNListUserAcces(null, null).ToList()
+                       select new MUserAcces
+                       {
+                           IdOption = result3.IdOption,
+                           OptionName = result3.OptionName,
+                           Visible = result3.Visible == null ? false : (bool)result3.Visible,
+                           Create = result3.Create == null ? false : (bool)result3.Create,
+                           Search = result3.Search == null ? false : (bool)result3.Search,
+                           Edit = result3.Edit == null ? false : (bool)result3.Edit,
+                           Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                       }).ToList();
+
+            return View(ObjUser);
         }
 
         // POST: User/Create
