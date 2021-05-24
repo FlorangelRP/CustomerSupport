@@ -2,6 +2,8 @@
 using CustomerSupport.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -66,53 +68,48 @@ namespace CustomerSupport.Controllers
         [HttpPost]
         public ActionResult AddEmployee(MPerson objPersonEmployee)
         {
-            //string variable= "HOLA SOY UNA PERSONA";
-            return View(objPersonEmployee);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    MMEnterprisesEntities db = new MMEnterprisesEntities();
+                    int IdContact;
+                    int IdPerson;
+                    ObjectParameter paramOutIdPerson = new ObjectParameter("IdPerson", typeof(int));
+                    //DateTime birthdayformat = (DateTime)Convert.ToDateTime(objPersonEmployee.Birthday).GetDateTimeFormats()[46];
+
+                    IdPerson = db.GNTranPerson("I", paramOutIdPerson, 2, objPersonEmployee.IdIdentificationType, objPersonEmployee.NumIdentification,
+                        objPersonEmployee.Name, objPersonEmployee.LastName, objPersonEmployee.Birthday,
+                        objPersonEmployee.Address, objPersonEmployee.Email, objPersonEmployee.IdContactType,
+                        objPersonEmployee.IdPosition, objPersonEmployee.ClientPermission, true);
+
+                    IdPerson = Int32.Parse(paramOutIdPerson.Value.ToString());
+                    if (IdPerson != 0)
+                    {
+                        ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
+                        foreach (var item in objPersonEmployee.listPersonContact)
+                        {
+                            IdContact = db.GNTranPersonContact("I", paramOutIdContact, IdPerson, item.IdPhoneNumberType, item.IdIsoCountry, item.PhoneNumber, true);
+                            IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
+                        }
+                    }
+                    return View("ListEmployee");
+                }
+                else 
+                {
+                    return View(objPersonEmployee);
+                }
+                
+            }
+            catch (SqlException ex)
+            {
+                //throw;
+                string msg= "Error al grabar datos del empleado: " + ex.Message;
+                ModelState.AddModelError("ErrorSave", msg);
+                return View(objPersonEmployee);
+            }
+
         }
-
-        //// POST: Employee/Create
-        //[HttpPost]
-        //public string Create(MPerson objPersonEmployee, FormCollection objForm)
-        //{   //, string[][] objContact  , List<MPersonContac> TPersonContact
-
-        //    var TPersonContact = new StringBuilder();
-        //    try
-        //    {
-        //        if (objPersonEmployee!=null)
-        //        {
-        //           var result= objForm.AllKeys.Where(k => k.Contains("listPersonContact")).ToArray<string>();
-        //            objPersonEmployee.IdPersonType = 2; //set por defecto tipo "Empleado"
-
-        //            foreach (var key in objForm.AllKeys.Where(k => k.Contains("listPersonContact")).ToArray<string>()) 
-        //            {
-        //                var valor = objForm[key];
-        //            }
-
-        //            if (TPersonContact != null)
-        //            {
-        //                //foreach (var item in TPersonContact)
-        //                //{
-        //                //    objPersonEmployee.listPersonContact.Add(new MPersonContac
-        //                //    {
-        //                //        IdContact = 0,
-        //                //        IdPerson = 0,
-        //                //        IdPhoneNumberType = int.Parse(item[0]),
-        //                //        IdIsoCountry = item[2],
-        //                //        PhoneNumber = item[4],
-        //                //        Status = true
-        //                //    });
-        //                //}
-        //            }
-        //        }
-
-        //        //return RedirectToAction("AddEmployee");
-        //        return TPersonContact.ToString(); //Json(true);
-        //    }
-        //    catch
-        //    {
-        //        return TPersonContact.ToString(); //Json(false);
-        //    }
-        //}
 
         // GET: Employee/Edit/5
         public ActionResult EditEmployee(int id)

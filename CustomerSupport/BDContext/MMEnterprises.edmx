@@ -161,8 +161,8 @@
           <Property Name="Edit" Type="bit" Nullable="false" />
           <Property Name="Delete" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="VWListCatalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -470,6 +470,31 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
         <Function Name="GNListUserAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUser" Type="int" Mode="In" />
           <Parameter Name="IdAssociated" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdPerson" Type="int" Mode="InOut" />
+          <Parameter Name="IdPersonType" Type="int" Mode="In" />
+          <Parameter Name="IdIdentificationType" Type="int" Mode="In" />
+          <Parameter Name="strNumIdentification" Type="varchar" Mode="In" />
+          <Parameter Name="strName" Type="varchar" Mode="In" />
+          <Parameter Name="strLastName" Type="varchar" Mode="In" />
+          <Parameter Name="dttBirthday" Type="datetime" Mode="In" />
+          <Parameter Name="strAddress" Type="varchar" Mode="In" />
+          <Parameter Name="strEmail" Type="varchar" Mode="In" />
+          <Parameter Name="IdContactType" Type="int" Mode="In" />
+          <Parameter Name="IdPosition" Type="int" Mode="In" />
+          <Parameter Name="btClientPermission" Type="bit" Mode="In" />
+          <Parameter Name="btStatus" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNTranPersonContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdContact" Type="int" Mode="InOut" />
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="IdPhoneNumberType" Type="int" Mode="In" />
+          <Parameter Name="strIdIsoCountry" Type="varchar" Mode="In" />
+          <Parameter Name="strPhoneNumber" Type="varchar" Mode="In" />
+          <Parameter Name="btStatus" Type="bit" Mode="In" />
         </Function>
         <EntityContainer Name="MMEnterprisesModelStoreContainer">
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
@@ -1088,6 +1113,31 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
             <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GNTranPerson">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdPerson" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
+            <Parameter Name="IdIdentificationType" Mode="In" Type="Int32" />
+            <Parameter Name="strNumIdentification" Mode="In" Type="String" />
+            <Parameter Name="strName" Mode="In" Type="String" />
+            <Parameter Name="strLastName" Mode="In" Type="String" />
+            <Parameter Name="dttBirthday" Mode="In" Type="DateTime" />
+            <Parameter Name="strAddress" Mode="In" Type="String" />
+            <Parameter Name="strEmail" Mode="In" Type="String" />
+            <Parameter Name="IdContactType" Mode="In" Type="Int32" />
+            <Parameter Name="IdPosition" Mode="In" Type="Int32" />
+            <Parameter Name="btClientPermission" Mode="In" Type="Boolean" />
+            <Parameter Name="btStatus" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranPersonContact">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdContact" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdPhoneNumberType" Mode="In" Type="Int32" />
+            <Parameter Name="strIdIsoCountry" Mode="In" Type="String" />
+            <Parameter Name="strPhoneNumber" Mode="In" Type="String" />
+            <Parameter Name="btStatus" Mode="In" Type="Boolean" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="VWListCatalog">
           <Key>
@@ -1388,6 +1438,8 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
+          <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
