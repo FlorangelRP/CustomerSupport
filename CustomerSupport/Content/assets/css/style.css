@@ -1151,14 +1151,23 @@ h3.ss_h3_center:before {
 .ss_foot_news_one h1,.ss_foot_news_one p{
 	color:#fff;
 }
-input,.ss_address_form select {
-    width: 100%;
-    padding: 0px 20px;
-    height: 50px;
-    line-height: 50px;
-    border-radius: 30px;
-    border: none;
+.ss_address_form select {
+	width: 100%;
+	padding: 0px 20px;
+	height: 50px;
+	line-height: 50px;
+	border-radius: 30px;
+	border: none;
 }
+.s_input input {
+	width: 100%;
+	padding: 0px 20px;
+	height: 50px;
+	line-height: 50px;
+	border-radius: 30px;
+	border: none;
+}
+
 .ss_footer_news input{
 	position:relative;
 	padding:0px 160px 0px 20px

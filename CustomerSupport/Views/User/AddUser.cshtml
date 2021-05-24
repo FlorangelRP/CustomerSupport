@@ -61,19 +61,13 @@
 
                     </div>
 
-                    <div class="row">
+                    @*<div class="row">
                         <div class="col-md-4">
                             <label class="control-label">Estatus:</label>
-                            <div class="s_status">
-                                <label>
-                                    <span id="labEstatus"></span>
-                                    @Html.CheckBoxFor(model => model.Status, new { @class = "form-control", @id = "chkStatus" })
-                                    <span class="s_st_checkbox"></span>
-                                </label>
-                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                            </div>
+                             @Html.TextBoxFor(model => model.Status, new { @type = "checkbox", @id = "chkStatus" })
+                            <label id="labEstatus"> </label>
                         </div>
-                    </div>
+                    </div>*@
 
 
                     <br />
@@ -90,21 +84,6 @@
                                                     <th>
                                                         Opción
                                                     </th>
-                                                    @*<th class="w-20">
-                                                            Visible
-                                                        </th>
-                                                        <th>
-                                                            Crear
-                                                        </th>
-                                                        <th>
-                                                            Buscar
-                                                        </th>
-                                                        <th>
-                                                            Editar
-                                                        </th>
-                                                        <th>
-                                                            Eliminar
-                                                        </th>*@
                                                 </tr>
                                             </thead>
 
@@ -164,30 +143,43 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script type="text/javascript">
 
-    //$('#LisPerson').inputpicker({
-    //    data: [
-    //        { IdPerson: "1", IdentificationType: "Pasaporte", IdentificationNumber: "12345672", Name: "Pedro", LastName: "Perez", Position: "Operador" },
-    //        { IdPerson: "2", IdentificationType: "Pasaporte", IdentificationNumber: "14270679", Name: "Ana", LastName: "Lucena", Position: "Encargado de Vtas" },
-    //        { IdPerson: "3", IdentificationType: "Pasaporte", IdentificationNumber: "88888888", Name: "Jose", LastName: "Rojas", Position: "Procesador" }
-    //    ],
-    //    fields: [
-    //        { name: 'IdPerson', text: 'Codigo' },
-    //        { name: 'IdentificationType', text: 'Tipo Identificación' },
-    //        { name: 'IdentificationNumber', text: 'Identificación' },
-    //        { name: 'Name', text: 'Nombre' },
-    //        { name: 'LastName', text: 'Apellido' },
-    //        { name: 'Position', text: 'Cargo' }
-    //    ],
-    //    headShow: true,
-    //    fieldText: 'IdentificationNumber',
-    //    fieldValue: 'Name',
-    //    filterOpen: true,
-    //    selectMode: null,
-    //    pagination: false,
-    //    responsive: true
-    //});
+        var OptionId = 0;
 
-    $(document).ready(function () {
+
+        function toggle(source, valor) {
+
+            var isSelected = $(source).is(":checked");
+            
+            var option = $(source).attr('rel');
+
+            switch (valor) {
+                case 1:
+                    checkboxes = document.getElementsByName('itemV' + option + '[]');
+                    break;
+                case 2:
+                    checkboxes = document.getElementsByName('itemC' + option + '[]');
+                    break;
+                case 3:
+                    checkboxes = document.getElementsByName('itemB' + option + '[]');
+                    break;
+                case 4:
+                    checkboxes = document.getElementsByName('itemE' + option + '[]');
+                    break;
+                case 5:
+                    checkboxes = document.getElementsByName('itemD' + option + '[]');
+                    break;
+            }
+
+
+            for (let i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = isSelected;
+
+            }
+           
+        }
+
+        $(document).ready(function () {
+
 
         // If the checkbox is checked, display the output text
         if ($("#chkStatus").checked == true) {
@@ -209,26 +201,44 @@
 
         });
 
-                    $('#TMenuOptions tbody td img').click(function () {
-                var nTr = this.parentNode.parentNode;
-                var objtable = "<table class='display table table-bordered table - striped' >";
-                objtable += "<tr><th></th><th>Opcion</th><th>Visible</th><th>Crear</th><th>Buscar</th><th>Editar</th><th>Eliminar</th></tr>";
+
+        $('#TMenuOptions tbody td img').click(function () {
 
                 if (this.src.match('details_close')) {
+
                     /* This row is already open - close it */
                     this.src = "/Content/assets/images/details_open.png";
+                    var nTr = this.parentNode.parentNode;
                     oTable.fnClose(nTr);
                 }
                 else {
-                    /* Open this row */
+
                     this.src = "/Content/assets/images/details_close.png";
-                    var OptionId = $(this).attr("rel");
+                    OptionId = $(this).attr("rel");
                     var IdUser = $("#IdUser").val();
+
                     var existe = 0;
                     var params = {
                         IdUser: IdUser,
                         IdAssociated: OptionId
                     };
+
+                    var nTr = this.parentNode.parentNode;
+                    var objtable = "<table id='TMenuOptionsDetail" + OptionId + "' class='padre display table table-bordered table - striped' > ";
+                    objtable += "<thead> ";
+                    objtable += "<tr> ";
+                    objtable += "<th>Opcion</th> "; 
+                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,1)' /> Visible </th> ";
+                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,2)' /> Crear </th> ";
+                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,3)' /> Buscar </th> ";
+                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,4)' /> Editar </th> ";
+                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,5)' /> Eliminar </th> ";
+                    objtable += "</tr> ";
+                    objtable += "</thead> ";
+                    nro = 0;
+
+                    /* Open this row */
+
                     $.ajax({
                         type: 'GET',
                         url: '@Url.Action("DetailMenuOption", "User")',
@@ -239,91 +249,111 @@
                         success: function (data) {
 
                             $.each(data, function (index, item) {
-                                objtable += "<tr><td colspan='2'>" + item.OptionName + "</td>";
+                                objtable += "<tbody><tr><td>" + item.OptionName + "</td>";
 
+                                nro = nro + 1;
                                 if (item.Visible.toString() == "true") {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox checked=checked name='itemV" + OptionId + "[]' value='" + nro + "'></td>";
                                 }
                                 else {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox name='itemV" + OptionId + "[]'  value='" + nro + "' ></td>";
                                 }
+
+                                nro = nro + 1;
 
                                 if (item.Create.toString() == "true") {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' ><span class='s_st_checkbox'></span></label></div></td>";
+                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' value='" + nro +"' ><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox checked=checked name='itemC" + OptionId + "[]' value='" + nro + "'></td>";
                                 }
                                 else {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox name='itemC" + OptionId + "[]' value='" + nro + "' ></td>";
+                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
                                 }
 
+                                nro = nro + 1;
                                 if (item.Search.toString() == "true") {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox checked=checked name='itemB" + OptionId + "[]' value='" + nro + "'></td>";
                                 }
                                 else {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox name='itemB" + OptionId + "[]' value='" + nro + "' ></td>";
                                 }
+
+                                nro = nro + 1;
 
                                 if (item.Edit.toString() == "true") {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' ><span class='s_st_checkbox'></span></label></div></td>";
+                                   // objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox checked=checked name='itemE" + OptionId + "[]'  value='" + nro + "'></td>";
                                 }
                                 else {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox name='itemE" + OptionId + "[]'  value='" + nro + "' ></td>";
                                 }
 
+                                nro = nro + 1;
+
                                 if (item.Delete.toString() == "true") {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' ><span class='s_st_checkbox'></span></label></div></td>";
+                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' value='" + nro +"' ><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox checked=checked name='itemD" + OptionId + "[]'  value='" + nro + "'></td>";
                                 }
                                 else {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]'><span class='s_st_checkbox'></span></label></div></td>";
+                                   // objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input type=checkbox name='itemD" + OptionId + "[]'  value='" + nro + "' ></td>";
                                 }
 
                                 existe = 1;
                             });
+
                             if (existe == 1)
-                                objtable += "</table>";
+                                objtable += "</tbody></table>";
                             else
                                 objtable = "";
 
                             oTable.fnOpen(nTr, objtable, 'details');
+
+                           
 
                         }
                     });
                 }
             });
 
-            /* Initialize table and make first column non-sortable*/
-            oTable = $('#TMenuOptions').dataTable({
-                "bJQueryUI": true,
-                "Columns": [{ "bSortable": false, "bSearchable": false,"Width":"5%" },
-                   null
-                ],
-                "bAutoWidth": false,
-                "bInfo": false,
-                "language": {
-                    "sProcessing": "Procesando...",
-                    "sLengthMenu": "Mostrar _MENU_ registros",
-                    "sZeroRecords": "No se encontraron resultados",
-                    "sEmptyTable": "No existen Registros",
-                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sSearch": "Buscar:",
-                    "sUrl": "",
-                    "sInfoThousands": ",",
-                    "sLoadingRecords": "Cargando...",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast": "Último",
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    }
-                }
-            });
 
-    });
+        /* Initialize table and make first column non-sortable*/
+        oTable = $('#TMenuOptions').dataTable({
+            "bJQueryUI": true,
+            "Columns": [{ "bSortable": false, "bSearchable": false,"Width":"5%" },
+                null
+            ],
+            "bAutoWidth": false,
+            "bInfo": false,
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "No existen Registros",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+
+        });
     </script>
 }

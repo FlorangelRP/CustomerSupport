@@ -95,21 +95,6 @@
                                                 <th>
                                                     Opción
                                                 </th>
-                                                @*<th class="w-20">
-                                                    Visible
-                                                </th>
-                                                <th>
-                                                    Crear
-                                                </th>
-                                                <th>
-                                                    Buscar
-                                                </th>
-                                                <th>
-                                                    Editar
-                                                </th>
-                                                <th>
-                                                    Eliminar
-                                                </th>*@
                                             </tr>
                                         </thead>
 
@@ -120,55 +105,6 @@
                                                 <td>
                                                     @item.OptionName
                                                 </td>
-
-                                                @*<td>
-                                                    <div class="s_status">
-                                                        <label>
-                                                            <span id="labEstatus"></span>
-                                                            @Html.DisplayFor(c => item.Visible)
-                                                            <span class="s_st_checkbox"></span>
-                                                        </label>
-
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="s_status">
-                                                        <label>
-                                                            <span id="labEstatus"></span>
-                                                            @Html.DisplayFor(c => item.Create)
-                                                            <span class="s_st_checkbox"></span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="s_status">
-                                                        <label>
-                                                            <span id="labEstatus"></span>
-                                                            @Html.DisplayFor(c => item.Search)
-                                                            <span class="s_st_checkbox"></span>
-                                                        </label>
-
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="s_status">
-                                                        <label>
-                                                            <span id="labEstatus"></span>
-                                                            @Html.DisplayFor(c => item.Edit)
-                                                            <span class="s_st_checkbox"></span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="s_status">
-                                                        <label>
-                                                            <span id="labEstatus"></span>
-                                                            @Html.DisplayFor(c => item.Delete)
-                                                            <span class="s_st_checkbox"></span>
-                                                        </label>
-
-                                                    </div>
-                                                </td>*@
                                             </tr>
                                         }
 
@@ -212,7 +148,7 @@
             $('#TMenuOptions tbody td img').click(function () {
                 var nTr = this.parentNode.parentNode;
                 var objtable = "<table class='display table table-bordered table - striped' >";
-                objtable += "<tr><th></th><th>Opcion</th><th>Visible</th><th>Crear</th><th>Buscar</th><th>Editar</th><th>Eliminar</th></tr>";
+                objtable += "<tr><th>Opcion</th><th>Visible</th><th>Crear</th><th>Buscar</th><th>Editar</th><th>Eliminar</th></tr>";
 
                 if (this.src.match('details_close')) {
                     /* This row is already open - close it */
@@ -239,7 +175,7 @@
                         success: function (data) {
 
                             $.each(data, function (index, item) {
-                                objtable += "<tr><td colspan='2'>" + item.OptionName + "</td>";
+                                objtable += "<tr><td>" + item.OptionName + "</td>";
 
                                 if (item.Visible.toString() == "true") {
                                     objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
