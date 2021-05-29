@@ -3,6 +3,7 @@ using CustomerSupport.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,9 @@ namespace CustomerSupport.Controllers
         // GET: Employee
         public ActionResult ListEmployee()
         {
-            return View();
+            var model = new MPerson();
+            model.Birthday = DateTime.Now;
+            return View(model);
         }
 
         public ActionResult GetListEmployee()
@@ -62,6 +65,8 @@ namespace CustomerSupport.Controllers
         public ActionResult AddEmployee()
         {
             var model = new MPerson();
+            model.Birthday = DateTime.Now;
+            //model.listPersonContact = new List<MPersonContact>();
             return View(model);
         }
 
@@ -73,27 +78,71 @@ namespace CustomerSupport.Controllers
                 if (ModelState.IsValid)
                 {
                     MMEnterprisesEntities db = new MMEnterprisesEntities();
+
                     int IdContact;
                     int IdPerson;
-                    ObjectParameter paramOutIdPerson = new ObjectParameter("IdPerson", typeof(int));
+                    int SqlResult;
+                    //ObjectParameter paramOutIdPerson = new ObjectParameter("IdPerson", typeof(int));
                     //DateTime birthdayformat = (DateTime)Convert.ToDateTime(objPersonEmployee.Birthday).GetDateTimeFormats()[46];
+                    
+                    SqlParameter paramOutIdPerson = new SqlParameter("@IdPerson", System.Data.SqlDbType.Int);
+                    paramOutIdPerson.Direction = System.Data.ParameterDirection.Output;
 
-                    IdPerson = db.GNTranPerson("I", paramOutIdPerson, 2, objPersonEmployee.IdIdentificationType, objPersonEmployee.NumIdentification,
-                        objPersonEmployee.Name, objPersonEmployee.LastName, objPersonEmployee.Birthday,
-                        objPersonEmployee.Address, objPersonEmployee.Email, objPersonEmployee.IdContactType,
-                        objPersonEmployee.IdPosition, objPersonEmployee.ClientPermission, true);
+                    SqlResult = db.Database.ExecuteSqlCommand("GNTranPerson @TransactionType, @IdPerson OUT, @IdPersonType "+
+                                                          ", @IdIdentificationType, @strNumIdentification, @strName, @strLastName, @dttBirthday " +
+                                                          ", @strAddress, @strEmail, @IdContactType, @IdPosition, @btClientPermission, @btStatus ",
+                           new SqlParameter[]{
+                                new SqlParameter("@TransactionType", "I"),
+                                paramOutIdPerson,
+                                new SqlParameter("@IdPersonType", 2),
+                                new SqlParameter("@IdIdentificationType", objPersonEmployee.IdIdentificationType),
+                                new SqlParameter("@strNumIdentification", objPersonEmployee.NumIdentification),
+                                new SqlParameter("@strName", objPersonEmployee.Name),
+                                new SqlParameter("@strLastName", objPersonEmployee.LastName),
+                                new SqlParameter("@dttBirthday", objPersonEmployee.Birthday),
+                                new SqlParameter("@strAddress", objPersonEmployee.Address),
+                                new SqlParameter("@strEmail", objPersonEmployee.Email),
+                                new SqlParameter("@IdContactType", DBNull.Value),
+                                new SqlParameter("@IdPosition", objPersonEmployee.IdPosition),
+                                new SqlParameter("@btClientPermission", objPersonEmployee.ClientPermission),
+                                new SqlParameter("@btStatus", true)
+                            }
+                        );
 
                     IdPerson = Int32.Parse(paramOutIdPerson.Value.ToString());
                     if (IdPerson != 0)
                     {
-                        ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
+                        //ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
+                        SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
+                        paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+
                         foreach (var item in objPersonEmployee.listPersonContact)
                         {
-                            IdContact = db.GNTranPersonContact("I", paramOutIdContact, IdPerson, item.IdPhoneNumberType, item.IdIsoCountry, item.PhoneNumber, true);
+                            
+                            SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
+                                                                      ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
+                               new SqlParameter[]{
+                                    new SqlParameter("@TransactionType", "I"),
+                                    paramOutIdContact,
+                                    new SqlParameter("@IdPerson", IdPerson),
+                                    new SqlParameter("@IdPhoneNumberType", item.IdPhoneNumberType),
+                                    new SqlParameter("@strIdIsoCountry", item.IdIsoCountry),
+                                    new SqlParameter("@strPhoneNumber", item.PhoneNumber),
+                                    new SqlParameter("@btStatus", true)
+                                }
+                            );
                             IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
                         }
+                                                
+                        ViewBag.SuccessSave = "Datos grabados exitosamente, Código de empleado generado: (" + IdPerson + ").";
+                        //FALTA QUE LIMPIE LOS CAMPOS Y SOLO MUESTRE EL MENSAJE DE ViewBag.SuccessSave
+                        return View();
                     }
-                    return View("ListEmployee");
+                    else
+                    {
+                        return View(objPersonEmployee);
+                    }
+
                 }
                 else 
                 {
@@ -104,8 +153,9 @@ namespace CustomerSupport.Controllers
             catch (SqlException ex)
             {
                 //throw;
-                string msg= "Error al grabar datos del empleado: " + ex.Message;
-                ModelState.AddModelError("ErrorSave", msg);
+                //string msg= "Error al grabar datos del empleado: " + ex.Message;
+                //ModelState.AddModelError("ErrorSave", msg);
+                ViewBag.ErrorSave = "Error al grabar datos del empleado: " + ex.Message;
                 return View(objPersonEmployee);
             }
 

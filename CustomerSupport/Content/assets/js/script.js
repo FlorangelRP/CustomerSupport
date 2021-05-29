@@ -411,7 +411,7 @@ new WOW().init();
 					contentType: false,
 					processData: false					
 				}).done(function(resp){
-					alert('entrando dos');
+					//alert('entrando dos');
 				    console.log(resp);
 					if(resp == 1){
 						targetForm.find('input').val('');
@@ -423,3 +423,18 @@ new WOW().init();
 				});
 			}
 		});
+
+
+		// Listen for the input event.
+		$(".input-numeric").on('input', function (evt) {
+			var regEx = /[^0-9]/g;
+			// Allow only numbers.
+			$(this).val($(this).val().replace(regEx, ''));
+		});
+		// Listen for the input event.
+		$(".input-alphabet").on('input', function (evt) {
+			var regEx = /[^a-zA-Z.\s,Ò—]/g;
+			// Allow only alphabet and space.
+			$(this).val($(this).val().replace(regEx, ''));
+		});
+
