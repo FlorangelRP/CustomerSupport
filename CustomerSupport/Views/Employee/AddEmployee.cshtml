@@ -461,6 +461,7 @@
 
         function addRow() {
 
+          
             @{
                 Model.listPersonContact.Add(new MPersonContact());
             }
@@ -500,6 +501,7 @@
                 var newRow = "<tr id='trContact" + index + "'>" +
                     colHid_indexCell + colHid_IdPhoneNumberType + colHid_IdIsoCountry + colHid_PhoneNumber + colHid_PhoneNumberType + colHid_CountryAreaCode +
                     colPhoneNumberType + colCountryAreaCode + colPhoneNumber + colDelete + "</tr>";
+                debugger;
                 $("#TPersonContact").append(newRow);
 
                 //--------------------------

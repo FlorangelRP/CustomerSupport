@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -123,7 +124,7 @@ namespace CustomerSupport.Controllers
             MUser ObjUser = new MUser();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            ObjUser.UserAcces = (from result3 in db.GNListUserAcces(null, null).ToList()
+            ObjUser.UserAccesPadre = (from result3 in db.GNListUserAcces(null, null).ToList()
                        select new MUserAcces
                        {
                            IdOption = result3.IdOption,
@@ -135,7 +136,56 @@ namespace CustomerSupport.Controllers
                            Delete = result3.Edit == null ? false : (bool)result3.Delete,
                        }).ToList();
 
+            ObjUser.UserAcces = new List<MUserAcces>();
+
             return View(ObjUser);
+        }
+
+        [HttpPost]
+        public ActionResult AddUser(MUser objUser)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //MMEnterprisesEntities db = new MMEnterprisesEntities();
+                    //int IdContact;
+                    //int IdPerson;
+                    //ObjectParameter paramOutIdPerson = new ObjectParameter("IdPerson", typeof(int));
+                    ////DateTime birthdayformat = (DateTime)Convert.ToDateTime(objPersonEmployee.Birthday).GetDateTimeFormats()[46];
+
+                    //IdPerson = db.GNTranPerson("I", paramOutIdPerson, 2, objPersonEmployee.IdIdentificationType, objPersonEmployee.NumIdentification,
+                    //    objPersonEmployee.Name, objPersonEmployee.LastName, objPersonEmployee.Birthday,
+                    //    objPersonEmployee.Address, objPersonEmployee.Email, objPersonEmployee.IdContactType,
+                    //    objPersonEmployee.IdPosition, objPersonEmployee.ClientPermission, true);
+
+                    //IdPerson = Int32.Parse(paramOutIdPerson.Value.ToString());
+                    //if (IdPerson != 0)
+                    //{
+                    //    ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
+                    //    foreach (var item in objPersonEmployee.listPersonContact)
+                    //    {
+                    //        IdContact = db.GNTranPersonContact("I", paramOutIdContact, IdPerson, item.IdPhoneNumberType, item.IdIsoCountry, item.PhoneNumber, true);
+                    //        IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
+                    //    }
+                    //}
+                    return View("ListEmployee");
+                }
+                else
+                {
+
+                    return View(objUser);
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                //throw;
+                string msg = "Error al grabar datos del Usuario: " + ex.Message;
+                ModelState.AddModelError("ErrorSave", msg);
+                return View(objUser);
+            }
+
         }
 
         // POST: User/Create

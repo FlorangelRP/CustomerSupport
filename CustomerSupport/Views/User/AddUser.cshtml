@@ -1,5 +1,5 @@
-﻿@model CustomerSupport.Models.MUser
-
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MUser
 @{
     ViewBag.Title = "Crear Usuario";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -24,25 +24,26 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <div class="control-label">Codigo:</div>
-                                @Html.TextBoxFor(model => model.IdUser, new { @class = "form-control", @disabled = "disabled" })
+                                @*<div class="control-label">Codigo:</div>*@
+                                @Html.HiddenFor(model => model.IdUser, new { @class = "form-control", @disabled = "disabled" })
                                 @Html.ValidationMessageFor(model => model.IdUser, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                    <hr>
+
                     <div class="row">
                         <div class="col-md-10">
                             <div class="form-group">
-                                <div class="control-label">Persona:</div>
-                                <input class="form-control" id="LisPerson" value="Seleccione" />
+                                <label>Persona</label><br>
+                                @*<input class="form-control" id="searchClient" value="" placeholder="Seleccione" />*@
+                                @Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione" })
                             </div>
                         </div>
                     </div>
 
+                    <hr>
 
                     <div class="row">
-
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Login:</div>
@@ -54,21 +55,12 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Clave:</div>
-                                @Html.TextBoxFor(model => model.Password, new { @class = "form-control" })
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                     </div>
-
-                    @*<div class="row">
-                        <div class="col-md-4">
-                            <label class="control-label">Estatus:</label>
-                             @Html.TextBoxFor(model => model.Status, new { @type = "checkbox", @id = "chkStatus" })
-                            <label id="labEstatus"> </label>
-                        </div>
-                    </div>*@
-
 
                     <br />
 
@@ -81,23 +73,31 @@
                                             <thead>
                                                 <tr>
                                                     <th></th>
+                                                    <th style="display:none;">colHid_indexCell</th>
+                                                    <th style="display:none;">colHid_IdOption</th>
+                                                    <th style="display:none;">colHid_OptionName</th>
                                                     <th>
                                                         Opción
                                                     </th>
                                                 </tr>
                                             </thead>
+                                            @if(Model!=null)
+                                            { 
+                                                if (Model.UserAccesPadre != null)
+                                                {
 
-                                            @foreach (var item in Model.UserAcces)
-                                            {
-                                                <tr>
-                                                    <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@item.IdOption" /></td>
-                                                    <td>
-                                                        @item.OptionName
-                                                    </td>
-
-                                                </tr>
+                                                    for (var i = 0; i < Model.UserAccesPadre.Count; i++)
+                                                    {
+                                                        <tr>
+                                                            <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@Model.UserAccesPadre[i].IdOption" /></td>
+                                                            <td style="display:none;"><input name="UserAccesPadre.Index" type="hidden" value="'@i'" /></td>
+                                                            <td style="display:none;"><input id="UserAccesPadre_'@i'" name="UserAccesPadre['@i'].IdOption" type="hidden" value='@Model.UserAccesPadre[i].IdOption' /></td>
+                                                            <td style="display:none;"><input id="UserAccesPadre_'@i'" name="UserAccesPadre['@i'].OptionName" type="hidden" value='@Model.UserAccesPadre[i].OptionName' /></td>
+                                                            <td>@Model.UserAccesPadre[i].OptionName</td>
+                                                        </tr>
+                                                    }
+                                                }
                                             }
-
                                         </table>
                                     </div>
                                 </div>
@@ -112,7 +112,8 @@
                         <div class="col-md-offset-2 col-md-10">
                             <div class="form-group">
                                 <div class="text-center">
-                                    <a href="location.href='@Url.Action("Create", "Person")';return false;" class="white_btn">Grabar</a>
+                                    <button class="white_btn" type="submit">Grabar</button>
+
                                 </div>
                             </div>
                         </div>
@@ -141,45 +142,90 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
+
     <script type="text/javascript">
 
         var OptionId = 0;
+        var Item = 0;
 
-
-        function toggle(source, valor) {
+    function Chk(source) {
 
             var isSelected = $(source).is(":checked");
-            
+    
+            $(source).val(isSelected);
+        }
+
+    function toggle(source, valor) {
+
+            var isSelected = $(source).is(":checked");
+
             var option = $(source).attr('rel');
 
             switch (valor) {
                 case 1:
-                    checkboxes = document.getElementsByName('itemV' + option + '[]');
+                    checkboxes = document.getElementsByClassName('itemV' + option + '[]');
                     break;
                 case 2:
-                    checkboxes = document.getElementsByName('itemC' + option + '[]');
+                    checkboxes = document.getElementsByClassName('itemC' + option + '[]');
                     break;
                 case 3:
-                    checkboxes = document.getElementsByName('itemB' + option + '[]');
+                    checkboxes = document.getElementsByClassName('itemB' + option + '[]');
                     break;
                 case 4:
-                    checkboxes = document.getElementsByName('itemE' + option + '[]');
+                    checkboxes = document.getElementsByClassName('itemE' + option + '[]');
                     break;
                 case 5:
-                    checkboxes = document.getElementsByName('itemD' + option + '[]');
+                    checkboxes = document.getElementsByClassName('itemD' + option + '[]');
                     break;
             }
+
 
 
             for (let i = 0; i < checkboxes.length; i++) {
                 checkboxes[i].checked = isSelected;
-
+                checkboxes[i].value = isSelected;
             }
-           
+
         }
 
-        $(document).ready(function () {
+        function ObtenerPersonas (ArrayClient) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetListPerson", "Person")',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    ArrayClient(msg);
 
+                    ListPersons = [];
+                    ListPersons = msg;
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar Lista");
+                }
+            });
+
+        }
+
+    $(document).ready(function () {
+
+        ObtenerPersonas(function (Lista) {
+
+            $('#searchPerson').inputpicker({
+                data: Lista,
+                fields: ['IdPerson', 'Name','LastName'],
+                fieldText: 'Name',
+                fieldValue: 'IdPerson',
+                headShow: true,
+                filterOpen: true,
+                selectMode: null,
+                pagination: false,
+                responsive: true
+            });
+
+        });
 
         // If the checkbox is checked, display the output text
         if ($("#chkStatus").checked == true) {
@@ -211,12 +257,12 @@
                     var nTr = this.parentNode.parentNode;
                     oTable.fnClose(nTr);
                 }
-                else {
-
-                    this.src = "/Content/assets/images/details_close.png";
+                else
+                {
                     OptionId = $(this).attr("rel");
-                    var IdUser = $("#IdUser").val();
+                    this.src = "/Content/assets/images/details_close.png";
 
+                    var IdUser = $("#IdUser").val();
                     var existe = 0;
                     var params = {
                         IdUser: IdUser,
@@ -227,7 +273,10 @@
                     var objtable = "<table id='TMenuOptionsDetail" + OptionId + "' class='padre display table table-bordered table - striped' > ";
                     objtable += "<thead> ";
                     objtable += "<tr> ";
-                    objtable += "<th>Opcion</th> "; 
+                    objtable += "<td style='display: none; '>colHid_indexCell</td>";
+                    objtable += "<td style='display: none; '>colHid_IdOption</td>";
+                    objtable += "<td style='display: none; '>colHid_OptionName</td>";
+                    objtable += "<th>Opcion</th> ";
                     objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,1)' /> Visible </th> ";
                     objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,2)' /> Crear </th> ";
                     objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,3)' /> Buscar </th> ";
@@ -248,58 +297,80 @@
                         dataSrc: '',
                         success: function (data) {
 
+
                             $.each(data, function (index, item) {
-                                objtable += "<tbody><tr><td>" + item.OptionName + "</td>";
 
-                                nro = nro + 1;
-                                if (item.Visible.toString() == "true") {
-                                    objtable += "<td><input type=checkbox checked=checked name='itemV" + OptionId + "[]' value='" + nro + "'></td>";
+                                @if(Model!=null)
+                                {
+                                    Model.UserAcces.Add(new MUserAcces());
+                                }
+                         
+
+                                Item = index + 1;
+
+                                objtable += "<tbody><tr  id='trMenuOptionsDetail" + item.IdOption + ">";
+                                objtable += "<td style='display:none'><input name='UserAcces.Index' type = 'hidden' value = '" + item.IdOption + "' /></td > ";
+                                objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].IdOption' type='hidden' value=" + item.IdOption + " /></td> ";
+                                objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].OptionName' type='hidden' value=" + item.OptionName + " /></td> ";;
+                                objtable += "<td>" + item.OptionName + "</td> ";
+
+                                //objtable += "<td>" + item.OptionName + "</td>";
+
+
+                                var modelo = @Html.Raw(Json.Encode(Model.UserAcces));
+
+                                 var Array = modelo.filter(word => word.IdOption == item.IdOption)
+
+                                var visible = false;
+                                var crear = false;
+                                var buscar = false;
+                                var Editar = false;
+                                var Eliminar = false;
+
+
+                                if (Array.length == 1) {
+                                    visible = Array[0].Visible;
+                                    crear = Array[0].Create;
+                                    buscar = Array[0].Search;
+                                    Editar = Array[0].Edit;
+                                    Eliminar = Array[0].Delete;
+                                }
+
+                                if (visible == true) {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=true></td>";
                                 }
                                 else {
-                                    objtable += "<td><input type=checkbox name='itemV" + OptionId + "[]'  value='" + nro + "' ></td>";
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=false ></td>";
                                 }
 
-                                nro = nro + 1;
-
-                                if (item.Create.toString() == "true") {
-                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' value='" + nro +"' ><span class='s_st_checkbox'></span></label></div></td>";
-                                    objtable += "<td><input type=checkbox checked=checked name='itemC" + OptionId + "[]' value='" + nro + "'></td>";
+                                if (crear == true) {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=true></td>";
                                 }
                                 else {
-                                    objtable += "<td><input type=checkbox name='itemC" + OptionId + "[]' value='" + nro + "' ></td>";
-                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=false></td>";
                                 }
 
-                                nro = nro + 1;
-                                if (item.Search.toString() == "true") {
-                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
-                                    objtable += "<td><input type=checkbox checked=checked name='itemB" + OptionId + "[]' value='" + nro + "'></td>";
+                                if (buscar== true) {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=true></td>";
                                 }
                                 else {
-                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
-                                    objtable += "<td><input type=checkbox name='itemB" + OptionId + "[]' value='" + nro + "' ></td>";
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=false></td>";
                                 }
 
-                                nro = nro + 1;
 
-                                if (item.Edit.toString() == "true") {
-                                   // objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
-                                    objtable += "<td><input type=checkbox checked=checked name='itemE" + OptionId + "[]'  value='" + nro + "'></td>";
+                                if (Editar == true) {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=true></td>";
                                 }
                                 else {
-                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
-                                    objtable += "<td><input type=checkbox name='itemE" + OptionId + "[]'  value='" + nro + "' ></td>";
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=false></td>";
                                 }
 
-                                nro = nro + 1;
 
-                                if (item.Delete.toString() == "true") {
-                                    //objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked name='item[]' value='" + nro +"' ><span class='s_st_checkbox'></span></label></div></td>";
-                                    objtable += "<td><input type=checkbox checked=checked name='itemD" + OptionId + "[]'  value='" + nro + "'></td>";
+                                if (Eliminar== true) {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=true></td>";
                                 }
                                 else {
-                                   // objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 name='item[]' value='" + nro +"'><span class='s_st_checkbox'></span></label></div></td>";
-                                    objtable += "<td><input type=checkbox name='itemD" + OptionId + "[]'  value='" + nro + "' ></td>";
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=false></td>";
                                 }
 
                                 existe = 1;
@@ -312,7 +383,7 @@
 
                             oTable.fnOpen(nTr, objtable, 'details');
 
-                           
+
 
                         }
                     });
