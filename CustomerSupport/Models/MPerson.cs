@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAnnotationsExtensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,28 +17,32 @@ namespace CustomerSupport.Models
         public int IdPersonType { get; set; }
         public string PersonType { get; set; } //descripcion del tipo de persona
 
-        [Required(ErrorMessage = "Seleccione un tipo de identificacion.")]
+        [Min(1, ErrorMessage = "*Requerido")]
         public int IdIdentificationType { get; set; }        
         public string IdentificationType { get; set; } //descripcion del tipo de identificacion
-        [Required(ErrorMessage = "Ingrese el numero identificacion.")]
+
+        [Required(ErrorMessage = "*Requerido")]
+        [StringLength(15, ErrorMessage = "Número identificación no puede tener mas de 15 caracteres.")]
         public string NumIdentification { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Nombres.")]
+
+        [Required(ErrorMessage = "*Requerido")]
         [StringLength(100, ErrorMessage = "Nombres no puede tener mas de 100 caracteres.")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Apellidos.")]
+        [Required(ErrorMessage = "*Requerido")]
         [StringLength(100, ErrorMessage = "Apellidos no puede tener mas de 100 caracteres.")]
         public string LastName { get; set; }
 
         public Nullable<System.DateTime> Birthday { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar una dirección.")]
+        [Required(ErrorMessage = "*Requerido")]
         [StringLength(100, ErrorMessage = "Dirección no puede tener mas de 300 caracteres.")]
         public string Address { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar un correo electrónico.")]
-        [StringLength(100, ErrorMessage = "Email no puede tener mas de 100 caracteres.")]
+        [Required(ErrorMessage = "*Requerido")]
+        [StringLength(100, ErrorMessage = "Correo electrónico no puede tener mas de 100 caracteres.")]
+        [EmailAddress(ErrorMessage = "Dirección de correo electrónico no válida")]
         public string Email { get; set; }
 
         public Nullable<int> IdContactType { get; set; }
@@ -47,8 +52,10 @@ namespace CustomerSupport.Models
         public string Position { get; set; } //descripcion del cargo, solo si es tipo de persona Empleado
 
         public bool ClientPermission { get; set; } //debe ser visible solo para tipo persona Empleado
+
         public bool Status { get; set; }
         public string StatusDesc { get; set; } //descripcion del estado (Activo/Inactivo)
+
         public List<MPersonContact> listPersonContact { get; set; } //Numeros de telefono de contacto de la persona
     }
 }

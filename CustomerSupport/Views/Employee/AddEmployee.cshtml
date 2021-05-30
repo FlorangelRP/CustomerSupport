@@ -15,11 +15,11 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-         
+
             <div class="m-0 row justify-content-center">
                 <div class="form-horizontal col-md-10">
 
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
                     <div class="row">
                         <div class="col-md-2">
@@ -45,7 +45,7 @@
                                 @Html.HiddenFor(model => model.IdPosition, new { @id = "inpIdPosition" })
                             </div>
                         </div>
-                        <div id="divClientPermission" class="col-md-6">
+                        @*<div id="divClientPermission" class="col-md-6">
                             <div class="form-group s_status">
                                 <label class="">
                                     Permitir ver como cliente
@@ -54,11 +54,20 @@
                                 </label>
                                 @Html.ValidationMessageFor(model => model.ClientPermission, "", new { @class = "text-danger" })
                             </div>
+                        </div>*@
+
+     
+                        <div id="divClientPermission" class="col-md-6 s_Checkbox">
+                            @*<label class="control-label">Permitir ver como cliente: </label>*@
+                            @Html.TextBoxFor(model => model.ClientPermission, new { @type = "checkbox", @class= "" })
+                            <label>Permitir ver como cliente</label>
+                            @Html.ValidationMessageFor(model => model.ClientPermission, "", new { @class = "text-danger" })
                         </div>
+                        
                     </div>
 
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Tipo de Identificacion:</div>
                                 <select id="lst_IdentificationType" class="form-control select2" style="width: 100%;">
@@ -70,7 +79,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Numero de Identificacion:</div>
-                                @Html.TextBoxFor(model => model.NumIdentification, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.NumIdentification, new { @class = "form-control", @maxlength = "15" })
                                 @Html.ValidationMessageFor(model => model.NumIdentification, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -80,14 +89,14 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Nombres:</div>
-                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-alphabet" })
                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Apellidos:</div>
-                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control input-alphabet" })
                                 @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -136,7 +145,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <div class="control-label">Número:</div>
-                                                        <input class="form-control" type="text" id="inpPhoneNumber" />
+                                                        <input class="form-control input-numeric" type="text" id="inpPhoneNumber" maxlength="15" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -192,7 +201,7 @@
                                                                         }
                                                                     </tbody>
                                                                 </table>
-                       
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -223,7 +232,7 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Email:</div>
-                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "email", @placeholder = "usuario@email.com" })
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "usuario@email.com" })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -243,6 +252,16 @@
                         </div>
                     </div>*@
 
+                <div class="row">
+                    <label class="control-label">Estatus:</label>
+                    <div class="col-md-4 s_Checkbox">
+                        @*<div class="s_Checkbox">*@
+                            @Html.TextBoxFor(model => model.Status, new { @type = "checkbox", @id = "chkStatus" })
+                            <label id="labEstatus"></label>
+                        @*</div>*@
+                    </div>
+                </div>
+
                     <div class="row">
                         <div class="col-md-offset-2 col-md-10">
                             <div class="form-group">
@@ -251,6 +270,13 @@
                                     <button class="white_btn" type="submit">Grabar</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 text-center">
+                            <span class="text-success">@ViewBag.SuccessSave</span>
+                            <span class="text-danger">@ViewBag.ErrorSave</span>
                         </div>
                     </div>
 
@@ -269,6 +295,7 @@
 
 @section Scripts {
 
+    <script src="~/Content/assets/js/jquery.min.js"></script>
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
