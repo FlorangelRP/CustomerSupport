@@ -138,38 +138,102 @@ namespace CustomerSupport.Controllers
 
             ObjUser.UserAcces = new List<MUserAcces>();
 
+            if(TempData["Success"] != null)
+                ViewBag.SuccessSave = TempData["Success"];
+
             return View(ObjUser);
         }
 
         [HttpPost]
         public ActionResult AddUser(MUser objUser)
         {
+
             try
             {
+                if (objUser.UserAcces == null)
+                {
+                    objUser.UserAcces = new List<MUserAcces>();
+                }
+
                 if (ModelState.IsValid)
                 {
-                    //MMEnterprisesEntities db = new MMEnterprisesEntities();
-                    //int IdContact;
-                    //int IdPerson;
-                    //ObjectParameter paramOutIdPerson = new ObjectParameter("IdPerson", typeof(int));
-                    ////DateTime birthdayformat = (DateTime)Convert.ToDateTime(objPersonEmployee.Birthday).GetDateTimeFormats()[46];
+                    MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-                    //IdPerson = db.GNTranPerson("I", paramOutIdPerson, 2, objPersonEmployee.IdIdentificationType, objPersonEmployee.NumIdentification,
-                    //    objPersonEmployee.Name, objPersonEmployee.LastName, objPersonEmployee.Birthday,
-                    //    objPersonEmployee.Address, objPersonEmployee.Email, objPersonEmployee.IdContactType,
-                    //    objPersonEmployee.IdPosition, objPersonEmployee.ClientPermission, true);
+                    int IdUser;
+                    int SqlResult;
+                    
+                    SqlParameter paramOutIdPerson = new SqlParameter("@IdUser", System.Data.SqlDbType.Int);
+                    paramOutIdPerson.Direction = System.Data.ParameterDirection.Output;
 
-                    //IdPerson = Int32.Parse(paramOutIdPerson.Value.ToString());
-                    //if (IdPerson != 0)
-                    //{
-                    //    ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
-                    //    foreach (var item in objPersonEmployee.listPersonContact)
-                    //    {
-                    //        IdContact = db.GNTranPersonContact("I", paramOutIdContact, IdPerson, item.IdPhoneNumberType, item.IdIsoCountry, item.PhoneNumber, true);
-                    //        IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
-                    //    }
-                    //}
-                    return View("ListEmployee");
+                    SqlResult = db.Database.ExecuteSqlCommand("GNTranUser @IdPerson, @strLogin , @strPassword, @TransactionType, @IdUser OUT, @btStatus ",
+                           new SqlParameter[]{
+                                new SqlParameter("@TransactionType", "I"),
+                                paramOutIdPerson,
+                                new SqlParameter("@IdPerson", objUser.IdPerson),
+                                new SqlParameter("@strLogin",objUser.Login),
+                                new SqlParameter("@strPassword", objUser.Encriptar(objUser.Password)),
+                                new SqlParameter("@btStatus", true)
+                            }
+                        );
+
+                    IdUser = Int32.Parse(paramOutIdPerson.Value.ToString());
+                    if (IdUser != 0)
+                    {
+
+                        //foreach (var item in objUser.UserAccesPadre)
+                        //{
+                        //    //ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
+                        //    SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
+                        //    paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+
+
+                        //    SqlResult = db.Database.ExecuteSqlCommand("GNTranUserAcces @IdUser, @IdOption, @blnVisible " +
+                        //                                              ", @blnCreate, @blnSearch, @blnEdit, @blnDelete ",
+                        //       new SqlParameter[]{
+                        //            new SqlParameter("@IdUser", IdUser),
+                        //            new SqlParameter("@IdOption", item.IdOption),
+                        //            new SqlParameter("@blnVisible", true),
+                        //            new SqlParameter("@blnCreate", true),
+                        //            new SqlParameter("@blnSearch", true),
+                        //            new SqlParameter("@blnEdit",true),
+                        //            new SqlParameter("@blnDelete",true)
+                        //        }
+                        //    );
+                        //}
+
+                        foreach (var item in objUser.UserAcces)
+                        {
+
+                            //ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
+                            SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
+                            paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+
+                            SqlResult = db.Database.ExecuteSqlCommand("GNTranUserAcces @IdUser, @IdOption, @blnVisible " +
+                                                                      ", @blnCreate, @blnSearch, @blnEdit, @blnDelete ",
+                               new SqlParameter[]{
+                                    new SqlParameter("@IdUser", IdUser),
+                                    new SqlParameter("@IdOption", item.IdOption),
+                                    new SqlParameter("@blnVisible", item.Visible),
+                                    new SqlParameter("@blnCreate", item.Create),
+                                    new SqlParameter("@blnSearch", item.Search),
+                                    new SqlParameter("@blnEdit", item.Edit),
+                                    new SqlParameter("@blnDelete", item.Delete)
+                                }
+                            );
+                        }
+
+                        //FALTA QUE LIMPIE LOS CAMPOS Y SOLO MUESTRE EL MENSAJE DE ViewBag.SuccessSave
+                        //return  View();
+                        TempData["Success"] = "Datos grabados exitosamente, Código de Usuario generado: (" + IdUser + ").";
+                        return RedirectToAction("AddUser");
+                    }
+                    else
+                    {
+
+
+                        return View(objUser);
+                    }
+
                 }
                 else
                 {
@@ -181,8 +245,9 @@ namespace CustomerSupport.Controllers
             catch (SqlException ex)
             {
                 //throw;
-                string msg = "Error al grabar datos del Usuario: " + ex.Message;
-                ModelState.AddModelError("ErrorSave", msg);
+                //string msg= "Error al grabar datos del empleado: " + ex.Message;
+                //ModelState.AddModelError("ErrorSave", msg);
+                ViewBag.ErrorSave = "Error al grabar datos del empleado: " + ex.Message;
                 return View(objUser);
             }
 

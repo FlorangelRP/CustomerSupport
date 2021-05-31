@@ -36,7 +36,8 @@
                             <div class="form-group">
                                 <label>Persona</label><br>
                                 @*<input class="form-control" id="searchClient" value="" placeholder="Seleccione" />*@
-                                @Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione" })
+                                @Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })
+                                @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -48,14 +49,14 @@
                             <div class="form-group">
                                 <div class="control-label">Login:</div>
                                 @Html.TextBoxFor(model => model.Login, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Login, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(model => model.Login, "", new { @maxlength = "10", @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Clave:</div>
-                                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                                @Html.PasswordFor(model => model.Password, new { @maxlength = "10", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -81,8 +82,8 @@
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            @if(Model!=null)
-                                            { 
+                                            @if (Model != null)
+                                            {
                                                 if (Model.UserAccesPadre != null)
                                                 {
 
@@ -99,6 +100,7 @@
                                                 }
                                             }
                                         </table>
+                                        @Html.ValidationMessageFor(model => model.UserAcces, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
@@ -115,6 +117,9 @@
                                     <button class="white_btn" type="submit">Grabar</button>
 
                                 </div>
+                                <br />
+                                <label class="text-danger">@ViewBag.ErrorSave</label>
+                                <label>@ViewBag.SuccessSave</label>
                             </div>
                         </div>
                     </div>
@@ -152,7 +157,7 @@
     function Chk(source) {
 
             var isSelected = $(source).is(":checked");
-    
+
             $(source).val(isSelected);
         }
 
@@ -197,6 +202,11 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
+                    var itemArray = {};
+                    itemArray.IdPerson = "";
+                    itemArray.LastName = "Seleccione";
+                    msg.push(itemArray);
+                    msg.reverse();
                     ArrayClient(msg);
 
                     ListPersons = [];
@@ -213,9 +223,13 @@
 
         ObtenerPersonas(function (Lista) {
 
+                //$('#searchPerson').inputpicker({
+                //    data: ["", "Seleccione",""]
+                //});
+
             $('#searchPerson').inputpicker({
                 data: Lista,
-                fields: ['IdPerson', 'Name','LastName'],
+                fields: ['Name','LastName'],
                 fieldText: 'Name',
                 fieldValue: 'IdPerson',
                 headShow: true,
@@ -225,6 +239,8 @@
                 responsive: true
             });
 
+
+            $('#searchClient').val("");
         });
 
         // If the checkbox is checked, display the output text
@@ -302,11 +318,15 @@
 
                                 @if(Model!=null)
                                 {
-                                    Model.UserAcces.Add(new MUserAcces());
-                                }
-                         
 
-                                Item = index + 1;
+                                    if (Model.UserAccesPadre != null)
+                                    {
+                                        Model.UserAcces.Add(new MUserAcces());
+                                    }
+                                }
+
+
+                              /*  Item = index + 1;*/
 
                                 objtable += "<tbody><tr  id='trMenuOptionsDetail" + item.IdOption + ">";
                                 objtable += "<td style='display:none'><input name='UserAcces.Index' type = 'hidden' value = '" + item.IdOption + "' /></td > ";
@@ -319,7 +339,7 @@
 
                                 var modelo = @Html.Raw(Json.Encode(Model.UserAcces));
 
-                                 var Array = modelo.filter(word => word.IdOption == item.IdOption)
+                                var Array = modelo.filter(word => word.IdOption == item.IdOption)
 
                                 var visible = false;
                                 var crear = false;
