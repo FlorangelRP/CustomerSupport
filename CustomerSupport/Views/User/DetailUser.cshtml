@@ -151,7 +151,7 @@
             $('#TMenuOptions tbody td img').click(function () {
                 var nTr = this.parentNode.parentNode;
                 var objtable = "<table class='display table table-bordered table - striped' >";
-                objtable += "<tr><th>Opcion</th><th>Visible</th><th>Crear</th><th>Buscar</th><th>Editar</th><th>Eliminar</th></tr>";
+                objtable += "<tr><th>Opcion</th><th>Visible</th><th>Crear</th><th>Buscar</th><th>Editar</th></tr>";
 
                 if (this.src.match('details_close')) {
                     /* This row is already open - close it */
@@ -208,12 +208,12 @@
                                     objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
                                 }
 
-                                if (item.Delete.toString() == "true") {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
-                                }
-                                else {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
-                                }
+                                //if (item.Delete.toString() == "true") {
+                                //    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
+                                //}
+                                //else {
+                                //    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
+                                //}
 
                                 existe = 1;
                             });
