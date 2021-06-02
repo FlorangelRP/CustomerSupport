@@ -183,7 +183,7 @@ namespace CustomerSupport.Controllers
                     else
                     {
 
-                        ViewBag.ErrorSave = "Error al grabar datos del empleado " + (mensaje==""?"": ": " + mensaje);
+                        ViewBag.ErrorSave = "Error al grabar datos del Usuario " + (mensaje==""?"": ": " + mensaje);
                         return View(objUser);
                     }
 
@@ -198,9 +198,9 @@ namespace CustomerSupport.Controllers
             catch (SqlException ex)
             {
                 //throw;
-                //string msg= "Error al grabar datos del empleado: " + ex.Message;
+                //string msg= "Error al grabar datos del Usuario: " + ex.Message;
                 //ModelState.AddModelError("ErrorSave", msg);
-                ViewBag.ErrorSave = "Error al grabar datos del empleado: " + ex.Message;
+                ViewBag.ErrorSave = "Error al grabar datos del Usuario: " + ex.Message;
                 return View(objUser);
             }
 
@@ -329,9 +329,9 @@ namespace CustomerSupport.Controllers
             catch (SqlException ex)
             {
                 //throw;
-                //string msg= "Error al grabar datos del empleado: " + ex.Message;
+                //string msg= "Error al grabar datos del Usuario: " + ex.Message;
                 //ModelState.AddModelError("ErrorSave", msg);
-                ViewBag.ErrorSave = "Error al grabar datos del empleado: " + ex.Message;
+                ViewBag.ErrorSave = "Error al grabar datos del Usuario: " + ex.Message;
                 return View(objUser);
             }
         }
