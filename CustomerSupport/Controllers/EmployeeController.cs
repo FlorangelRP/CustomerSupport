@@ -18,9 +18,10 @@ namespace CustomerSupport.Controllers
         // GET: Employee
         public ActionResult ListEmployee()
         {
-            var model = new MPerson();
-            model.Birthday = DateTime.Now;
-            return View(model);
+            //MPerson objPersonEmployee = new MPerson();
+            //objPersonEmployee.Birthday = DateTime.Now;
+            //return View(objPersonEmployee);
+            return View();
         }
 
         public ActionResult GetListEmployee()
@@ -55,19 +56,28 @@ namespace CustomerSupport.Controllers
 
         }
 
-        // GET: Employee/Details/5
-        public ActionResult Details(int id)
+        // GET: Employee/DetailEmployee/5
+        public ActionResult DetailEmployee(int id)
         {
             return View();
         }
 
-        // GET: Employee/Create
+        // GET: Employee/AddEmployee
         public ActionResult AddEmployee()
         {
-            var model = new MPerson();
-            model.Birthday = DateTime.Now;
-            //model.listPersonContact = new List<MPersonContact>();
-            return View(model);
+            MPerson objPersonEmployee = new MPerson();
+            objPersonEmployee.Birthday = DateTime.Now;
+            objPersonEmployee.listPersonContact = new List<MPersonContact>();
+
+            if (TempData["Success"] != null) {
+                ViewBag.SuccessSave = TempData["Success"];
+            }
+            if (TempData["ErrorSave"] != null)
+            {
+                ViewBag.SuccessSave = TempData["ErrorSave"];
+            }
+
+            return View(objPersonEmployee);
         }
 
         [HttpPost]
@@ -112,34 +122,38 @@ namespace CustomerSupport.Controllers
                     IdPerson = Int32.Parse(paramOutIdPerson.Value.ToString());
                     if (IdPerson != 0)
                     {
-                        //ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
-                        SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
-                        paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+                        if (objPersonEmployee.listPersonContact!=null) 
+                        { 
 
-                        foreach (var item in objPersonEmployee.listPersonContact)
-                        {
-                            
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
-                                                                      ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
-                               new SqlParameter[]{
-                                    new SqlParameter("@TransactionType", "I"),
-                                    paramOutIdContact,
-                                    new SqlParameter("@IdPerson", IdPerson),
-                                    new SqlParameter("@IdPhoneNumberType", item.IdPhoneNumberType),
-                                    new SqlParameter("@strIdIsoCountry", item.IdIsoCountry),
-                                    new SqlParameter("@strPhoneNumber", item.PhoneNumber),
-                                    new SqlParameter("@btStatus", true)
-                                }
-                            );
-                            IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
+                            foreach (var item in objPersonEmployee.listPersonContact)
+                            {
+
+                                //ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
+                                SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
+                                paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+
+                                SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
+                                                                          ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
+                                   new SqlParameter[]{
+                                        new SqlParameter("@TransactionType", "I"),
+                                        paramOutIdContact,
+                                        new SqlParameter("@IdPerson", IdPerson),
+                                        new SqlParameter("@IdPhoneNumberType", item.IdPhoneNumberType),
+                                        new SqlParameter("@strIdIsoCountry", item.IdIsoCountry),
+                                        new SqlParameter("@strPhoneNumber", item.PhoneNumber),
+                                        new SqlParameter("@btStatus", true)
+                                    }
+                                );
+                                IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
+                            }
                         }
-                                                
-                        ViewBag.SuccessSave = "Datos grabados exitosamente, Código de empleado generado: (" + IdPerson + ").";
-                        //FALTA QUE LIMPIE LOS CAMPOS Y SOLO MUESTRE EL MENSAJE DE ViewBag.SuccessSave
-                        return View();
+
+                        TempData["Success"] = "Datos grabados exitosamente, Código de empleado generado: (" + IdPerson + ").";
+                        return RedirectToAction("AddEmployee");
                     }
                     else
                     {
+                        TempData["ErrorSave"] = "No se pudo generar codigo del empleado, intente nuevamente.";
                         return View(objPersonEmployee);
                     }
 

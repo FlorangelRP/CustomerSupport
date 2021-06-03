@@ -34,7 +34,8 @@ namespace CustomerSupport.Models
         [StringLength(100, ErrorMessage = "Apellidos no puede tener mas de 100 caracteres.")]
         public string LastName { get; set; }
 
-        public Nullable<System.DateTime> Birthday { get; set; }
+        [Required(ErrorMessage = "*Requerido")]
+        public System.DateTime? Birthday { get; set; } //Nullable<System.DateTime>
 
         [Required(ErrorMessage = "*Requerido")]
         [StringLength(100, ErrorMessage = "Dirección no puede tener mas de 300 caracteres.")]
@@ -45,10 +46,12 @@ namespace CustomerSupport.Models
         [EmailAddress(ErrorMessage = "Dirección de correo electrónico no válida")]
         public string Email { get; set; }
 
-        public Nullable<int> IdContactType { get; set; }
+        [Min(1, ErrorMessage = "*Requerido")]
+        public int? IdContactType { get; set; } //Nullable<int>
         public string ContactType { get; set; } //descripcion de la via de contacto
 
-        public Nullable<int> IdPosition { get; set; }
+        [Min(1, ErrorMessage = "*Requerido")]
+        public int? IdPosition { get; set; } //Nullable<int>
         public string Position { get; set; } //descripcion del cargo, solo si es tipo de persona Empleado
 
         public bool ClientPermission { get; set; } //debe ser visible solo para tipo persona Empleado
