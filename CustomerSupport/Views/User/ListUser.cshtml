@@ -101,18 +101,18 @@
                             }
                         }, 'autowidth': true
                     },
-                    {
-                        'data': null, render: function (data, type, row) {
-                            //debugger;
-                            if (data != null) {
-                                if (row.IdUser == null) {
-                                    return '';
-                                } else {
-                                    return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
-                                }
-                            }
-                        }, 'autowidth': true
-                    }
+                    //{
+                    //    'data': null, render: function (data, type, row) {
+                    //        //debugger;
+                    //        if (data != null) {
+                    //            if (row.IdUser == null) {
+                    //                return '';
+                    //            } else {
+                    //                return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
+                    //            }
+                    //        }
+                    //    }, 'autowidth': true
+                    //}
                 ],
         "columnDefs":
             [
@@ -154,6 +154,12 @@
                 $(".searchRow").attr("href", '@Url.Action("DetailUser", "User")?id=' + data.IdUser);
             });
         //}
+
+        $('#TUser').on("click", "a.editRow", function () {
+                //debugger;
+                var data = table.row($(this).parents("tr")).data();
+            $(".editRow").attr("href", '@Url.Action("EditUser", "User")?id=' + data.IdUser);
+         });
 
         //consultar("#TUser tbody", table);
     </script>

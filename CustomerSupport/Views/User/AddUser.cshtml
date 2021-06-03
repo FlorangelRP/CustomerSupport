@@ -48,16 +48,16 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Login:</div>
-                                @Html.TextBoxFor(model => model.Login, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Login, "", new { @maxlength = "10", @class = "text-danger" })
+                                @Html.TextBoxFor(model => model.Login, new { @maxlength = "15", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Login, "", new { @maxlength = "15", @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Clave:</div>
-                                @Html.PasswordFor(model => model.Password, new { @maxlength = "10", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                @Html.PasswordFor(model => model.Password, new { @maxlength = "15", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @maxlength = "15", @class = "text-danger" })
                             </div>
                         </div>
 
@@ -119,7 +119,7 @@
                                 </div>
                                 <br />
                                 <label class="text-danger">@ViewBag.ErrorSave</label>
-                                <label>@ViewBag.SuccessSave</label>
+                                <label class="text-success">@ViewBag.SuccessSave</label>
                             </div>
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                     objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,2)' /> Crear </th> ";
                     objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,3)' /> Buscar </th> ";
                     objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,4)' /> Editar </th> ";
-                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,5)' /> Eliminar </th> ";
+                    //objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,5)' /> Eliminar </th> ";
                     objtable += "</tr> ";
                     objtable += "</thead> ";
                     nro = 0;
@@ -386,12 +386,12 @@
                                 }
 
 
-                                if (Eliminar== true) {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=true></td>";
-                                }
-                                else {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=false></td>";
-                                }
+                                //if (Eliminar== true) {
+                                //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=true></td>";
+                                //}
+                                //else {
+                                //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=false></td>";
+                                //}
 
                                 existe = 1;
                             });

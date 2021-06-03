@@ -20,10 +20,11 @@
                         <div class="form-group">
                             <div class="control-label"><b>Codigo:</b></div>
                             @Html.DisplayFor(model => model.IdUser)
-                            @Html.HiddenFor(model => model.IdUser, new { @id="IdUser"})
+                            @Html.HiddenFor(model => model.IdUser, new { @id = "IdUser" })
                         </div>
                     </div>
                 </div>
+
                 <hr>
 
                 <div class="row shadow-sm p-3 mb-5 bg-white rounded">
@@ -71,18 +72,20 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label class="control-label">Estatus:</label>
+                        <label class="control-label">Estado:</label>
                         <div class="s_status">
                             <label>
                                 <span id="labEstatus"></span>
-                                @Html.DisplayFor(model => model.Status)
-                                <span class="s_st_checkbox"></span>
+                                @Html.CheckBoxFor(model => model.Status, new { @class = "form-control", @id = "chkStatus" })
+                                <span class="s_st_checkbox border-secondary"></span>
                             </label>
-                            @*@Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })*@
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                         </div>
                     </div>
+
                 </div>
 
+                <br />
                 <div class="row">
                     <div class="col-md-10">
                         <div id="demo">
@@ -98,7 +101,7 @@
                                             </tr>
                                         </thead>
 
-                                        @foreach (var item in Model.UserAcces)
+                                        @foreach (var item in Model.UserAccesPadre)
                                         {
                                             <tr>
                                                 <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@item.IdOption" /></td>
@@ -148,7 +151,7 @@
             $('#TMenuOptions tbody td img').click(function () {
                 var nTr = this.parentNode.parentNode;
                 var objtable = "<table class='display table table-bordered table - striped' >";
-                objtable += "<tr><th>Opcion</th><th>Visible</th><th>Crear</th><th>Buscar</th><th>Editar</th><th>Eliminar</th></tr>";
+                objtable += "<tr><th>Opcion</th><th>Visible</th><th>Crear</th><th>Buscar</th><th>Editar</th></tr>";
 
                 if (this.src.match('details_close')) {
                     /* This row is already open - close it */
@@ -205,12 +208,12 @@
                                     objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
                                 }
 
-                                if (item.Delete.toString() == "true") {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
-                                }
-                                else {
-                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
-                                }
+                                //if (item.Delete.toString() == "true") {
+                                //    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
+                                //}
+                                //else {
+                                //    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
+                                //}
 
                                 existe = 1;
                             });

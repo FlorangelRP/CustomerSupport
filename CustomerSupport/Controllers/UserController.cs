@@ -115,6 +115,18 @@ namespace CustomerSupport.Controllers
                                                        }).ToList()
                         }).First()  ;
 
+            ObjUser.UserAccesPadre = (from result3 in db.GNListUserAcces(null, null).ToList()
+                                      select new MUserAcces
+                                      {
+                                          IdOption = result3.IdOption,
+                                          OptionName = result3.OptionName,
+                                          Visible = result3.Visible == null ? false : (bool)result3.Visible,
+                                          Create = result3.Create == null ? false : (bool)result3.Create,
+                                          Search = result3.Search == null ? false : (bool)result3.Search,
+                                          Edit = result3.Edit == null ? false : (bool)result3.Edit,
+                                          Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                      }).ToList();
+
             return View(ObjUser);
 
         }
@@ -147,7 +159,7 @@ namespace CustomerSupport.Controllers
         [HttpPost]
         public ActionResult AddUser(MUser objUser)
         {
-
+            string mensaje="";
             try
             {
                 if (objUser.UserAcces == null)
@@ -157,70 +169,11 @@ namespace CustomerSupport.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    MMEnterprisesEntities db = new MMEnterprisesEntities();
+                    objUser.Status = true;
+                    int IdUser = funGNTranuser(objUser, "I", ref mensaje);
 
-                    int IdUser;
-                    int SqlResult;
-                    
-                    SqlParameter paramOutIdPerson = new SqlParameter("@IdUser", System.Data.SqlDbType.Int);
-                    paramOutIdPerson.Direction = System.Data.ParameterDirection.Output;
-
-                    SqlResult = db.Database.ExecuteSqlCommand("GNTranUser @IdPerson, @strLogin , @strPassword, @TransactionType, @IdUser OUT, @btStatus ",
-                           new SqlParameter[]{
-                                new SqlParameter("@TransactionType", "I"),
-                                paramOutIdPerson,
-                                new SqlParameter("@IdPerson", objUser.IdPerson),
-                                new SqlParameter("@strLogin",objUser.Login),
-                                new SqlParameter("@strPassword", objUser.Encriptar(objUser.Password)),
-                                new SqlParameter("@btStatus", true)
-                            }
-                        );
-
-                    IdUser = Int32.Parse(paramOutIdPerson.Value.ToString());
-                    if (IdUser != 0)
-                    {
-
-                        //foreach (var item in objUser.UserAccesPadre)
-                        //{
-                        //    //ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
-                        //    SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
-                        //    paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
-
-
-                        //    SqlResult = db.Database.ExecuteSqlCommand("GNTranUserAcces @IdUser, @IdOption, @blnVisible " +
-                        //                                              ", @blnCreate, @blnSearch, @blnEdit, @blnDelete ",
-                        //       new SqlParameter[]{
-                        //            new SqlParameter("@IdUser", IdUser),
-                        //            new SqlParameter("@IdOption", item.IdOption),
-                        //            new SqlParameter("@blnVisible", true),
-                        //            new SqlParameter("@blnCreate", true),
-                        //            new SqlParameter("@blnSearch", true),
-                        //            new SqlParameter("@blnEdit",true),
-                        //            new SqlParameter("@blnDelete",true)
-                        //        }
-                        //    );
-                        //}
-
-                        foreach (var item in objUser.UserAcces)
-                        {
-
-                            //ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
-                            SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
-                            paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
-
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranUserAcces @IdUser, @IdOption, @blnVisible " +
-                                                                      ", @blnCreate, @blnSearch, @blnEdit, @blnDelete ",
-                               new SqlParameter[]{
-                                    new SqlParameter("@IdUser", IdUser),
-                                    new SqlParameter("@IdOption", item.IdOption),
-                                    new SqlParameter("@blnVisible", item.Visible),
-                                    new SqlParameter("@blnCreate", item.Create),
-                                    new SqlParameter("@blnSearch", item.Search),
-                                    new SqlParameter("@blnEdit", item.Edit),
-                                    new SqlParameter("@blnDelete", item.Delete)
-                                }
-                            );
-                        }
+                    if (IdUser > 0)
+                    { 
 
                         //FALTA QUE LIMPIE LOS CAMPOS Y SOLO MUESTRE EL MENSAJE DE ViewBag.SuccessSave
                         //return  View();
@@ -230,7 +183,7 @@ namespace CustomerSupport.Controllers
                     else
                     {
 
-
+                        ViewBag.ErrorSave = "Error al grabar datos del Usuario " + (mensaje==""?"": ": " + mensaje);
                         return View(objUser);
                     }
 
@@ -245,9 +198,9 @@ namespace CustomerSupport.Controllers
             catch (SqlException ex)
             {
                 //throw;
-                //string msg= "Error al grabar datos del empleado: " + ex.Message;
+                //string msg= "Error al grabar datos del Usuario: " + ex.Message;
                 //ModelState.AddModelError("ErrorSave", msg);
-                ViewBag.ErrorSave = "Error al grabar datos del empleado: " + ex.Message;
+                ViewBag.ErrorSave = "Error al grabar datos del Usuario: " + ex.Message;
                 return View(objUser);
             }
 
@@ -270,46 +223,116 @@ namespace CustomerSupport.Controllers
         }
 
         // GET: User/Edit/5int id
-        public ActionResult EditUser()
+        public ActionResult EditUser(string id)
         {
 
-            Models.MUser mlUser = new Models.MUser();
-            //using (MMEnterprisesEntities db = new MMEnterprisesEntities())
-            //{
-            //    mlUser = (from d in db.Users
-            //            select new Models.MUser
-            //            {
-            //                IdUser = d.IdUser,
-            //                IdPerson = d.IdPerson,
-            //                //IdPosition = d.IdPosition,
-            //                //Position ="",
-            //                Login = d.Login,
-            //                Status = d.Status
-            //            }).First();
-            //    mlUser.PersonEmployee = new MPerson();
-            //    mlUser.PersonEmployee.IdIdentificationType = 1;
-            //    mlUser.PersonEmployee.NumIdentification ="14270679";
-            //    mlUser.PersonEmployee.LastName = "Lucena";
-            //    mlUser.PersonEmployee.Name = "Lucena";
-                
-           
+            MUser ObjUser = new MUser();
+            MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            return View(mlUser);
+            ObjUser = (from result in db.GNListUser(Convert.ToInt32(id)).ToList()
+                       select new MUser
+                       {
+                           IdUser = result.IdUser,
+                           IdPerson = result.IdPerson,
+                           Login = result.Login,
+                           Status = result.Status,
+                           Password = ObjUser.Desencriptar(result.Password),
+                           StatusDesc = result.Status == true ? "Activo" : "Inactivo",
+                           PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null).ToList()
+                                                      select new MPerson
+                                                      {
+                                                          IdPerson = result2.IdPerson,
+                                                          IdPersonType = result2.IdPersonType,
+                                                          PersonType = result2.PersonType,
+                                                          IdIdentificationType = result2.IdIdentificationType,
+                                                          IdentificationType = result2.IdentificationType,
+                                                          NumIdentification = result2.NumIdentification,
+                                                          Name = result2.Name,
+                                                          LastName = result2.LastName,
+                                                          Birthday = result2.Birthday,
+                                                          Address = result2.Address,
+                                                          Email = result2.Email,
+                                                          IdContactType = result2.IdContactType,
+                                                          ContactType = result2.ContactType,
+                                                          IdPosition = result2.IdPosition,
+                                                          Position = result2.Position,
+                                                          ClientPermission = result2.ClientPermission,
+                                                          Status = result2.Status
+                                                      }).ToList().First(),
+
+                           UserAcces = (from result3 in db.GNListUserAcces(result.IdUser, null).ToList()
+                                        select new MUserAcces
+                                        {
+                                            IdOption = result3.IdOption,
+                                            OptionName = result3.OptionName,
+                                            Visible = result3.Visible == null ? false : (bool)result3.Visible,
+                                            Create = result3.Create == null ? false : (bool)result3.Create,
+                                            Search = result3.Search == null ? false : (bool)result3.Search,
+                                            Edit = result3.Edit == null ? false : (bool)result3.Edit,
+                                            Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                        }).ToList()
+                       }).First();
+
+            ObjUser.UserAccesPadre = (from result3 in db.GNListUserAcces(null, null).ToList()
+                                      select new MUserAcces
+                                      {
+                                          IdOption = result3.IdOption,
+                                          OptionName = result3.OptionName,
+                                          Visible = result3.Visible == null ? false : (bool)result3.Visible,
+                                          Create = result3.Create == null ? false : (bool)result3.Create,
+                                          Search = result3.Search == null ? false : (bool)result3.Search,
+                                          Edit = result3.Edit == null ? false : (bool)result3.Edit,
+                                          Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                      }).ToList();
+
+
+            return View(ObjUser);
         }
 
         // POST: User/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult EditUser(MUser objUser)
         {
+            string mensaje = "";
             try
             {
-                // TODO: Add update logic here
+                if (objUser.UserAcces == null)
+                {
+                    objUser.UserAcces = new List<MUserAcces>();
+                }
 
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    int IdUser = funGNTranuser(objUser, "U", ref mensaje);
+
+                    if (IdUser > 0)
+                    {
+
+                        ViewBag.SuccessSave = "Datos grabados exitosamente, Código de Usuario: (" + IdUser + ").";
+                        return View(objUser);
+                    }
+                    else
+                    {
+
+                        ViewBag.ErrorSave = "Error al grabar datos del Usuario " + (mensaje == "" ? "" : ": " + mensaje);
+                        return View(objUser);
+                    }
+
+                }
+                else
+                {
+
+                    return View(objUser);
+                }
+
             }
-            catch
+            catch (SqlException ex)
             {
-                return View();
+                //throw;
+                //string msg= "Error al grabar datos del Usuario: " + ex.Message;
+                //ModelState.AddModelError("ErrorSave", msg);
+                ViewBag.ErrorSave = "Error al grabar datos del Usuario: " + ex.Message;
+                return View(objUser);
             }
         }
 
@@ -362,6 +385,69 @@ namespace CustomerSupport.Controllers
           return   Json(ObjUser, JsonRequestBehavior.AllowGet);
 
         }
+
+        private int funGNTranuser(MUser objUser, string TransactionType, ref string Mensaje)
+        {
+            try
+            {
+                MMEnterprisesEntities db = new MMEnterprisesEntities();
+
+                int IdUser;
+                int SqlResult;
+
+                SqlParameter paramOutIdUsuario = new SqlParameter();
+                paramOutIdUsuario.ParameterName = "@IdUser";
+                paramOutIdUsuario.SqlDbType = System.Data.SqlDbType.Int;
+                paramOutIdUsuario.Direction = System.Data.ParameterDirection.InputOutput;
+                paramOutIdUsuario.Value = objUser.IdUser;
+
+
+
+                SqlResult = db.Database.ExecuteSqlCommand("GNTranUser @IdPerson, @strLogin , @strPassword, @TransactionType, @IdUser OUT, @btStatus ",
+                       new SqlParameter[]{
+                                new SqlParameter("@TransactionType", TransactionType),
+                                paramOutIdUsuario,
+                                new SqlParameter("@IdPerson", objUser.IdPerson),
+                                new SqlParameter("@strLogin",objUser.Login),
+                                new SqlParameter("@strPassword", objUser.Encriptar(objUser.Password)),
+                                new SqlParameter("@btStatus", objUser.Status)
+                        }
+                    );
+
+                IdUser = Int32.Parse(paramOutIdUsuario.Value.ToString());
+                if (IdUser != 0)
+                {
+
+                    foreach (var item in objUser.UserAcces)
+                    {
+
+                        //ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
+                        SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
+                        paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+
+                        SqlResult = db.Database.ExecuteSqlCommand("GNTranUserAcces @IdUser, @IdOption, @blnVisible " +
+                                                                  ", @blnCreate, @blnSearch, @blnEdit, @blnDelete ",
+                           new SqlParameter[]{
+                                    new SqlParameter("@IdUser", IdUser),
+                                    new SqlParameter("@IdOption", item.IdOption),
+                                    new SqlParameter("@blnVisible", item.Visible),
+                                    new SqlParameter("@blnCreate", item.Create),
+                                    new SqlParameter("@blnSearch", item.Search),
+                                    new SqlParameter("@blnEdit", item.Edit),
+                                    new SqlParameter("@blnDelete", item.Delete)
+                            }
+                        );
+                    }
+                }
+                return IdUser;
+            }
+            catch (SqlException ex)
+            {
+                Mensaje= ex.Message;
+                return 0;
+            }
+        }
+            
 
     }
 }

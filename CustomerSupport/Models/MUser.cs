@@ -17,11 +17,11 @@ namespace CustomerSupport.Models
         public int IdPerson { get; set; }
 
         [Required(ErrorMessage = "Debe indicar el Login.")]
-        [StringLength(10, ErrorMessage = "El Login solo es de 10 Caracteres.")]
+        [StringLength(15, ErrorMessage = "El Login solo es de 15 Caracteres.")]
         public string Login { get; set; }
 
         [Required(ErrorMessage = "Debe indicar la Contraseña.")]
-        [StringLength(8, ErrorMessage = "La Contraseña es de 8 caracteres.")]
+        [StringLength(15, ErrorMessage = "La Contraseña es de 15 caracteres.")]
         public string Password { get; set; }
         public bool Status { get; set; }
         public string StatusDesc { get; set; } //descripcion del estado (Activo/Inactivo)
