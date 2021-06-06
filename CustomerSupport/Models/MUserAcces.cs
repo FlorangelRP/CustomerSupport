@@ -16,5 +16,8 @@ namespace CustomerSupport.Models
         public bool Search { get; set; }
         public bool Edit { get; set; }
         public bool Delete { get; set; }
+        public string Action { get; set; }
+        public string Controller { get; set; }
+        public int? IdAssociated { get; set; }
     }
 }

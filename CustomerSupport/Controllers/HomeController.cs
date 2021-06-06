@@ -10,7 +10,14 @@ namespace CustomerSupport.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            { 
+                return View();
+            }
         }
 
         public ActionResult About()

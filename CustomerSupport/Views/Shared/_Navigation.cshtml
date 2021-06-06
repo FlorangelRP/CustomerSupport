@@ -1,54 +1,91 @@
-﻿<section class="ss_index_one">
- 
+﻿@using CustomerSupport.Models
+@model MUser
+<section class="ss_index_one">
+
     <div class="container-fluid">
-        <div class="ss_header">
 
             <div class="row">
-                <div class="col-lg-3 col-md-7 col-sm-12 col-12 align-self-center">
-                    <div class="ss_logo">
-                        <a href="index.html"><img class="img-fluid" src="~/Content/assets/images/svg/MM_White_Small.svg" alt="logo" /></a>
-                    </div>
-                </div>
-                <div class="col-lg-9 col-md-5 col-sm-12 col-12 align-self-center">
+                <div class="col-sm-12 col-12 text-right">
                     <div class="ss_menu">
-                        <ul>
+                        <a href="#" class="d-block">
+                            @if (Session["Usuario"] != null && ((MUser)Session["Usuario"]).Login != null)
+                            {
+                                MUser obj = new MUser();
 
-                            <li><a href='@Url.Action("Index", "Home")'>Inicio</a></li>
+                                obj = ((MUser)Session["Usuario"]);
 
-                            <li class="ss_menuP">
-                                Mantenimiento
-                                <ul class="ss_subMenu">
-                                    @*<li><a href='@Url.Action("ListPerson", "Person")'>Persona</a></li>*@
-                                    <li><a href='@Url.Action("ListEmployee", "Employee")'>Empleado</a></li>
-                                    <li><a href='@Url.Action("ListUser", "User")'>Usuario</a></li>
-                                    @*<li><a href='@Url.Action("Index", "Home")'>Servicio</a></li>*@
-                                    <li><a href='@Url.Action("ListClient", "Client")'>Cliente</a></li>
-                                </ul>
-                            </li>
-                            <li class="ss_menuP">
-                                Transacciones
-                                <ul class="ss_subMenu">
-                                    <li><a href='@Url.Action("ListServiceRequest", "ServiceRequest")'>Solicitud de Servicio</a></li>
-                                </ul>
-                            </li>
-
-                        </ul>
-                        <div class="head_icon">
-                            <div class="ss_menu_bar">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <a href="signup.html" class="white_btn">Salir</a>
-                        </div>
+                                @obj.Login.ToString();
+                            }
+                        </a>
                     </div>
                 </div>
             </div>
 
-        </div>
+            <div class="ss_header">
 
-        <div class="ss_banner_main banner_three">
-        </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-7 col-sm-12 col-12 align-self-center">
+                        <div class="ss_logo">
+                            <a href="index.html"><img class="img-fluid" src="~/Content/assets/images/svg/MM_White_Small.svg" alt="logo" /></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-5 col-sm-12 col-12 align-self-center">
+                        <div class="ss_menu">
+                            <ul>
 
-    </div>
-</section> 
+                                <li><a href='@Url.Action("Index", "Home")'>Inicio</a></li>
+
+                                @if ((Session["Usuario"]) != null)
+                                {
+
+                                    //Recorremos las Padres
+                                    foreach (var mOptionPadre in (((MUser)Session["Usuario"])).UserAccesPadre)
+                                    {
+
+                                        var Lis = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.IdAssociated == mOptionPadre.IdOption && X.Visible == true).ToList();
+
+                                        if (Lis.Count > 0)
+                                        {
+                                            <li class="ss_menuP">
+                                                @mOptionPadre.OptionName
+
+                                                <ul class="ss_subMenu">
+                                                    @foreach (var mOptionAso in Lis)
+                                                    {
+                                                        if (mOptionAso.Visible == true)
+                                                        {
+                                                            <li><a href='@Url.Action(mOptionAso.Action, mOptionAso.Controller)'>@mOptionAso.OptionName</a></li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </li>
+
+                                        }
+                                    }
+                                }
+
+
+                            </ul>
+                            <div class="head_icon">
+                                <div class="ss_menu_bar">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <a href='@Url.Action("Close", "User")' class="white_btn">Salir</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            @*<div class="ss_banner_main banner_three">
+
+        </div>*@
+
+            <br />
+            <br />
+        </div>
+</section>

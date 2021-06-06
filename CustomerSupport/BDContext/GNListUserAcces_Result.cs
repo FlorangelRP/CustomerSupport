@@ -20,5 +20,8 @@ namespace CustomerSupport.BDContext
         public Nullable<bool> Search { get; set; }
         public Nullable<bool> Edit { get; set; }
         public Nullable<bool> Delete { get; set; }
+        public string Action { get; set; }
+        public string Controller { get; set; }
+        public Nullable<int> IdAssociated { get; set; }
     }
 }

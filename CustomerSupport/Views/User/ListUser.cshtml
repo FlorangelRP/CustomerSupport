@@ -1,7 +1,10 @@
-﻿
+﻿@using CustomerSupport.Models
+@model MUser
+
 @{
     ViewBag.Title = "Listado de Usuario";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Action = "ListUser";
 }
 
 <div class="card card-primary">
@@ -11,16 +14,29 @@
     <div class="card-body">
 
         <form>
+            @{ 
+                MUserAcces perm = null;
+                if (Session["Usuario"]!=null)
+                { 
+                 perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+                }
+            }
 
-            <div class="row text-right">
-                <div class="col-md-12">
-                    <div class="text-right">
-                        @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
-                        @*<a href="location.href='@Url.Action("AddUser", "User")';return false;" class="white_btn">Agregar</a>*@
-                        <button class="white_btn" onclick="location.href='@Url.Action("AddUser", "User")';return false;">Agregar</button>
+             @if (perm!=null)
+             { 
+                if (perm.Create==true)
+                {
+                    <div class="row text-right">
+                        <div class="col-md-12">
+                            <div class="text-right">
+                                @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
+                                @*<a href="location.href='@Url.Action("AddUser", "User")';return false;" class="white_btn">Agregar</a>*@
+                                <button class="white_btn" onclick="location.href='@Url.Action("AddUser", "User")';return false;">Agregar</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                }
+             }
             <div class="table-responsive">
                 <div class="container">
                     <table id="TUser" class="table table-bordered table-striped">
@@ -32,9 +48,13 @@
                                 <th>Apellidos</th>
                                 <th>Cargo</th>
                                 <th>Estado</th>
-                                <th class="text-center" colspan="3">Opciones</th>
-                                @*<th></th>*@
-                                @*<th></th>*@
+                                @if (perm != null)
+                                {
+                                    if (perm.Search == true || perm.Edit == true)
+                                    {
+                                    <th class="text-center" colspan="2">Opciones</th>
+                                    }
+                                }
                             </tr>
                         </thead>
                     </table>
@@ -61,8 +81,12 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
     <script>
+       
+        var Permis = @Html.Raw(Json.Encode(perm));
+        Buscar = Permis.Search;
+        Editar = Permis.Edit;
 
-    var table = $('#TUser').DataTable({
+        var table = $('#TUser').DataTable({
 
             'ajax': {
                 'url': '@Url.Action("GetListUser", "User")',
@@ -78,8 +102,8 @@
                     { 'data': 'PersonEmployee.LastName', 'autowidth': true },
                     { 'data': 'PersonEmployee.Position', 'autowidth': true },
                     { 'data': 'StatusDesc', 'autowidth': true },
-                    {'data': null, render: function (data, type, row) {
-                            //debugger;
+                    {
+                        'data': null, render: function (data, type, row) {
                             if (data != null) {
                                 if (row.IdUser == null) {
                                     return '';
@@ -91,9 +115,8 @@
                     },
                     {
                         'data': null, render: function (data, type, row) {
-                            //debugger;
                             if (data != null) {
-                                if (row.IdUser == null) {
+                                if (row.IdUser == null ) {
                                     return '';
                                 } else {
                                     return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
@@ -116,7 +139,9 @@
                 ],
         "columnDefs":
             [
-                { "targets": 0, "bVisible": false, "orderable": false }
+                { "targets": 0, "bVisible": false, "orderable": false },
+                { "targets": 6, "bVisible": Editar },
+                { "targets": 7, "bVisible": Buscar }
             ],
             "bAutoWidth": false,
             "bInfo": false,
@@ -145,18 +170,18 @@
                 }
             }
 
-    });
+        });
+
+
 
         //var consultar = function (tbody, table) {
         $('#TUser').on("click", "a.searchRow", function () {
-                //debugger;
                 var data = table.row($(this).parents("tr")).data();
                 $(".searchRow").attr("href", '@Url.Action("DetailUser", "User")?id=' + data.IdUser);
             });
         //}
 
         $('#TUser').on("click", "a.editRow", function () {
-                //debugger;
                 var data = table.row($(this).parents("tr")).data();
             $(".editRow").attr("href", '@Url.Action("EditUser", "User")?id=' + data.IdUser);
          });

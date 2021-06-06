@@ -42,6 +42,8 @@
           <Property Name="IdAssociated" Type="int" />
           <Property Name="AssociatedName" Type="varchar" MaxLength="50" />
           <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="Action" Type="varchar" MaxLength="50" />
+          <Property Name="Controller" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -456,6 +458,11 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GNAuthenticationUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strLogin" Type="varchar" Mode="In" />
+          <Parameter Name="strPassword" Type="varchar" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="InOut" />
+        </Function>
         <Function Name="GNListCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdCountry" Type="int" Mode="In" />
           <Parameter Name="IdIsoCountry" Type="varchar" Mode="In" />
@@ -686,6 +693,8 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <NavigationProperty Name="OptionMenu1" Relationship="Self.FK_AssociatedMenu_OptionMenu" FromRole="OptionMenu" ToRole="OptionMenu1" />
           <NavigationProperty Name="OptionMenu2" Relationship="Self.FK_AssociatedMenu_OptionMenu" FromRole="OptionMenu1" ToRole="OptionMenu" />
           <NavigationProperty Name="UserAcces" Relationship="Self.FK_UserAcces_OptionMenu" FromRole="OptionMenu" ToRole="UserAcces" />
+          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Controller" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -1126,10 +1135,6 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="IdCountry" Mode="In" Type="Int32" />
             <Parameter Name="IdIsoCountry" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GNListUserAcces" ReturnType="Collection(MMEnterprisesModel.GNListUserAcces_Result)">
-            <Parameter Name="IdUser" Mode="In" Type="Int32" />
-            <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="GNTranPerson">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
             <Parameter Name="IdPerson" Mode="InOut" Type="Int32" />
@@ -1171,6 +1176,15 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="blnSearch" Mode="In" Type="Int32" />
             <Parameter Name="blnEdit" Mode="In" Type="Int32" />
             <Parameter Name="blnDelete" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNAuthenticationUser">
+            <Parameter Name="strLogin" Mode="In" Type="String" />
+            <Parameter Name="strPassword" Mode="In" Type="String" />
+            <Parameter Name="IdUser" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListUserAcces" ReturnType="Collection(MMEnterprisesModel.GNListUserAcces_Result)">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="VWListCatalog">
@@ -1229,6 +1243,9 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Type="Boolean" Name="Search" Nullable="true" />
           <Property Type="Boolean" Name="Edit" Nullable="true" />
           <Property Type="Boolean" Name="Delete" Nullable="true" />
+          <Property Type="String" Name="Action" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Controller" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdAssociated" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1270,6 +1287,8 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <EntitySetMapping Name="OptionMenus">
             <EntityTypeMapping TypeName="MMEnterprisesModel.OptionMenu">
               <MappingFragment StoreEntitySet="OptionMenu">
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
                 <ScalarProperty Name="IdOption" ColumnName="IdOption" />
                 <ScalarProperty Name="OptionName" ColumnName="OptionName" />
                 <ScalarProperty Name="IdAssociated" ColumnName="IdAssociated" />
@@ -1459,6 +1478,11 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
+          <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
+          <FunctionImportMapping FunctionImportName="GNTranUser" FunctionName="MMEnterprisesModel.Store.GNTranUser" />
+          <FunctionImportMapping FunctionImportName="GNTranUserAcces" FunctionName="MMEnterprisesModel.Store.GNTranUserAcces" />
+          <FunctionImportMapping FunctionImportName="GNAuthenticationUser" FunctionName="MMEnterprisesModel.Store.GNAuthenticationUser" />
           <FunctionImportMapping FunctionImportName="GNListUserAcces" FunctionName="MMEnterprisesModel.Store.GNListUserAcces">
             <ResultMapping>
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListUserAcces_Result">
@@ -1469,13 +1493,12 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
                 <ScalarProperty Name="Search" ColumnName="Search" />
                 <ScalarProperty Name="Edit" ColumnName="Edit" />
                 <ScalarProperty Name="Delete" ColumnName="Delete" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="IdAssociated" ColumnName="IdAssociated" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
-          <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
-          <FunctionImportMapping FunctionImportName="GNTranUser" FunctionName="MMEnterprisesModel.Store.GNTranUser" />
-          <FunctionImportMapping FunctionImportName="GNTranUserAcces" FunctionName="MMEnterprisesModel.Store.GNTranUserAcces" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

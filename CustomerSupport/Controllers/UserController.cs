@@ -14,7 +14,14 @@ namespace CustomerSupport.Controllers
         // GET: User
         public ActionResult ListUser()
         {
-            return View();
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            { 
+                return View();
+            }
         }
 
         public ActionResult GetListUser()
@@ -62,7 +69,136 @@ namespace CustomerSupport.Controllers
             return View();
         }
 
-        // GET: User/Details/5
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Login(MUser objUser)
+        {
+            Session.Timeout = 30;
+            try
+            {
+                objUser.IdPerson = 1;
+                
+               //if (ModelState.IsValid)
+               // { 
+                    MMEnterprisesEntities db = new MMEnterprisesEntities();
+                    MUser OUser = new MUser();
+
+                    int SqlResult;
+
+                    SqlParameter paramOutIdUsuario = new SqlParameter();
+                    paramOutIdUsuario.ParameterName = "@IdUser";
+                    paramOutIdUsuario.SqlDbType = System.Data.SqlDbType.Int;
+                    paramOutIdUsuario.Direction = System.Data.ParameterDirection.Output;
+                    paramOutIdUsuario.Value = objUser.IdUser;
+
+                    SqlResult = db.Database.ExecuteSqlCommand("GNAuthenticationUser @strLogin, @strPassword,@IdUser OUT ",
+                           new SqlParameter[]{
+                                    new SqlParameter("@strLogin",objUser.Login),
+                                    new SqlParameter("@strPassword", OUser.Encriptar(objUser.Password)),
+                                    paramOutIdUsuario
+                            }
+                        );
+
+                    if(SqlResult!=0) 
+                    {
+
+                     int IdUser = Int32.Parse(paramOutIdUsuario.Value.ToString());
+                        if (IdUser != 0)
+                        {
+
+                            MUser ObjUser = new MUser();
+
+                            ObjUser = (from result in db.GNListUser(Convert.ToInt32(IdUser)).ToList()
+                                       select new MUser
+                                       {
+                                           IdUser = result.IdUser,
+                                           IdPerson = result.IdPerson,
+                                           Login = result.Login,
+                                           Status = result.Status,
+                                           StatusDesc = result.Status == true ? "Activo" : "Inactivo",
+                                           PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null).ToList()
+                                                                      select new MPerson
+                                                                      {
+                                                                          IdPerson = result2.IdPerson,
+                                                                          IdPersonType = result2.IdPersonType,
+                                                                          PersonType = result2.PersonType,
+                                                                          IdIdentificationType = result2.IdIdentificationType,
+                                                                          IdentificationType = result2.IdentificationType,
+                                                                          NumIdentification = result2.NumIdentification,
+                                                                          Name = result2.Name,
+                                                                          LastName = result2.LastName,
+                                                                          Birthday = result2.Birthday,
+                                                                          Address = result2.Address,
+                                                                          Email = result2.Email,
+                                                                          IdContactType = result2.IdContactType,
+                                                                          ContactType = result2.ContactType,
+                                                                          IdPosition = result2.IdPosition,
+                                                                          Position = result2.Position,
+                                                                          ClientPermission = result2.ClientPermission,
+                                                                          Status = result2.Status
+                                                                      }).ToList().First(),
+                                           UserAcces = (from result3 in db.GNListUserAcces(result.IdUser, null).ToList()
+                                                        select new MUserAcces
+                                                        {
+                                                            IdOption = result3.IdOption,
+                                                            OptionName = result3.OptionName,
+                                                            Visible = result3.Visible == null ? false : (bool)result3.Visible,
+                                                            Create = result3.Create == null ? false : (bool)result3.Create,
+                                                            Search = result3.Search == null ? false : (bool)result3.Search,
+                                                            Edit = result3.Edit == null ? false : (bool)result3.Edit,
+                                                            Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                                            IdAssociated = result3.IdAssociated,
+                                                            Action = result3.Action,
+                                                            Controller = result3.Controller,
+                                                        }).ToList()
+                                       }).First();
+
+                                ObjUser.UserAccesPadre = (from result3 in db.GNListUserAcces(null, null).ToList()
+                                                      select new MUserAcces
+                                                      {
+                                                          IdOption = result3.IdOption,
+                                                          OptionName = result3.OptionName,
+                                                          Visible = result3.Visible == null ? false : (bool)result3.Visible,
+                                                          Create = result3.Create == null ? false : (bool)result3.Create,
+                                                          Search = result3.Search == null ? false : (bool)result3.Search,
+                                                          Edit = result3.Edit == null ? false : (bool)result3.Edit,
+                                                          Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                                          IdAssociated = result3.IdAssociated,
+                                                          Action = result3.Action,
+                                                          Controller = result3.Controller,
+                                                      }).ToList();
+
+                            Session["Usuario"] = ObjUser;
+
+                            return RedirectToAction("Index", "Home");
+
+                        }
+                        else
+                        {
+                            ViewBag.ErrorSave = "Error al Autenticar";
+                            return View(objUser);
+                        }
+
+                    }
+                    else
+                    {
+                        ViewBag.ErrorSave = "Error al Autenticar";
+                        return View(objUser);
+                    }
+               // }
+               //else
+               // {
+               //     return View(objUser);
+               // }
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorSave = e.Message;
+                return View(objUser);
+            }
+
+        }
+
         public ActionResult Details(int id)
         {
             return View();
@@ -112,6 +248,7 @@ namespace CustomerSupport.Controllers
                                                            Search = result3.Search == null ? false : (bool)result3.Search,
                                                            Edit = result3.Edit == null ? false : (bool)result3.Edit,
                                                            Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                                           IdAssociated = result3.IdAssociated,
                                                        }).ToList()
                         }).First()  ;
 
@@ -125,6 +262,7 @@ namespace CustomerSupport.Controllers
                                           Search = result3.Search == null ? false : (bool)result3.Search,
                                           Edit = result3.Edit == null ? false : (bool)result3.Edit,
                                           Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                          IdAssociated = result3.IdAssociated,
                                       }).ToList();
 
             return View(ObjUser);
@@ -146,6 +284,7 @@ namespace CustomerSupport.Controllers
                            Search = result3.Search == null ? false : (bool)result3.Search,
                            Edit = result3.Edit == null ? false : (bool)result3.Edit,
                            Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                           IdAssociated = result3.IdAssociated,
                        }).ToList();
 
             ObjUser.UserAcces = new List<MUserAcces>();
@@ -270,6 +409,7 @@ namespace CustomerSupport.Controllers
                                             Search = result3.Search == null ? false : (bool)result3.Search,
                                             Edit = result3.Edit == null ? false : (bool)result3.Edit,
                                             Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                            IdAssociated = result3.IdAssociated,
                                         }).ToList()
                        }).First();
 
@@ -283,6 +423,7 @@ namespace CustomerSupport.Controllers
                                           Search = result3.Search == null ? false : (bool)result3.Search,
                                           Edit = result3.Edit == null ? false : (bool)result3.Edit,
                                           Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                          IdAssociated = result3.IdAssociated,
                                       }).ToList();
 
 
@@ -380,6 +521,7 @@ namespace CustomerSupport.Controllers
                            Search = result3.Search == null ? false : (bool)result3.Search,
                            Edit = result3.Edit == null ? false : (bool)result3.Edit,
                            Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                           IdAssociated = result3.IdAssociated,
                        }).ToList();
 
           return   Json(ObjUser, JsonRequestBehavior.AllowGet);
@@ -447,7 +589,12 @@ namespace CustomerSupport.Controllers
                 return 0;
             }
         }
-            
 
+        public ActionResult Close()
+        {
+            Session.RemoveAll();
+
+            return RedirectToAction("Login", "User");
+        }
     }
 }

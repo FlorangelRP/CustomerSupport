@@ -26,6 +26,8 @@ namespace CustomerSupport.BDContext
         public Nullable<int> IdAssociated { get; set; }
         public string AssociatedName { get; set; }
         public bool Status { get; set; }
+        public string Action { get; set; }
+        public string Controller { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OptionMenu> OptionMenu1 { get; set; }

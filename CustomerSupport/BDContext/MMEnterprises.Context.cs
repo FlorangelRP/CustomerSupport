@@ -74,19 +74,6 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCountry_Result>("GNListCountry", idCountryParameter, idIsoCountryParameter);
         }
     
-        public virtual ObjectResult<GNListUserAcces_Result> GNListUserAcces(Nullable<int> idUser, Nullable<int> idAssociated)
-        {
-            var idUserParameter = idUser.HasValue ?
-                new ObjectParameter("IdUser", idUser) :
-                new ObjectParameter("IdUser", typeof(int));
-    
-            var idAssociatedParameter = idAssociated.HasValue ?
-                new ObjectParameter("IdAssociated", idAssociated) :
-                new ObjectParameter("IdAssociated", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUserAcces_Result>("GNListUserAcces", idUserParameter, idAssociatedParameter);
-        }
-    
         public virtual int GNTranPerson(string transactionType, ObjectParameter idPerson, Nullable<int> idPersonType, Nullable<int> idIdentificationType, string strNumIdentification, string strName, string strLastName, Nullable<System.DateTime> dttBirthday, string strAddress, string strEmail, Nullable<int> idContactType, Nullable<int> idPosition, Nullable<bool> btClientPermission, Nullable<bool> btStatus)
         {
             var transactionTypeParameter = transactionType != null ?
@@ -229,6 +216,32 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("blnDelete", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranUserAcces", idUserParameter, idOptionParameter, blnVisibleParameter, blnCreateParameter, blnSearchParameter, blnEditParameter, blnDeleteParameter);
+        }
+    
+        public virtual int GNAuthenticationUser(string strLogin, string strPassword, ObjectParameter idUser)
+        {
+            var strLoginParameter = strLogin != null ?
+                new ObjectParameter("strLogin", strLogin) :
+                new ObjectParameter("strLogin", typeof(string));
+    
+            var strPasswordParameter = strPassword != null ?
+                new ObjectParameter("strPassword", strPassword) :
+                new ObjectParameter("strPassword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNAuthenticationUser", strLoginParameter, strPasswordParameter, idUser);
+        }
+    
+        public virtual ObjectResult<GNListUserAcces_Result> GNListUserAcces(Nullable<int> idUser, Nullable<int> idAssociated)
+        {
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
+    
+            var idAssociatedParameter = idAssociated.HasValue ?
+                new ObjectParameter("IdAssociated", idAssociated) :
+                new ObjectParameter("IdAssociated", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUserAcces_Result>("GNListUserAcces", idUserParameter, idAssociatedParameter);
         }
     }
 }
