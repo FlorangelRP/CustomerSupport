@@ -19,120 +19,128 @@ namespace CustomerSupport.Controllers
 
         public ActionResult GetListClient()
         {
-            List<MPerson> ListPerson = new List<MPerson>();            
-            MMEnterprisesEntities db = new MMEnterprisesEntities();
-
-            ListPerson = (from result in db.GNListPerson(null,1).ToList()
-                        select new MPerson
-                        {
-                            IdPerson = result.IdPerson,
-                            IdPersonType = result.IdPersonType,
-                            PersonType = result.PersonType,
-                            IdIdentificationType = result.IdIdentificationType,
-                            IdentificationType = result.IdentificationType,
-                            NumIdentification = result.NumIdentification,
-                            Name = result.Name,
-                            LastName = result.LastName,
-                            Birthday = result.Birthday,
-                            Address = result.Address,
-                            Email = result.Email,
-                            IdContactType = result.IdContactType,
-                            ContactType = result.ContactType,
-                            IdPosition = result.IdPosition,
-                            Position = result.Position,
-                            ClientPermission = result.ClientPermission,
-                            Status = result.Status,
-                            StatusDesc = result.Status==true ? "Activo" : "Inactivo"
-                        }).ToList();
+            List<MPerson> ListPerson = new List<MPerson>();
+            ListPerson = PersonController.fnListPerson(null, 1); //1-cliente
 
             return Json(ListPerson, JsonRequestBehavior.AllowGet); 
-
         }
 
-        // GET: Client/Details/5
-        public ActionResult Details(int id)
+        // GET: Client/DetailClient/5
+        public ActionResult DetailClient(int id)
         {
-
-            return View();
-        }
-
-        public ActionResult AddClient()
-        {
-            var model = new MPerson();
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult AddClient(MPerson objPersonClient)
-        {
-            //string variable= "HOLA SOY UNA PERSONA";
+            MPerson objPersonClient = new MPerson();
+            objPersonClient = PersonController.fnListPerson(id, 1).First(); //1-cliente
             return View(objPersonClient);
         }
 
-        //// GET: Client/Create
-        //public ActionResult AddClient()
-        //{
-        //    return View();
-        //}
+        // GET: Client/AddClient
+        public ActionResult AddClient()
+        {
+            MPerson objPersonClient = new MPerson();
+            objPersonClient.Birthday = DateTime.Now;
+            objPersonClient.listPersonContact = new List<MPersonContact>();
 
-        //// POST: Client/Create
-        //[HttpPost]
-        //public ActionResult Create(FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add insert logic here
+            if (TempData["Success"] != null)
+            {
+                ViewBag.SuccessSave = TempData["Success"];
+            }
 
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            return View(objPersonClient);
+        }
 
-        // GET: Client/Edit/5
+        // POST: Client/AddClient
+        [HttpPost]
+        public ActionResult AddClient(MPerson objPersonClient)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //valores por defecto
+                    objPersonClient.Status = true; //activo
+                    objPersonClient.IdPersonType = 1; //tipo cliente
+
+                    string mensaje = "";
+                    int resultDb = PersonController.fnGNTranPerson(objPersonClient, "I", ref mensaje);
+
+                    if (resultDb != 0)
+                    {
+                        TempData["Success"] = mensaje;
+                        return RedirectToAction("AddClient");
+                    }
+                    else
+                    {
+                        ViewBag.ErrorSave = mensaje;
+                        return View(objPersonClient);
+                    }
+                }
+                else
+                {
+                    return View(objPersonClient);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorSave = "Error al grabar datos del cliente: " + ex.Message;
+                return View(objPersonClient);
+            }
+        }
+
+
+        // GET: Client/EditClient/5
         public ActionResult EditClient(int id)
         {
-            return View();
+            MPerson objPersonClient = new MPerson();
+            objPersonClient = PersonController.fnListPerson(id, 1).First(); //1-cliente
+
+            if (TempData["Success"] != null)
+            {
+                ViewBag.SuccessSave = TempData["Success"];
+            }
+
+            return View(objPersonClient);
         }
 
-        // POST: Client/Edit/5
+        // POST: Client/EditClient
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult EditClient(MPerson objPersonClient)
         {
             try
             {
-                // TODO: Add update logic here
+                if (ModelState.IsValid)
+                {
+                    //valores por defecto
+                    objPersonClient.IdPersonType = 1; //tipo cliente
 
-                return RedirectToAction("Index");
+                    string mensaje = "";
+                    int resultDb = PersonController.fnGNTranPerson(objPersonClient, "U", ref mensaje);
+
+                    if (resultDb != 0)
+                    {
+                        TempData["Success"] = mensaje;
+                        return RedirectToAction("EditClient", new { id = objPersonClient.IdPerson });
+                    }
+                    else
+                    {
+                        ViewBag.ErrorSave = mensaje;
+                        return View(objPersonClient);
+                    }
+                }
+                else
+                {
+                    return View(objPersonClient);
+                }
+
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.ErrorSave = "Error al grabar datos del cliente: " + ex.Message;
+                return View(objPersonClient);
             }
+
         }
 
-        // GET: Client/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: Client/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

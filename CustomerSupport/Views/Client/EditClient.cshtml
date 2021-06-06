@@ -2,7 +2,7 @@
 @model CustomerSupport.Models.MPerson
 
 @{
-    ViewBag.Title = "Crear Cliente";
+    ViewBag.Title = "Editar Cliente";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,21 +12,20 @@
     </div>
     <div class="card-body">
 
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="m-0 row justify-content-center">
-                <div class="form-horizontal col-md-10">
+        <div class="m-0 row justify-content-center">
+            <div class="form-horizontal col-md-10">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
 
                     @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                @*<div class="control-label">Codigo:</div>*@
+                                <div class="control-label">Codigo:</div>
+                                @Html.DisplayFor(model => model.IdPerson)
                                 @Html.HiddenFor(model => model.IdPerson)
-                                @*@Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })*@
 
                                 @Html.HiddenFor(model => model.IdPersonType)
                                 @Html.HiddenFor(model => model.IdPosition)
@@ -34,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    @*<hr>*@
+                    <hr>
 
                     <div class="row">
                         <div class="col-md-4">
@@ -231,19 +230,19 @@
                         </div>
                     </div>*@
 
-                    @*<div class="row">
+                    <div class="row">
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label class="control-label">Estado: </label>
                                 <div class="col-md-6 s_Checkbox">
-                                    @Html.TextBoxFor(model => model.Status, new { @type = "checkbox", @id = "chkStatus" })
-                                    @Html.LabelFor(model => model.StatusDesc, new { @id = "labEstatus" })
+                                    @Html.CheckBoxFor(model => model.Status, new { @id = "chkStatus" })
+                                    @Html.LabelForModel(Model.StatusDesc, new { @id = "labEstatus" })
 
                                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
-                    </div>*@
+                    </div>
 
                     <div class="row">
                         <div class="col-md-offset-2 col-md-10">
@@ -263,11 +262,10 @@
                         </div>
                     </div>
 
-                </div>
+                }
 
             </div>
-
-        }
+        </div>
 
         <div>
             @Html.ActionLink("Regresar a la Lista", "ListClient")
@@ -293,13 +291,6 @@
     <script>
 
         $(document).ready(function () {
-
-            // If the checkbox is checked, display the output text
-            if ($("#chkStatus").checked == true) {
-                $("#labEstatus").text("Activo");
-            } else {
-                $("#labEstatus").text("Inactivo");
-            }
 
             $("#lst_ContactType").on('change', function () {
                 var selectValue = $(this).val();
@@ -568,5 +559,3 @@
 
     </script>
 }
-
-

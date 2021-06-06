@@ -2,6 +2,7 @@
 using CustomerSupport.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,7 +12,6 @@ namespace CustomerSupport.Controllers
 {
     public class PersonController : Controller
     {
-        // GET: Person
         public ActionResult ListPerson()
         {
             return View();
@@ -19,106 +19,191 @@ namespace CustomerSupport.Controllers
 
         public ActionResult GetListPerson()
         {
-            List<MPerson> ListPerson = new List<MPerson>();            
-            MMEnterprisesEntities db = new MMEnterprisesEntities();
-
-            ListPerson = (from result in db.GNListPerson(null,null).ToList()
-                        select new MPerson
-                        {
-                            IdPerson= result.IdPerson,
-                            IdPersonType= result.IdPersonType,
-                            PersonType= result.PersonType,
-                            IdIdentificationType= result.IdIdentificationType,
-                            IdentificationType= result.IdentificationType,
-                            NumIdentification= result.NumIdentification,
-                            Name= result.Name,
-                            LastName= result.LastName,
-                            Birthday= result.Birthday,
-                            Address= result.Address,
-                            Email= result.Email,
-                            IdContactType= result.IdContactType,
-                            ContactType= result.ContactType,
-                            IdPosition= result.IdPosition,
-                            Position= result.Position,
-                            ClientPermission= result.ClientPermission,
-                            Status= result.Status
-                        }).ToList();
+            List<MPerson> ListPerson = new List<MPerson>();
+            ListPerson = PersonController.fnListPerson(null, null); 
 
             return Json(ListPerson, JsonRequestBehavior.AllowGet); 
-
         }
 
-        // GET: Person/Details/5
-        public ActionResult Details(int id)
+        public static List<MPerson> fnListPerson(int? idPerson, int? PersonType)
         {
+            List<MPerson> ListPerson = new List<MPerson>();
+            MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            return View();
+            ListPerson = (from result in db.GNListPerson(idPerson, PersonType).ToList()
+                          select new MPerson
+                          {
+                              IdPerson = result.IdPerson,
+                              IdPersonType = result.IdPersonType,
+                              PersonType = result.PersonType,
+                              IdIdentificationType = result.IdIdentificationType,
+                              IdentificationType = result.IdentificationType,
+                              NumIdentification = result.NumIdentification,
+                              Name = result.Name,
+                              LastName = result.LastName,
+                              Birthday = result.Birthday,
+                              Address = result.Address,
+                              Email = result.Email,
+                              IdContactType = result.IdContactType,
+                              ContactType = result.ContactType,
+                              IdPosition = result.IdPosition,
+                              Position = result.Position,
+                              ClientPermission = result.ClientPermission,
+                              Status = result.Status,
+                              StatusDesc = result.Status == true ? "Activo" : "Inactivo",
+                              listPersonContact = (List<MPersonContact>)(from result2 in db.GNListPersonContact(result.IdPerson, result.IdPersonType, null).ToList()
+                                                                         select new MPersonContact
+                                                                         {
+                                                                             IdContact = result2.IdContact,
+                                                                             IdPerson = result2.IdPerson,
+                                                                             IdPhoneNumberType = result2.IdPhoneNumberType,
+                                                                             PhoneNumberType = result2.PhoneNumberType,
+                                                                             IdIsoCountry = result2.IdIsoCountry,
+                                                                             CountryAreaCode = result2.CountryAreaCode,
+                                                                             PhoneNumber = result2.PhoneNumber,
+                                                                             Status = result2.Status
+                                                                         }).ToList()
+
+                          }).ToList();
+
+            return ListPerson;
+
         }
 
-        // GET: Person/Create
-        public ActionResult AddPerson()
-        {
-            return View();
-        }
-
-        // POST: Person/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Person/Edit/5
-        public ActionResult EditPerson(int id)
-        {
-            return View();
-        }
-
-        // POST: Person/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Person/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Person/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public static int fnGNTranPerson(MPerson objPerson, string TransactionType, ref string Mensaje)
         {
             try
             {
-                // TODO: Add delete logic here
+                MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-                return RedirectToAction("Index");
+                int IdPerson;
+                int IdContact;
+                int SqlResultPerson;
+                int SqlResult;
+
+                SqlParameter paramOutIdPerson = new SqlParameter();
+                paramOutIdPerson.ParameterName = "@IdPerson";
+                paramOutIdPerson.SqlDbType = System.Data.SqlDbType.Int;
+                paramOutIdPerson.Direction = System.Data.ParameterDirection.InputOutput;
+                paramOutIdPerson.Value = objPerson.IdPerson;
+
+                SqlParameter paramIdContactType = new SqlParameter();
+                paramIdContactType.ParameterName = "@IdContactType";
+                paramIdContactType.SqlDbType = System.Data.SqlDbType.Int;
+                paramIdContactType.Direction = System.Data.ParameterDirection.Input;
+                paramIdContactType.IsNullable = true;
+                if (objPerson.IdContactType != null)
+                {
+                    paramIdContactType.Value = objPerson.IdContactType;
+                }
+                else
+                {
+                    paramIdContactType.Value = DBNull.Value;
+                }
+
+                SqlParameter paramIdPosition = new SqlParameter();
+                paramIdPosition.ParameterName = "@IdPosition";
+                paramIdPosition.SqlDbType = System.Data.SqlDbType.Int;
+                paramIdPosition.Direction = System.Data.ParameterDirection.Input;
+                paramIdPosition.IsNullable = true;
+                if (objPerson.IdPosition != null)
+                {
+                    paramIdPosition.Value = objPerson.IdPosition;
+                }
+                else
+                {
+                    paramIdPosition.Value = DBNull.Value;
+                }
+
+                SqlResultPerson = db.Database.ExecuteSqlCommand("GNTranPerson @TransactionType, @IdPerson OUT, @IdPersonType " +
+                                                        ", @IdIdentificationType, @strNumIdentification, @strName, @strLastName, @dttBirthday " +
+                                                        ", @strAddress, @strEmail, @IdContactType, @IdPosition, @btClientPermission, @btStatus ",
+                        new SqlParameter[]{
+                            new SqlParameter("@TransactionType", TransactionType),
+                            paramOutIdPerson,
+                            new SqlParameter("@IdPersonType", objPerson.IdPersonType),
+                            new SqlParameter("@IdIdentificationType", objPerson.IdIdentificationType),
+                            new SqlParameter("@strNumIdentification", objPerson.NumIdentification),
+                            new SqlParameter("@strName", objPerson.Name),
+                            new SqlParameter("@strLastName", objPerson.LastName),
+                            new SqlParameter("@dttBirthday", objPerson.Birthday),
+                            new SqlParameter("@strAddress", objPerson.Address),
+                            new SqlParameter("@strEmail", objPerson.Email),
+                            paramIdContactType,
+                            paramIdPosition,
+                            new SqlParameter("@btClientPermission", objPerson.ClientPermission),
+                            new SqlParameter("@btStatus", objPerson.Status)
+                        }
+                    );
+
+                IdPerson = Int32.Parse(paramOutIdPerson.Value.ToString());
+
+                if (IdPerson != 0)
+                {
+                    if (objPerson.listPersonContact != null)
+                    {
+
+                        //si va a actualizar, se eliminan los telefonos de contacto para volver a insertar
+                        if (TransactionType == "U")
+                        {
+                            SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
+                            paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+
+                            SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
+                                                                        ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
+                                new SqlParameter[]{
+                                    new SqlParameter("@TransactionType", TransactionType),
+                                    paramOutIdContact,
+                                    new SqlParameter("@IdPerson", IdPerson),
+                                    new SqlParameter("@IdPhoneNumberType", DBNull.Value),
+                                    new SqlParameter("@strIdIsoCountry", DBNull.Value),
+                                    new SqlParameter("@strPhoneNumber", DBNull.Value),
+                                    new SqlParameter("@btStatus", DBNull.Value)
+                                }
+                            );
+                        }
+
+                        //Inserta los telefonos de contacto
+                        foreach (var item in objPerson.listPersonContact)
+                        {
+
+                            SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
+                            paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+
+                            SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
+                                                                        ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
+                                new SqlParameter[]{
+                                    new SqlParameter("@TransactionType", "I"),
+                                    paramOutIdContact,
+                                    new SqlParameter("@IdPerson", IdPerson),
+                                    new SqlParameter("@IdPhoneNumberType", item.IdPhoneNumberType),
+                                    new SqlParameter("@strIdIsoCountry", item.IdIsoCountry),
+                                    new SqlParameter("@strPhoneNumber", item.PhoneNumber),
+                                    new SqlParameter("@btStatus", true)
+                                }
+                            );
+                            IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
+                        }
+                    }
+
+                    //Mensaje = "Datos grabados exitosamente para el Código de empleado: (" + IdPerson + ").";
+                    Mensaje = "Datos grabados exitosamente.";
+                }
+                else
+                {
+                    Mensaje = "No se pudo realizar la transaccion, intente nuevamente.";
+                }
+
+                return SqlResultPerson;
+
             }
-            catch
+            catch (SqlException ex)
             {
-                return View();
+                Mensaje = "Error al grabar datos: " + ex.Message;
+                return 0;
             }
         }
+
+
     }
 }

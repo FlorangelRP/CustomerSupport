@@ -218,6 +218,23 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranUserAcces", idUserParameter, idOptionParameter, blnVisibleParameter, blnCreateParameter, blnSearchParameter, blnEditParameter, blnDeleteParameter);
         }
     
+        public virtual ObjectResult<GNListPersonContact_Result> GNListPersonContact(Nullable<int> idPerson, Nullable<int> idPersonType, Nullable<int> idContact)
+        {
+            var idPersonParameter = idPerson.HasValue ?
+                new ObjectParameter("IdPerson", idPerson) :
+                new ObjectParameter("IdPerson", typeof(int));
+    
+            var idPersonTypeParameter = idPersonType.HasValue ?
+                new ObjectParameter("IdPersonType", idPersonType) :
+                new ObjectParameter("IdPersonType", typeof(int));
+    
+            var idContactParameter = idContact.HasValue ?
+                new ObjectParameter("IdContact", idContact) :
+                new ObjectParameter("IdContact", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPersonContact_Result>("GNListPersonContact", idPersonParameter, idPersonTypeParameter, idContactParameter);
+        }
+    
         public virtual int GNAuthenticationUser(string strLogin, string strPassword, ObjectParameter idUser)
         {
             var strLoginParameter = strLogin != null ?

@@ -2,7 +2,7 @@
 @model CustomerSupport.Models.MPerson
 
 @{
-    ViewBag.Title = "Crear Cliente";
+    ViewBag.Title = "Editar Empleado";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,29 +12,46 @@
     </div>
     <div class="card-body">
 
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="m-0 row justify-content-center">
-                <div class="form-horizontal col-md-10">
+        <div class="m-0 row justify-content-center">
+            <div class="form-horizontal col-md-10">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
 
                     @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                @*<div class="control-label">Codigo:</div>*@
+                                <div class="control-label">Codigo:</div>
+                                @Html.DisplayFor(model => model.IdPerson)
                                 @Html.HiddenFor(model => model.IdPerson)
-                                @*@Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })*@
 
                                 @Html.HiddenFor(model => model.IdPersonType)
-                                @Html.HiddenFor(model => model.IdPosition)
-                                @Html.HiddenFor(model => model.ClientPermission)
+                                @Html.HiddenFor(model => model.IdContactType)
                             </div>
                         </div>
                     </div>
-                    @*<hr>*@
+                    <hr>
+
+                    <div class="row">
+                        <div id="divPosition" class="col-md-4">
+                            <div class="form-group">
+                                <div class="control-label">Cargo:</div>
+                                <select id="lst_Position" class="form-control select2" style="width: 100%;">
+                                </select>
+                                @Html.HiddenFor(model => model.IdPosition, new { @id = "inpIdPosition" })
+                                @Html.ValidationMessageFor(model => model.IdPosition, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 s_Checkbox">                            
+                            @Html.CheckBoxFor(model => model.ClientPermission, new {@id = "blnClientPermission" })
+                            <label>Permitir ver como cliente</label>
+                            @Html.ValidationMessageFor(model => model.ClientPermission, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
 
                     <div class="row">
                         <div class="col-md-4">
@@ -206,15 +223,6 @@
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <div class="control-label">Via de Contacto:</div>
-                                <select id="lst_ContactType" class="form-control select2" style="width: 100%;">
-                                </select>
-                                @Html.HiddenFor(model => model.IdContactType, new { @id = "inpIdContactType" })
-                                @Html.ValidationMessageFor(model => model.IdContactType, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
                     </div>
 
                     @*<div class="row">
@@ -231,25 +239,25 @@
                         </div>
                     </div>*@
 
-                    @*<div class="row">
+                    <div class="row">
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label class="control-label">Estado: </label>
                                 <div class="col-md-6 s_Checkbox">
-                                    @Html.TextBoxFor(model => model.Status, new { @type = "checkbox", @id = "chkStatus" })
-                                    @Html.LabelFor(model => model.StatusDesc, new { @id = "labEstatus" })
+                                    @Html.CheckBoxFor(model => model.Status, new { @id = "chkStatus" })
+                                    @Html.LabelForModel(Model.StatusDesc, new { @id = "labEstatus" })
 
                                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
-                    </div>*@
+                    </div>
 
                     <div class="row">
                         <div class="col-md-offset-2 col-md-10">
                             <div class="form-group">
                                 <div class="text-center">
-                                    @*<a href="location.href='@Url.Action("Create", "Client")';return false;" class="white_btn">Grabar</a>*@
+                                    @*<a href="location.href='@Url.Action("Create", "Employee")';return false;" class="white_btn">Grabar</a>*@
                                     <button class="white_btn" type="submit">Grabar</button>
                                 </div>
                             </div>
@@ -263,14 +271,13 @@
                         </div>
                     </div>
 
-                </div>
+                }
 
             </div>
-
-        }
+        </div>
 
         <div>
-            @Html.ActionLink("Regresar a la Lista", "ListClient")
+            @Html.ActionLink("Regresar a la Lista", "ListEmployee")
         </div>
 
     </div>
@@ -294,17 +301,10 @@
 
         $(document).ready(function () {
 
-            // If the checkbox is checked, display the output text
-            if ($("#chkStatus").checked == true) {
-                $("#labEstatus").text("Activo");
-            } else {
-                $("#labEstatus").text("Inactivo");
-            }
-
-            $("#lst_ContactType").on('change', function () {
+            $("#lst_Position").on('change', function () {
                 var selectValue = $(this).val();
-                //$("#inpIdContactType").val(selectValue);
-                changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", selectValue);
+                //$("#inpIdPosition").val(selectValue);
+                changeCodeInputHiddenList("lst_Position", "inpIdPosition", selectValue);
             });
 
             $("#lst_IdentificationType").on('change', function () {
@@ -328,7 +328,7 @@
 
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"CONTACTTYPE",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"POSITION",
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -337,19 +337,19 @@
                     var option = $(document.createElement('option'));
                     option.text("Seleccione");
                     option.val("0");
-                    $("#lst_ContactType").append(option);
+                    $("#lst_Position").append(option);
 
                     $(msg).each(function () {
                         var option = $(document.createElement('option'));
                         option.text(this.DetailDesc);
                         option.val(this.IdCatalogDetail); //Identity
 
-                        $("#lst_ContactType").append(option);
+                        $("#lst_Position").append(option);
                     });
 
-                    document.getElementById('lst_ContactType').value = "0";
+                    document.getElementById('lst_Position').value = "0";
 
-                    changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", "");
+                    changeCodeInputHiddenList("lst_Position", "inpIdPosition", "");
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de cargos");
@@ -568,5 +568,3 @@
 
     </script>
 }
-
-

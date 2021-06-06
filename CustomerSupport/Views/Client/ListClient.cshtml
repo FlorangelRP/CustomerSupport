@@ -34,7 +34,7 @@
                                 <th>Tipo Identificacion</th>
                                 <th>N° Identificacion</th>
                                 <th>Estado</th>
-                                <th class="text-center" colspan="3">Opciones</th>
+                                <th class="text-center" colspan="2">Opciones</th>
                                 @*<th></th>*@
                                 @*<th></th>*@
                             </tr>
@@ -103,18 +103,18 @@
                             }
                         }, 'autowidth': true
                     },
-                    {
-                        'data': null, render: function (data, type, row) {
-                            //debugger;
-                            if (data != null) {
-                                if (row.IdPerson == null) {
-                                    return '';
-                                } else {
-                                    return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
-                                }
-                            }
-                        }, 'autowidth': true
-                    }
+                    //{
+                    //    'data': null, render: function (data, type, row) {
+                    //        //debugger;
+                    //        if (data != null) {
+                    //            if (row.IdPerson == null) {
+                    //                return '';
+                    //            } else {
+                    //                return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
+                    //            }
+                    //        }
+                    //    }, 'autowidth': true
+                    //}
                 ],
             "columnDefs": [{
                 "targets": 0,
@@ -147,6 +147,15 @@
                 }
             }
 
+    });
+
+    $('#TPerson').on("click", "a.editRow", function () {
+        var data = table.row($(this).parents("tr")).data();
+        $(".editRow").attr("href", '@Url.Action("EditClient", "Client")?id=' + data.IdPerson);
+    });
+    $('#TPerson').on("click", "a.searchRow", function () {
+        var data = table.row($(this).parents("tr")).data();
+        $(".searchRow").attr("href", '@Url.Action("DetailClient", "Client")?id=' + data.IdPerson);
     });
 
     </script>
