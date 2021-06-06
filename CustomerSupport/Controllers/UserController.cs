@@ -285,28 +285,35 @@ namespace CustomerSupport.Controllers
         // GET: User/Create
         public ActionResult AddUser()
         {
-            MUser ObjUser = new MUser();
-            MMEnterprisesEntities db = new MMEnterprisesEntities();
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                MUser ObjUser = new MUser();
+                MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            ObjUser.UserAccesPadre = (from result3 in db.GNListUserAcces(null, null).ToList()
-                       select new MUserAcces
-                       {
-                           IdOption = result3.IdOption,
-                           OptionName = result3.OptionName,
-                           Visible = result3.Visible == null ? false : (bool)result3.Visible,
-                           Create = result3.Create == null ? false : (bool)result3.Create,
-                           Search = result3.Search == null ? false : (bool)result3.Search,
-                           Edit = result3.Edit == null ? false : (bool)result3.Edit,
-                           Delete = result3.Edit == null ? false : (bool)result3.Delete,
-                           IdAssociated = result3.IdAssociated,
-                       }).ToList();
+                ObjUser.UserAccesPadre = (from result3 in db.GNListUserAcces(null, null).ToList()
+                                          select new MUserAcces
+                                          {
+                                              IdOption = result3.IdOption,
+                                              OptionName = result3.OptionName,
+                                              Visible = result3.Visible == null ? false : (bool)result3.Visible,
+                                              Create = result3.Create == null ? false : (bool)result3.Create,
+                                              Search = result3.Search == null ? false : (bool)result3.Search,
+                                              Edit = result3.Edit == null ? false : (bool)result3.Edit,
+                                              Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                              IdAssociated = result3.IdAssociated,
+                                          }).ToList();
 
-            ObjUser.UserAcces = new List<MUserAcces>();
+                ObjUser.UserAcces = new List<MUserAcces>();
 
-            if(TempData["Success"] != null)
-                ViewBag.SuccessSave = TempData["Success"];
+                if (TempData["Success"] != null)
+                    ViewBag.SuccessSave = TempData["Success"];
 
-            return View(ObjUser);
+                return View(ObjUser);
+            }
         }
 
         [HttpPost]
@@ -470,7 +477,7 @@ namespace CustomerSupport.Controllers
                     {
 
                         ViewBag.SuccessSave = "Datos grabados exitosamente, Código de Usuario: (" + IdUser + ").";
-                        return View(objUser);
+                        return RedirectToAction("EditUser", new { id = objUser.IdUser });
                     }
                     else
                     {
