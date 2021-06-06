@@ -10,23 +10,17 @@
 namespace CustomerSupport.BDContext
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Country
+    public partial class GNListPersonContact_Result
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Country()
-        {
-            this.PersonContacts = new HashSet<PersonContact>();
-        }
-    
-        public int IdCountry { get; set; }
+        public int IdPersonType { get; set; }
+        public int IdPerson { get; set; }
+        public int IdContact { get; set; }
         public string IdIsoCountry { get; set; }
-        public string Country1 { get; set; }
         public string CountryAreaCode { get; set; }
+        public int IdPhoneNumberType { get; set; }
+        public string PhoneNumberType { get; set; }
+        public string PhoneNumber { get; set; }
         public bool Status { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonContact> PersonContacts { get; set; }
     }
 }

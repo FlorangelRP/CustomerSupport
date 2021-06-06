@@ -19,76 +19,37 @@
             <div class="m-0 row justify-content-center">
                 <div class="form-horizontal col-md-10">
 
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <div class="control-label">Codigo:</div>
-                                @Html.TextBoxFor(model => model.IdPerson, new { @class = "form-control", @disabled = "disabled" })
-                                @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
+                                @*<div class="control-label">Codigo:</div>*@
+                                @Html.HiddenFor(model => model.IdPerson)
+                                @*@Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })*@
 
-                    <!--<div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <div class="control-label">Tipo Persona:</div>-->
-                    @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
-                    @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
-                    <!--<select name="personType" id="SelpersonType" class="form-control select2" style="width: 100%;">
-                                <option value="1">Empleado</option>
-                                <option value="2">Cliente</option>
-                            </select>
+                                @Html.HiddenFor(model => model.IdPersonType)
+                                @Html.HiddenFor(model => model.IdPosition)
+                                @Html.HiddenFor(model => model.ClientPermission)
+                            </div>
                         </div>
                     </div>
-                    <div id="divPosition" class="col-md-4">
-                        <div class="form-group">
-                            <div class="control-label">Cargo:</div>-->
-                    @*@Html.EditorFor(model => model.IdPersonType, new { @class = "form-control" })*@
-                    @*@Html.ValidationMessageFor(model => model.IdPersonType, "", new { @class = "text-danger" })*@
-                    <!--<select name="personType" id="personType" class="form-control select2" style="width: 100%;">
-                                    <option value="1">Presidente</option>
-                                    <option value="2">Asistente Ejecutivo</option>
-                                    <option value="3">Encargado de Ventas</option>
-                                    <option value="4">Encargado de Processing</option>
-                                    <option value="5">Encargado de Marketing</option>
-                                    <option value="6">Project Manager</option>
-                                    <option value="7">Procesador</option>
-                                    <option value="8">Operador</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div id="divClientPermission" class="col-md-3">
-                            <div class="form-group s_status">
-                                <label>Permitir ver como cliente
-                                    @Html.CheckBoxFor(model => model.ClientPermission, new { @class = "form-control" })
-                                    <span class="s_st_checkbox border-secondary"></span>
-                                </label>
-                                @Html.ValidationMessageFor(model => model.ClientPermission, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>-->
+                    @*<hr>*@
 
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Tipo de Identificacion:</div>
-                                @*@Html.EditorFor(model => model.IdIdentificationType, new { htmlAttributes = new { @class = "form-control" } })*@
-                                @*@Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })*@
-                                <select name="identificationType" id="identificationType" class="form-control select2" style="width: 100%;">
-                                    <option value="1">Doc. Identidad</option>
-                                    <option value="2">Seguro Social</option>
-                                    <option value="2">Pasaporte</option>
+                                <select id="lst_IdentificationType" class="form-control select2" style="width: 100%;">
                                 </select>
+                                @Html.HiddenFor(model => model.IdIdentificationType, new { @id = "inpIdIdentificationType" })
+                                @Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Numero de Identificacion:</div>
-                                @Html.TextBoxFor(model => model.NumIdentification, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.NumIdentification, new { @class = "form-control", @maxlength = "15" })
                                 @Html.ValidationMessageFor(model => model.NumIdentification, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -98,21 +59,21 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Nombres:</div>
-                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-alphabet" })
                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Apellidos:</div>
-                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control input-alphabet" })
                                 @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Fecha de Nacimiento:</div>
-                                @Html.TextBoxFor(model => model.Birthday, new { @class = "form-control", @type = "date" })
+                                @Html.TextBoxFor(model => model.Birthday, "{0:d}", new { @class = "form-control", @type = "date" })
                                 @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -154,7 +115,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <div class="control-label">Número:</div>
-                                                        <input class="form-control" type="text" id="inpPhoneNumber" />
+                                                        <input class="form-control input-numeric" type="text" id="inpPhoneNumber" maxlength="15" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -227,39 +188,6 @@
 
                     </div>
 
-                    @*<div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <div class="control-label">Telefonos de contacto:</div>
-                                    <div class="table-responsive">
-                                        <div class="container">
-                                            <table id="TPersonContact" class="table table-bordered table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Tipo</th>
-                                                        <th>Codigo Area Pais</th>
-                                                        <th>Numero de Telefono</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Movil</td>
-                                                        <td>+1</td>
-                                                        <td>234556790</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Casa</td>
-                                                        <td>+1</td>
-                                                        <td>222536780</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
-
                     <div class="row">
                         <div class="col-md-10">
                             <div class="form-group">
@@ -274,24 +202,22 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Email:</div>
-                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "email", @placeholder = "usuario@email.com" })
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "usuario@email.com" })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Via de Contacto:</div>
-                                <select name="personType" id="personType" class="form-control select2" style="width: 100%;">
-                                    <option value="1">Instagram</option>
-                                    <option value="2">Facebook</option>
-                                    <option value="3">Videos Publicitarios</option>
-                                    <option value="4">Recomendacion</option>
+                                <select id="lst_ContactType" class="form-control select2" style="width: 100%;">
                                 </select>
+                                @Html.HiddenFor(model => model.IdContactType, new { @id = "inpIdContactType" })
+                                @Html.ValidationMessageFor(model => model.IdContactType, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
+                    @*<div class="row">
                         <div class="col-md-4">
                             <label class="control-label">Estatus:</label>
                             <div class="s_status">
@@ -303,7 +229,21 @@
                                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                    </div>
+                    </div>*@
+
+                    @*<div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label">Estado: </label>
+                                <div class="col-md-6 s_Checkbox">
+                                    @Html.TextBoxFor(model => model.Status, new { @type = "checkbox", @id = "chkStatus" })
+                                    @Html.LabelFor(model => model.StatusDesc, new { @id = "labEstatus" })
+
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
 
                     <div class="row">
                         <div class="col-md-offset-2 col-md-10">
@@ -313,6 +253,13 @@
                                     <button class="white_btn" type="submit">Grabar</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 text-center">
+                            <span class="text-success">@ViewBag.SuccessSave</span>
+                            <span class="text-danger">@ViewBag.ErrorSave</span>
                         </div>
                     </div>
 
@@ -331,6 +278,7 @@
 
 @section Scripts {
 
+    <script src="~/Content/assets/js/jquery.min.js"></script>
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -353,26 +301,16 @@
                 $("#labEstatus").text("Inactivo");
             }
 
-            $("#SelpersonType").on('change', function () {
-
+            $("#lst_ContactType").on('change', function () {
                 var selectValue = $(this).val();
-                //var selecDesc = $('select[id="SelpersonType"] option:selected').text()
-                //alert(selectValue);
-                //debugger;
+                //$("#inpIdContactType").val(selectValue);
+                changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", selectValue);
+            });
 
-                switch (selectValue) {
-                    case "1":
-                        $("#divPosition").show();
-                        $("#divClientPermission").show();
-                        break;
-                    case "2":
-                        $("#divPosition").hide();
-                        $("#divClientPermission").hide();
-                        break;
-                    //default:
-
-                }
-
+            $("#lst_IdentificationType").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpIdIdentificationType").val(selectValue);
+                changeCodeInputHiddenList("lst_IdentificationType", "inpIdIdentificationType", selectValue);
             });
 
             $("#chkStatus").on('click', function () {
@@ -384,6 +322,70 @@
                     $("#labEstatus").text("Activo");
                 } else {
                     $("#labEstatus").text("Inactivo");
+                }
+
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"CONTACTTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_ContactType").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ContactType").append(option);
+                    });
+
+                    document.getElementById('lst_ContactType').value = "0";
+
+                    changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de cargos");
+                }
+
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"IDENTIFICATIONTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_IdentificationType").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_IdentificationType").append(option);
+                    });
+
+                    document.getElementById('lst_IdentificationType').value = "0";
+
+                    changeCodeInputHiddenList("lst_IdentificationType", "inpIdIdentificationType", "");
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de tipos de identificacion");
                 }
 
             });
@@ -449,12 +451,20 @@
         });
 
         function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
-
+            //debugger;
             if (valCode === "") {
-                var CodeAntSelected = document.getElementById(idInputHidden).value;
-                $("#" + idDropDownList + " option[value='" + CodeAntSelected + "']").attr("selected", true);
 
-                $("#" + idInputHidden).val(CodeAntSelected);
+                var CodeAntSelected = document.getElementById(idInputHidden).value;
+
+                if (CodeAntSelected != "") {
+                    $("#" + idDropDownList + " option[value='" + CodeAntSelected + "']").attr("selected", true);
+                    $("#" + idInputHidden).val(CodeAntSelected);
+                }
+                else {
+                    var CodeActual = $("#" + idDropDownList).val();
+                    $("#" + idInputHidden).val(CodeActual);
+                }
+
             }
             else {
                 $("#" + idInputHidden).val(valCode);
@@ -463,11 +473,12 @@
         }
 
         function deleteRow(id) {
-        var controlToBeRemoved = "#trContact" + id;
-        $(controlToBeRemoved).remove();
+            var controlToBeRemoved = "#trContact" + id;
+            $(controlToBeRemoved).remove();
         }
 
         function addRow() {
+
 
             @{
                 Model.listPersonContact.Add(new MPersonContact());
@@ -488,16 +499,16 @@
                 var index = document.getElementById('TPersonContact').rows.length;
                 //alert(index);
 
-                var colHid_indexCell = "<td style='display:none'><input name='listPersonContact.Index' type='hidden' value='" + index + "' /></td> ";
-                var colHid_IdPhoneNumberType = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].IdPhoneNumberType' type='hidden' value='" + strIdPhoneNumberType + "' /></td> ";
-                var colHid_IdIsoCountry = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].IdIsoCountry' type='hidden' value='" + strIdIsoCountry + "' /></td> ";
-                var colHid_PhoneNumber = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].PhoneNumber' type='hidden' value='" + strPhoneNumber + "' /></td> ";
-                var colHid_PhoneNumberType = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].PhoneNumberType' type='hidden' value='" + strPhoneNumberType + "' /></td> ";
-                var colHid_CountryAreaCode = "<td style='display:none'><input id='listPersonContact_" + index + "' name='listPersonContact[" + index + "].CountryAreaCode' type='hidden' value='" + strCountryAreaCode + "' /></td> ";
+                var colHid_indexCell = "<td style='display:none'><input name='listPersonContact.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                var colHid_IdPhoneNumberType = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].IdPhoneNumberType' type='hidden' value='" + strIdPhoneNumberType + "' /></td> ";
+                var colHid_IdIsoCountry = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].IdIsoCountry' type = 'hidden' value = '" + strIdIsoCountry + "' /></td> ";
+                var colHid_PhoneNumber = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumber' type = 'hidden' value = '" + strPhoneNumber + "' /></td> ";
+                var colHid_PhoneNumberType = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].PhoneNumberType' type = 'hidden' value = '" + strPhoneNumberType + "' /></td> ";
+                var colHid_CountryAreaCode = "<td style='display:none'><input id='listPersonContact_" + index + "' name = 'listPersonContact[" + index + "].CountryAreaCode' type = 'hidden' value = '" + strCountryAreaCode + "' /></td> ";
 
                 var colPhoneNumberType = "<td>" + strPhoneNumberType + "</td> ";
                 var colCountryAreaCode = "<td>" + strCountryAreaCode + "</td> ";
-                var colPhoneNumber = "<td name='PhoneNumber_" + index + "'>" + strPhoneNumber + "</td> ";
+                var colPhoneNumber = "<td name = 'PhoneNumber_" + index + "'>" + strPhoneNumber + "</td> ";
                 var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
 
                 //Si el numero a insertar ya existe lo elimina para luego volver a insertarlo y asi evitar duplicados
@@ -508,6 +519,7 @@
                 var newRow = "<tr id='trContact" + index + "'>" +
                     colHid_indexCell + colHid_IdPhoneNumberType + colHid_IdIsoCountry + colHid_PhoneNumber + colHid_PhoneNumberType + colHid_CountryAreaCode +
                     colPhoneNumberType + colCountryAreaCode + colPhoneNumber + colDelete + "</tr>";
+                debugger;
                 $("#TPersonContact").append(newRow);
 
                 //--------------------------
@@ -517,6 +529,7 @@
                 document.getElementById('lst_CountryAreaCode').value = "";
                 document.getElementById('inpPhoneNumber').value = "";
             }
+
         }
 
         function doSearchForDelete(searchText, colName) {
@@ -555,4 +568,5 @@
 
     </script>
 }
+
 

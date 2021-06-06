@@ -35,6 +35,7 @@ namespace CustomerSupport.Models
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "*Requerido")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public System.DateTime? Birthday { get; set; } //Nullable<System.DateTime>
 
         [Required(ErrorMessage = "*Requerido")]
@@ -48,7 +49,7 @@ namespace CustomerSupport.Models
 
         [Min(1, ErrorMessage = "*Requerido")]
         public int? IdContactType { get; set; } //Nullable<int>
-        public string ContactType { get; set; } //descripcion de la via de contacto
+        public string ContactType { get; set; } //descripcion de la via de contacto solo si es tipo de cliente
 
         [Min(1, ErrorMessage = "*Requerido")]
         public int? IdPosition { get; set; } //Nullable<int>

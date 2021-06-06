@@ -149,5 +149,14 @@
 
     });
 
+    $('#TPerson').on("click", "a.editRow", function () {
+        var data = table.row($(this).parents("tr")).data();
+        $(".editRow").attr("href", '@Url.Action("EditClient", "Client")?id=' + data.IdPerson);
+    });
+    $('#TPerson').on("click", "a.searchRow", function () {
+        var data = table.row($(this).parents("tr")).data();
+        $(".searchRow").attr("href", '@Url.Action("DetailClient", "Client")?id=' + data.IdPerson);
+    });
+
     </script>
 }

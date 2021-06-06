@@ -161,8 +161,8 @@
           <Property Name="Edit" Type="bit" Nullable="false" />
           <Property Name="Delete" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="VWListCatalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -464,6 +464,11 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Parameter Name="IdPerson" Type="int" Mode="In" />
           <Parameter Name="IdPersonType" Type="int" Mode="In" />
         </Function>
+        <Function Name="GNListPersonContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="IdPersonType" Type="int" Mode="In" />
+          <Parameter Name="IdContact" Type="int" Mode="In" />
+        </Function>
         <Function Name="GNListUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUser" Type="int" Mode="In" />
         </Function>
@@ -495,23 +500,6 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Parameter Name="strIdIsoCountry" Type="varchar" Mode="In" />
           <Parameter Name="strPhoneNumber" Type="varchar" Mode="In" />
           <Parameter Name="btStatus" Type="bit" Mode="In" />
-        </Function>
-        <Function Name="GNTranUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="IdPerson" Type="int" Mode="In" />
-          <Parameter Name="strLogin" Type="varchar" Mode="In" />
-          <Parameter Name="strPassword" Type="varchar" Mode="In" />
-          <Parameter Name="TransactionType" Type="char" Mode="In" />
-          <Parameter Name="IdUser" Type="int" Mode="InOut" />
-          <Parameter Name="btStatus" Type="bit" Mode="In" />
-        </Function>
-        <Function Name="GNTranUserAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="IdUser" Type="int" Mode="In" />
-          <Parameter Name="IdOption" Type="int" Mode="In" />
-          <Parameter Name="blnVisible" Type="int" Mode="In" />
-          <Parameter Name="blnCreate" Type="int" Mode="In" />
-          <Parameter Name="blnSearch" Type="int" Mode="In" />
-          <Parameter Name="blnEdit" Type="int" Mode="In" />
-          <Parameter Name="blnDelete" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="MMEnterprisesModelStoreContainer">
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
@@ -1172,6 +1160,11 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="blnEdit" Mode="In" Type="Int32" />
             <Parameter Name="blnDelete" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GNListPersonContact" ReturnType="Collection(MMEnterprisesModel.GNListPersonContact_Result)">
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
+            <Parameter Name="IdContact" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="VWListCatalog">
           <Key>
@@ -1229,6 +1222,17 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Type="Boolean" Name="Search" Nullable="true" />
           <Property Type="Boolean" Name="Edit" Nullable="true" />
           <Property Type="Boolean" Name="Delete" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GNListPersonContact_Result">
+          <Property Type="Int32" Name="IdPersonType" Nullable="false" />
+          <Property Type="Int32" Name="IdPerson" Nullable="false" />
+          <Property Type="Int32" Name="IdContact" Nullable="false" />
+          <Property Type="String" Name="IdIsoCountry" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="CountryAreaCode" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="IdPhoneNumberType" Nullable="false" />
+          <Property Type="String" Name="PhoneNumberType" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="PhoneNumber" Nullable="false" MaxLength="15" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1474,9 +1478,22 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
           <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
-          <FunctionImportMapping FunctionImportName="GNTranUser" FunctionName="MMEnterprisesModel.Store.GNTranUser" />
-          <FunctionImportMapping FunctionImportName="GNTranUserAcces" FunctionName="MMEnterprisesModel.Store.GNTranUserAcces" />
-        </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="GNListPersonContact" FunctionName="MMEnterprisesModel.Store.GNListPersonContact">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPersonContact_Result">
+                <ScalarProperty Name="IdPersonType" ColumnName="IdPersonType" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdContact" ColumnName="IdContact" />
+                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
+                <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
+                <ScalarProperty Name="IdPhoneNumberType" ColumnName="IdPhoneNumberType" />
+                <ScalarProperty Name="PhoneNumberType" ColumnName="PhoneNumberType" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

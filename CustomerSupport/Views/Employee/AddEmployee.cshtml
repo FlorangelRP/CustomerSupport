@@ -25,11 +25,11 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 @*<div class="control-label">Codigo:</div>*@
-                                @Html.HiddenFor(model => model.IdPerson, new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.IdPerson)
                                 @*@Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })*@
 
-                                @Html.HiddenFor(model => model.IdPersonType, new { @class = "form-control" })
-                                @Html.HiddenFor(model => model.IdContactType, new { @class = "form-control" })
+                                @Html.HiddenFor(model => model.IdPersonType)
+                                @Html.HiddenFor(model => model.IdContactType)
                             </div>
                         </div>
                     </div>
@@ -44,26 +44,12 @@
                                 @Html.HiddenFor(model => model.IdPosition, new { @id = "inpIdPosition" })
                                 @Html.ValidationMessageFor(model => model.IdPosition, "", new { @class = "text-danger" })
                             </div>
-                        </div>
-                        @*<div id="divClientPermission" class="col-md-6">
-                            <div class="form-group s_status">
-                                <label class="">
-                                    Permitir ver como cliente
-                                    @Html.CheckBoxFor(model => model.ClientPermission, new { @class = "form-control" })
-                                    <span class="s_st_checkbox border-secondary"></span>
-                                </label>
-                                @Html.ValidationMessageFor(model => model.ClientPermission, "", new { @class = "text-danger" })
-                            </div>
-                        </div>*@
-
-     
-                        <div id="divClientPermission" class="col-md-6 s_Checkbox">
-                            @*<label class="control-label">Permitir ver como cliente: </label>*@
-                            @Html.TextBoxFor(model => model.ClientPermission, new { @type = "checkbox", @class= "" })
+                        </div>     
+                        <div class="col-md-6 s_Checkbox">                            
+                            @Html.CheckBoxFor(model => model.ClientPermission, new {@id = "blnClientPermission" })
                             <label>Permitir ver como cliente</label>
                             @Html.ValidationMessageFor(model => model.ClientPermission, "", new { @class = "text-danger" })
-                        </div>
-                        
+                        </div>                        
                     </div>
 
                     <div class="row">
@@ -103,7 +89,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Fecha de Nacimiento:</div>
-                                @Html.TextBoxFor(model => model.Birthday, new { @class = "form-control", @type = "date" })
+                                @Html.TextBoxFor(model => model.Birthday, "{0:d}", new { @class = "form-control", @type = "date" })
                                 @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -253,11 +239,15 @@
                     </div>*@
 
                     @*<div class="row">
-                        <label class="control-label">Estatus:</label>
-                        <div class="col-md-4 s_Checkbox">
-                            <div class="">
-                                @Html.TextBoxFor(model => model.Status, new { @type = "checkbox", @id = "chkStatus" })
-                                <label id="labEstatus"></label>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label">Estado: </label>
+                                <div class="col-md-6 s_Checkbox">
+                                    @Html.TextBoxFor(model => model.Status, new { @type = "checkbox", @id = "chkStatus" })
+                                    @Html.LabelFor(model => model.StatusDesc, new { @id = "labEstatus" })
+
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                         </div>
                     </div>*@
@@ -466,19 +456,6 @@
             });
 
         });
-
-        //function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
-
-        //    if (valCode === "") {
-        //        var CodeAntSelected = document.getElementById(idInputHidden).value;
-        //        $("#" + idDropDownList + " option[value='" + CodeAntSelected + "']").attr("selected", true);
-        //        $("#" + idInputHidden).val(CodeAntSelected);
-        //    }
-        //    else {
-        //        $("#" + idInputHidden).val(valCode);
-        //    }
-
-        //}
 
         function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
             //debugger;

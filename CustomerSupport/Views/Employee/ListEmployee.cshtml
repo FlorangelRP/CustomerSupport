@@ -151,5 +151,14 @@
 
     });
 
+    $('#TPerson').on("click", "a.editRow", function () {
+        var data = table.row($(this).parents("tr")).data();
+        $(".editRow").attr("href", '@Url.Action("EditEmployee", "Employee")?id=' + data.IdPerson);
+    });
+    $('#TPerson').on("click", "a.searchRow", function () {
+        var data = table.row($(this).parents("tr")).data();
+        $(".searchRow").attr("href", '@Url.Action("DetailEmployee", "Employee")?id=' + data.IdPerson);
+    });
+
     </script>
 }

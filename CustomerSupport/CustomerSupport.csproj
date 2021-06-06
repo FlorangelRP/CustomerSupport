@@ -145,6 +145,9 @@
     <Compile Include="BDContext\GNListCountry_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListPersonContact_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListPerson_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -601,6 +604,8 @@
     <Content Include="Views\User\DetailUser.cshtml" />
     <Content Include="Views\Employee\DetailEmployee.cshtml" />
     <Content Include="Views\Employee\EditEmployee.cshtml" />
+    <Content Include="Views\Client\DetailClient.cshtml" />
+    <Content Include="Views\Client\EditClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,39 +18,13 @@ namespace CustomerSupport.Controllers
         // GET: Employee
         public ActionResult ListEmployee()
         {
-            //MPerson objPersonEmployee = new MPerson();
-            //objPersonEmployee.Birthday = DateTime.Now;
-            //return View(objPersonEmployee);
             return View();
         }
 
         public ActionResult GetListEmployee()
         {
-            List<MPerson> ListPerson = new List<MPerson>();            
-            MMEnterprisesEntities db = new MMEnterprisesEntities();
-
-            ListPerson = (from result in db.GNListPerson(null,2).ToList()
-                        select new MPerson
-                        {
-                            IdPerson= result.IdPerson,
-                            IdPersonType= result.IdPersonType,
-                            PersonType= result.PersonType,
-                            IdIdentificationType= result.IdIdentificationType,
-                            IdentificationType= result.IdentificationType,
-                            NumIdentification= result.NumIdentification,
-                            Name= result.Name,
-                            LastName= result.LastName,
-                            Birthday= result.Birthday,
-                            Address= result.Address,
-                            Email= result.Email,
-                            IdContactType= result.IdContactType,
-                            ContactType= result.ContactType,
-                            IdPosition= result.IdPosition,
-                            Position= result.Position,
-                            ClientPermission= result.ClientPermission,
-                            Status= result.Status,
-                            StatusDesc = result.Status == true ? "Activo" : "Inactivo"
-                        }).ToList();
+            List<MPerson> ListPerson = new List<MPerson>();
+            ListPerson = PersonController.fnListPerson(null, 2); //2-empleado
 
             return Json(ListPerson, JsonRequestBehavior.AllowGet); 
 
@@ -59,7 +33,9 @@ namespace CustomerSupport.Controllers
         // GET: Employee/DetailEmployee/5
         public ActionResult DetailEmployee(int id)
         {
-            return View();
+            MPerson objPersonEmployee = new MPerson();
+            objPersonEmployee = PersonController.fnListPerson(id, 2).First(); //2-empleado
+            return View(objPersonEmployee);
         }
 
         // GET: Employee/AddEmployee
@@ -72,14 +48,11 @@ namespace CustomerSupport.Controllers
             if (TempData["Success"] != null) {
                 ViewBag.SuccessSave = TempData["Success"];
             }
-            if (TempData["ErrorSave"] != null)
-            {
-                ViewBag.SuccessSave = TempData["ErrorSave"];
-            }
 
             return View(objPersonEmployee);
         }
 
+        // POST: Employee/AddEmployee
         [HttpPost]
         public ActionResult AddEmployee(MPerson objPersonEmployee)
         {
@@ -87,76 +60,23 @@ namespace CustomerSupport.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    MMEnterprisesEntities db = new MMEnterprisesEntities();
+                    //valores por defecto
+                    objPersonEmployee.Status = true; //activo
+                    objPersonEmployee.IdPersonType = 2; //tipo empleado
 
-                    int IdContact;
-                    int IdPerson;
-                    int SqlResult;
-                    //ObjectParameter paramOutIdPerson = new ObjectParameter("IdPerson", typeof(int));
-                    //DateTime birthdayformat = (DateTime)Convert.ToDateTime(objPersonEmployee.Birthday).GetDateTimeFormats()[46];
-                    
-                    SqlParameter paramOutIdPerson = new SqlParameter("@IdPerson", System.Data.SqlDbType.Int);
-                    paramOutIdPerson.Direction = System.Data.ParameterDirection.Output;
+                    string mensaje = "";
+                    int resultDb = PersonController.fnGNTranPerson(objPersonEmployee, "I", ref mensaje);
 
-                    SqlResult = db.Database.ExecuteSqlCommand("GNTranPerson @TransactionType, @IdPerson OUT, @IdPersonType "+
-                                                          ", @IdIdentificationType, @strNumIdentification, @strName, @strLastName, @dttBirthday " +
-                                                          ", @strAddress, @strEmail, @IdContactType, @IdPosition, @btClientPermission, @btStatus ",
-                           new SqlParameter[]{
-                                new SqlParameter("@TransactionType", "I"),
-                                paramOutIdPerson,
-                                new SqlParameter("@IdPersonType", 2),
-                                new SqlParameter("@IdIdentificationType", objPersonEmployee.IdIdentificationType),
-                                new SqlParameter("@strNumIdentification", objPersonEmployee.NumIdentification),
-                                new SqlParameter("@strName", objPersonEmployee.Name),
-                                new SqlParameter("@strLastName", objPersonEmployee.LastName),
-                                new SqlParameter("@dttBirthday", objPersonEmployee.Birthday),
-                                new SqlParameter("@strAddress", objPersonEmployee.Address),
-                                new SqlParameter("@strEmail", objPersonEmployee.Email),
-                                new SqlParameter("@IdContactType", DBNull.Value),
-                                new SqlParameter("@IdPosition", objPersonEmployee.IdPosition),
-                                new SqlParameter("@btClientPermission", objPersonEmployee.ClientPermission),
-                                new SqlParameter("@btStatus", true)
-                            }
-                        );
-
-                    IdPerson = Int32.Parse(paramOutIdPerson.Value.ToString());
-                    if (IdPerson != 0)
+                    if (resultDb != 0)
                     {
-                        if (objPersonEmployee.listPersonContact!=null) 
-                        { 
-
-                            foreach (var item in objPersonEmployee.listPersonContact)
-                            {
-
-                                //ObjectParameter paramOutIdContact = new ObjectParameter("IdContact", typeof(int));
-                                SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
-                                paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
-
-                                SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
-                                                                          ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
-                                   new SqlParameter[]{
-                                        new SqlParameter("@TransactionType", "I"),
-                                        paramOutIdContact,
-                                        new SqlParameter("@IdPerson", IdPerson),
-                                        new SqlParameter("@IdPhoneNumberType", item.IdPhoneNumberType),
-                                        new SqlParameter("@strIdIsoCountry", item.IdIsoCountry),
-                                        new SqlParameter("@strPhoneNumber", item.PhoneNumber),
-                                        new SqlParameter("@btStatus", true)
-                                    }
-                                );
-                                IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
-                            }
-                        }
-
-                        TempData["Success"] = "Datos grabados exitosamente, Código de empleado generado: (" + IdPerson + ").";
+                        TempData["Success"] = mensaje;
                         return RedirectToAction("AddEmployee");
                     }
                     else
                     {
-                        TempData["ErrorSave"] = "No se pudo generar codigo del empleado, intente nuevamente.";
+                        ViewBag.ErrorSave = mensaje;
                         return View(objPersonEmployee);
                     }
-
                 }
                 else 
                 {
@@ -164,59 +84,66 @@ namespace CustomerSupport.Controllers
                 }
                 
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                //throw;
-                //string msg= "Error al grabar datos del empleado: " + ex.Message;
-                //ModelState.AddModelError("ErrorSave", msg);
                 ViewBag.ErrorSave = "Error al grabar datos del empleado: " + ex.Message;
                 return View(objPersonEmployee);
             }
 
         }
 
-        // GET: Employee/Edit/5
+        // GET: Employee/EditEmployee/5
         public ActionResult EditEmployee(int id)
         {
-            return View();
+            MPerson objPersonEmployee = new MPerson();
+            objPersonEmployee = PersonController.fnListPerson(id, 2).First(); //2-empleado
+
+            if (TempData["Success"] != null)
+            {
+                ViewBag.SuccessSave = TempData["Success"];
+            }
+
+            return View(objPersonEmployee);
         }
 
-        // POST: Employee/Edit/5
+        // POST: Employee/EditEmployee/
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult EditEmployee(MPerson objPersonEmployee)
         {
             try
             {
-                // TODO: Add update logic here
+                if (ModelState.IsValid)
+                {
+                    //valores por defecto
+                    objPersonEmployee.IdPersonType = 2; //tipo empleado
 
-                return RedirectToAction("Index");
+                    string mensaje = "";
+                    int resultDb = PersonController.fnGNTranPerson(objPersonEmployee, "U", ref mensaje);
+
+                    if (resultDb != 0)
+                    {
+                        TempData["Success"] = mensaje;
+                        return RedirectToAction("EditEmployee", new { id = objPersonEmployee.IdPerson });
+                    }
+                    else
+                    {
+                        ViewBag.ErrorSave = mensaje;
+                        return View(objPersonEmployee);
+                    }
+                }
+                else
+                {
+                    return View(objPersonEmployee);
+                }
+
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.ErrorSave = "Error al grabar datos del empleado: " + ex.Message;
+                return View(objPersonEmployee);
             }
         }
 
-        // GET: Employee/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: Employee/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

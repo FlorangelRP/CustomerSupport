@@ -2,7 +2,7 @@
 @model CustomerSupport.Models.MPerson
 
 @{
-    ViewBag.Title = "Detalle de Empleado";
+    ViewBag.Title = "Detalle de Cliente";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -21,38 +21,13 @@
                             <div class="control-label font-weight-bold">Codigo:</div>
                             @Html.DisplayFor(model => model.IdPerson)
 
-                            @Html.HiddenFor(model => model.IdPerson)
                             @Html.HiddenFor(model => model.IdPersonType)
-                            @Html.HiddenFor(model => model.IdContactType)
+                            @Html.HiddenFor(model => model.IdPosition)
+                            @Html.HiddenFor(model => model.ClientPermission)
                         </div>
                     </div>
                 </div>
                 <hr>
-
-                <div class="row">
-                    <div id="divPosition" class="col-md-4">
-                        <div class="form-group">
-                            <div class="control-label font-weight-bold">Cargo:</div>
-                            @Html.DisplayFor(model => model.Position)
-                        </div>
-                    </div>
-
-                    @*<div id="divClientPermission" class="col-md-6 s_Checkbox">
-                        @Html.TextBoxFor(model => model.ClientPermission, new { @type = "checkbox", @class = "", @readonly = true })
-                        <label>Permitir ver como cliente</label>
-                    </div>*@
-
-                    <div id="divPosition" class="col-md-4">
-                        <div class="form-group">
-                            <div class="control-label font-weight-bold">Permitir ver como cliente:</div>
-                            @{ string isClient="";
-                               isClient = Model.ClientPermission == true ? "Si" : "No";
-                             }
-                            @isClient
-                        </div>
-                    </div>
-
-                </div>
 
                 <div class="row">
                     <div class="col-md-4">
@@ -184,6 +159,12 @@
                             @Html.DisplayFor(model => model.Email)
                         </div>
                     </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Via de Contacto:</div>
+                            @Html.DisplayFor(model => model.ContactType)
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -199,7 +180,7 @@
         </div>
 
         <div>
-            @Html.ActionLink("Regresar a la Lista", "ListEmployee")
+            @Html.ActionLink("Regresar a la Lista", "ListClient")
         </div>
 
     </div>
