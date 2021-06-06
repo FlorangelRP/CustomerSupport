@@ -72,14 +72,9 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label class="control-label">Estado:</label>
-                        <div class="s_status">
-                            <label>
-                                <span id="labEstatus"></span>
-                                @Html.CheckBoxFor(model => model.Status, new { @class = "form-control", @id = "chkStatus" })
-                                <span class="s_st_checkbox border-secondary"></span>
-                            </label>
-                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <label class="control-label font-weight-bold">Estado: </label>
+                            @Html.DisplayFor(model => model.StatusDesc)
                         </div>
                     </div>
 

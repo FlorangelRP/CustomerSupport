@@ -27,6 +27,12 @@
                                 @*<div class="control-label">Codigo:</div>*@
                                 @Html.HiddenFor(model => model.IdUser, new { @class = "form-control", @disabled = "disabled" })
                                 @Html.ValidationMessageFor(model => model.IdUser, "", new { @class = "text-danger" })
+    
+                                @Html.HiddenFor(model => model.PersonEmployee.Birthday, new { @id = "Birthday" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdContactType, new { @id = "IdContactType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPosition, new { @id = "IdPosition" })
+                                @Html.HiddenFor(model => model.PersonEmployee.ClientPermission, new { @id = "ClientPermission" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPersonType, new { @id = "IdPersonType" })
                             </div>
                         </div>
                     </div>
@@ -35,7 +41,6 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <label>Persona</label><br>
-                                @*<input class="form-control" id="searchClient" value="" placeholder="Seleccione" />*@
                                 @Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
@@ -153,6 +158,7 @@
 
         var OptionId = 0;
         var Item = 0;
+        var ListPersons;
 
     function Chk(source) {
 
@@ -194,10 +200,10 @@
 
         }
 
-        function ObtenerPersonas (ArrayClient) {
+   function ObtenerPersonas (ArrayClient) {
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("GetListPerson", "Person")',
+                url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -219,6 +225,17 @@
 
         }
 
+        function cargarDataPerson(IdPerson, lstPersons) {
+            if (IdPerson === "") { return false; }
+
+            var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
+
+            $("#Birthday").val(objPerson.Birthday); //hidden del modelo
+            $("#IdContactType").val(objPerson.IdContactType); //hidden del modelo
+            $("#IdPosition").val(objPerson.IdPosition); //hidden del modelo
+            $("#ClientPermission").val(objPerson.ClientPermission); //hidden del modelo
+            $("#IdPersonType").val(objPerson.IdPersonType); //hidden del modelo
+        }
     $(document).ready(function () {
 
         ObtenerPersonas(function (Lista) {
@@ -239,8 +256,14 @@
                 responsive: true
             });
 
+            cargarDataPerson(IdPerson, Lista)
+            /*$('#searchPerson').val("");*/
+        });
 
-            $('#searchClient').val("");
+        $("#searchPerson").on('change', function () {
+            var IdPerson = $(this).val();
+
+            cargarDataPerson(IdPerson, ListPersons)
         });
 
         // If the checkbox is checked, display the output text
@@ -445,6 +468,10 @@
             }
         });
 
-        });
+
+    });
+
+
+
     </script>
 }

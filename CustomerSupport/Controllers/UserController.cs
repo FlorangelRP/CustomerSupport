@@ -201,71 +201,85 @@ namespace CustomerSupport.Controllers
 
         public ActionResult Details(int id)
         {
-            return View();
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult DetailUser(string id)
         {
-            MUser ObjUser = new MUser();
-            MMEnterprisesEntities db = new MMEnterprisesEntities();
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                MUser ObjUser = new MUser();
+                MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            ObjUser = (from result in db.GNListUser(Convert.ToInt32(id)).ToList()
-                        select new MUser
-                        {
-                            IdUser = result.IdUser,
-                            IdPerson = result.IdPerson,
-                            Login = result.Login,
-                            Status = result.Status,
-                            StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null).ToList()
-                                                       select new MPerson
-                                                       {
-                                                           IdPerson = result2.IdPerson,
-                                                           IdPersonType = result2.IdPersonType,
-                                                           PersonType = result2.PersonType,
-                                                           IdIdentificationType = result2.IdIdentificationType,
-                                                           IdentificationType = result2.IdentificationType,
-                                                           NumIdentification = result2.NumIdentification,
-                                                           Name = result2.Name,
-                                                           LastName = result2.LastName,
-                                                           Birthday = result2.Birthday,
-                                                           Address = result2.Address,
-                                                           Email = result2.Email,
-                                                           IdContactType = result2.IdContactType,
-                                                           ContactType = result2.ContactType,
-                                                           IdPosition = result2.IdPosition,
-                                                           Position = result2.Position,
-                                                           ClientPermission = result2.ClientPermission,
-                                                           Status = result2.Status
-                                                       }).ToList().First(),
-                            UserAcces = (from result3 in db.GNListUserAcces(result.IdUser,null).ToList()
-                                                       select new MUserAcces
-                                                       {
-                                                           IdOption = result3.IdOption,
-                                                           OptionName = result3.OptionName,
-                                                           Visible = result3.Visible==null?false:(bool)result3.Visible,
-                                                           Create = result3.Create == null ? false : (bool)result3.Create,
-                                                           Search = result3.Search == null ? false : (bool)result3.Search,
-                                                           Edit = result3.Edit == null ? false : (bool)result3.Edit,
-                                                           Delete = result3.Edit == null ? false : (bool)result3.Delete,
-                                                           IdAssociated = result3.IdAssociated,
-                                                       }).ToList()
-                        }).First()  ;
+                ObjUser = (from result in db.GNListUser(Convert.ToInt32(id)).ToList()
+                           select new MUser
+                           {
+                               IdUser = result.IdUser,
+                               IdPerson = result.IdPerson,
+                               Login = result.Login,
+                               Status = result.Status,
+                               StatusDesc = result.Status == true ? "Activo" : "Inactivo",
+                               PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null).ToList()
+                                                          select new MPerson
+                                                          {
+                                                              IdPerson = result2.IdPerson,
+                                                              IdPersonType = result2.IdPersonType,
+                                                              PersonType = result2.PersonType,
+                                                              IdIdentificationType = result2.IdIdentificationType,
+                                                              IdentificationType = result2.IdentificationType,
+                                                              NumIdentification = result2.NumIdentification,
+                                                              Name = result2.Name,
+                                                              LastName = result2.LastName,
+                                                              Birthday = result2.Birthday,
+                                                              Address = result2.Address,
+                                                              Email = result2.Email,
+                                                              IdContactType = result2.IdContactType,
+                                                              ContactType = result2.ContactType,
+                                                              IdPosition = result2.IdPosition,
+                                                              Position = result2.Position,
+                                                              ClientPermission = result2.ClientPermission,
+                                                              Status = result2.Status
+                                                          }).ToList().First(),
+                               UserAcces = (from result3 in db.GNListUserAcces(result.IdUser, null).ToList()
+                                            select new MUserAcces
+                                            {
+                                                IdOption = result3.IdOption,
+                                                OptionName = result3.OptionName,
+                                                Visible = result3.Visible == null ? false : (bool)result3.Visible,
+                                                Create = result3.Create == null ? false : (bool)result3.Create,
+                                                Search = result3.Search == null ? false : (bool)result3.Search,
+                                                Edit = result3.Edit == null ? false : (bool)result3.Edit,
+                                                Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                                IdAssociated = result3.IdAssociated,
+                                            }).ToList()
+                           }).First();
 
-            ObjUser.UserAccesPadre = (from result3 in db.GNListUserAcces(null, null).ToList()
-                                      select new MUserAcces
-                                      {
-                                          IdOption = result3.IdOption,
-                                          OptionName = result3.OptionName,
-                                          Visible = result3.Visible == null ? false : (bool)result3.Visible,
-                                          Create = result3.Create == null ? false : (bool)result3.Create,
-                                          Search = result3.Search == null ? false : (bool)result3.Search,
-                                          Edit = result3.Edit == null ? false : (bool)result3.Edit,
-                                          Delete = result3.Edit == null ? false : (bool)result3.Delete,
-                                          IdAssociated = result3.IdAssociated,
-                                      }).ToList();
+                ObjUser.UserAccesPadre = (from result3 in db.GNListUserAcces(null, null).ToList()
+                                          select new MUserAcces
+                                          {
+                                              IdOption = result3.IdOption,
+                                              OptionName = result3.OptionName,
+                                              Visible = result3.Visible == null ? false : (bool)result3.Visible,
+                                              Create = result3.Create == null ? false : (bool)result3.Create,
+                                              Search = result3.Search == null ? false : (bool)result3.Search,
+                                              Edit = result3.Edit == null ? false : (bool)result3.Edit,
+                                              Delete = result3.Edit == null ? false : (bool)result3.Delete,
+                                              IdAssociated = result3.IdAssociated,
+                                          }).ToList();
 
-            return View(ObjUser);
+                return View(ObjUser);
+            }
 
         }
         // GET: User/Create
@@ -486,7 +500,14 @@ namespace CustomerSupport.Controllers
         // GET: User/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // POST: User/Delete/5

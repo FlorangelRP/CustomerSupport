@@ -17,10 +17,10 @@ namespace CustomerSupport.Controllers
             return View();
         }
 
-        public ActionResult GetListPerson()
+        public ActionResult GetListPerson(int? IdPersonType = null)
         {
             List<MPerson> ListPerson = new List<MPerson>();
-            ListPerson = PersonController.fnListPerson(null, null); 
+            ListPerson = PersonController.fnListPerson(null, IdPersonType); 
 
             return Json(ListPerson, JsonRequestBehavior.AllowGet); 
         }
