@@ -17,9 +17,9 @@ namespace CustomerSupport.BDContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.ServiceRequests = new HashSet<ServiceRequest>();
-            this.Tasks = new HashSet<Task>();
-            this.UserAcces = new HashSet<UserAcce>();
+            this.ServiceRequest = new HashSet<ServiceRequest>();
+            this.Task = new HashSet<Task>();
+            this.UserAcces = new HashSet<UserAcces>();
         }
     
         public int IdUser { get; set; }
@@ -30,10 +30,10 @@ namespace CustomerSupport.BDContext
     
         public virtual Person Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ServiceRequest> ServiceRequests { get; set; }
+        public virtual ICollection<ServiceRequest> ServiceRequest { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Task> Task { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserAcce> UserAcces { get; set; }
+        public virtual ICollection<UserAcces> UserAcces { get; set; }
     }
 }

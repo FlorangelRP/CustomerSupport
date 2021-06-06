@@ -27,17 +27,43 @@ namespace CustomerSupport.BDContext
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Catalog> Catalogs { get; set; }
-        public virtual DbSet<CatalogDetail> CatalogDetails { get; set; }
-        public virtual DbSet<Country> Countries { get; set; }
-        public virtual DbSet<OptionMenu> OptionMenus { get; set; }
-        public virtual DbSet<Person> People { get; set; }
-        public virtual DbSet<PersonContact> PersonContacts { get; set; }
-        public virtual DbSet<ServiceRequest> ServiceRequests { get; set; }
-        public virtual DbSet<Task> Tasks { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserAcce> UserAcces { get; set; }
-        public virtual DbSet<VWListCatalog> VWListCatalogs { get; set; }
+        public virtual DbSet<Catalog> Catalog { get; set; }
+        public virtual DbSet<CatalogDetail> CatalogDetail { get; set; }
+        public virtual DbSet<Country> Country { get; set; }
+        public virtual DbSet<OptionMenu> OptionMenu { get; set; }
+        public virtual DbSet<Person> Person { get; set; }
+        public virtual DbSet<PersonContact> PersonContact { get; set; }
+        public virtual DbSet<ServiceRequest> ServiceRequest { get; set; }
+        public virtual DbSet<Task> Task { get; set; }
+        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserAcces> UserAcces { get; set; }
+        public virtual DbSet<VWListCatalog> VWListCatalog { get; set; }
+    
+        public virtual int GNAuthenticationUser(string strLogin, string strPassword, ObjectParameter idUser)
+        {
+            var strLoginParameter = strLogin != null ?
+                new ObjectParameter("strLogin", strLogin) :
+                new ObjectParameter("strLogin", typeof(string));
+    
+            var strPasswordParameter = strPassword != null ?
+                new ObjectParameter("strPassword", strPassword) :
+                new ObjectParameter("strPassword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNAuthenticationUser", strLoginParameter, strPasswordParameter, idUser);
+        }
+    
+        public virtual ObjectResult<GNListCountry_Result> GNListCountry(Nullable<int> idCountry, string idIsoCountry)
+        {
+            var idCountryParameter = idCountry.HasValue ?
+                new ObjectParameter("IdCountry", idCountry) :
+                new ObjectParameter("IdCountry", typeof(int));
+    
+            var idIsoCountryParameter = idIsoCountry != null ?
+                new ObjectParameter("IdIsoCountry", idIsoCountry) :
+                new ObjectParameter("IdIsoCountry", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCountry_Result>("GNListCountry", idCountryParameter, idIsoCountryParameter);
+        }
     
         public virtual ObjectResult<GNListPerson_Result> GNListPerson(Nullable<int> idPerson, Nullable<int> idPersonType)
         {
@@ -52,6 +78,23 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPerson_Result>("GNListPerson", idPersonParameter, idPersonTypeParameter);
         }
     
+        public virtual ObjectResult<GNListPersonContact_Result> GNListPersonContact(Nullable<int> idPerson, Nullable<int> idPersonType, Nullable<int> idContact)
+        {
+            var idPersonParameter = idPerson.HasValue ?
+                new ObjectParameter("IdPerson", idPerson) :
+                new ObjectParameter("IdPerson", typeof(int));
+    
+            var idPersonTypeParameter = idPersonType.HasValue ?
+                new ObjectParameter("IdPersonType", idPersonType) :
+                new ObjectParameter("IdPersonType", typeof(int));
+    
+            var idContactParameter = idContact.HasValue ?
+                new ObjectParameter("IdContact", idContact) :
+                new ObjectParameter("IdContact", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPersonContact_Result>("GNListPersonContact", idPersonParameter, idPersonTypeParameter, idContactParameter);
+        }
+    
         public virtual ObjectResult<GNListUser_Result> GNListUser(Nullable<int> idUser)
         {
             var idUserParameter = idUser.HasValue ?
@@ -61,17 +104,17 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUser_Result>("GNListUser", idUserParameter);
         }
     
-        public virtual ObjectResult<GNListCountry_Result> GNListCountry(Nullable<int> idCountry, string idIsoCountry)
+        public virtual ObjectResult<GNListUserAcces_Result> GNListUserAcces(Nullable<int> idUser, Nullable<int> idAssociated)
         {
-            var idCountryParameter = idCountry.HasValue ?
-                new ObjectParameter("IdCountry", idCountry) :
-                new ObjectParameter("IdCountry", typeof(int));
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
     
-            var idIsoCountryParameter = idIsoCountry != null ?
-                new ObjectParameter("IdIsoCountry", idIsoCountry) :
-                new ObjectParameter("IdIsoCountry", typeof(string));
+            var idAssociatedParameter = idAssociated.HasValue ?
+                new ObjectParameter("IdAssociated", idAssociated) :
+                new ObjectParameter("IdAssociated", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCountry_Result>("GNListCountry", idCountryParameter, idIsoCountryParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUserAcces_Result>("GNListUserAcces", idUserParameter, idAssociatedParameter);
         }
     
         public virtual int GNTranPerson(string transactionType, ObjectParameter idPerson, Nullable<int> idPersonType, Nullable<int> idIdentificationType, string strNumIdentification, string strName, string strLastName, Nullable<System.DateTime> dttBirthday, string strAddress, string strEmail, Nullable<int> idContactType, Nullable<int> idPosition, Nullable<bool> btClientPermission, Nullable<bool> btStatus)
@@ -216,49 +259,6 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("blnDelete", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranUserAcces", idUserParameter, idOptionParameter, blnVisibleParameter, blnCreateParameter, blnSearchParameter, blnEditParameter, blnDeleteParameter);
-        }
-    
-        public virtual ObjectResult<GNListPersonContact_Result> GNListPersonContact(Nullable<int> idPerson, Nullable<int> idPersonType, Nullable<int> idContact)
-        {
-            var idPersonParameter = idPerson.HasValue ?
-                new ObjectParameter("IdPerson", idPerson) :
-                new ObjectParameter("IdPerson", typeof(int));
-    
-            var idPersonTypeParameter = idPersonType.HasValue ?
-                new ObjectParameter("IdPersonType", idPersonType) :
-                new ObjectParameter("IdPersonType", typeof(int));
-    
-            var idContactParameter = idContact.HasValue ?
-                new ObjectParameter("IdContact", idContact) :
-                new ObjectParameter("IdContact", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPersonContact_Result>("GNListPersonContact", idPersonParameter, idPersonTypeParameter, idContactParameter);
-        }
-    
-        public virtual int GNAuthenticationUser(string strLogin, string strPassword, ObjectParameter idUser)
-        {
-            var strLoginParameter = strLogin != null ?
-                new ObjectParameter("strLogin", strLogin) :
-                new ObjectParameter("strLogin", typeof(string));
-    
-            var strPasswordParameter = strPassword != null ?
-                new ObjectParameter("strPassword", strPassword) :
-                new ObjectParameter("strPassword", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNAuthenticationUser", strLoginParameter, strPasswordParameter, idUser);
-        }
-    
-        public virtual ObjectResult<GNListUserAcces_Result> GNListUserAcces(Nullable<int> idUser, Nullable<int> idAssociated)
-        {
-            var idUserParameter = idUser.HasValue ?
-                new ObjectParameter("IdUser", idUser) :
-                new ObjectParameter("IdUser", typeof(int));
-    
-            var idAssociatedParameter = idAssociated.HasValue ?
-                new ObjectParameter("IdAssociated", idAssociated) :
-                new ObjectParameter("IdAssociated", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUserAcces_Result>("GNListUserAcces", idUserParameter, idAssociatedParameter);
         }
     }
 }

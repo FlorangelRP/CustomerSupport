@@ -190,7 +190,7 @@
     <Compile Include="BDContext\User.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\UserAcce.cs">
+    <Compile Include="BDContext\UserAcces.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\VWListCatalog.cs">
@@ -444,13 +444,6 @@
     <Content Include="Content\assets\webfonts\fa-solid-900.ttf" />
     <Content Include="Content\assets\webfonts\fa-solid-900.woff" />
     <Content Include="Content\assets\webfonts\fa-solid-900.woff2" />
-    <EntityDeploy Include="BDContext\MMEnterprises.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="BDContext\MMEnterprises.edmx.diagram">
-      <DependentUpon>MMEnterprises.edmx</DependentUpon>
-    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -474,6 +467,13 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <EntityDeploy Include="BDContext\MMEnterprises.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="BDContext\MMEnterprises.edmx.diagram">
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

@@ -21,7 +21,7 @@ namespace CustomerSupport.Controllers
             object ListTableCatalog;
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            ListTableCatalog = db.VWListCatalogs.Where(t => t.IdTable == idTable).ToList();
+            ListTableCatalog = db.VWListCatalog.Where(t => t.IdTable == idTable).ToList();
 
             return Json(ListTableCatalog, JsonRequestBehavior.AllowGet); 
             
@@ -32,7 +32,7 @@ namespace CustomerSupport.Controllers
             string DetailDesc;
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            DetailDesc = db.VWListCatalogs.Where(t => t.IdTable == idTable && t.IdCatalogDetail== idDetail).First().DetailDesc;
+            DetailDesc = db.VWListCatalog.Where(t => t.IdTable == idTable && t.IdCatalogDetail== idDetail).First().DetailDesc;
 
             return DetailDesc;
 

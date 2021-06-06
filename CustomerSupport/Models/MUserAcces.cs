@@ -8,7 +8,7 @@ namespace CustomerSupport.Models
 {
     public class MUserAcces
     {
-        public int IdOption { get; set; }
+        public int? IdOption { get; set; }
         public string OptionName { get; set; }
         //public int? IdAssociated { get; set; }
         public bool Visible { get; set; }

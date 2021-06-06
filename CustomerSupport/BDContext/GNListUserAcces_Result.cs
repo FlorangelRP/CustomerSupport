@@ -13,7 +13,7 @@ namespace CustomerSupport.BDContext
     
     public partial class GNListUserAcces_Result
     {
-        public int IdOption { get; set; }
+        public Nullable<int> IdOption { get; set; }
         public string OptionName { get; set; }
         public Nullable<bool> Visible { get; set; }
         public Nullable<bool> Create { get; set; }

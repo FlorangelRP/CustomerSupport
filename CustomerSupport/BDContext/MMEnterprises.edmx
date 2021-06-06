@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Catalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -163,16 +163,16 @@
           <Property Name="Edit" Type="bit" Nullable="false" />
           <Property Name="Delete" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="VWListCatalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
             <PropertyRef Name="IdTable" />
             <PropertyRef Name="IdCatalogDetail" />
             <PropertyRef Name="IdTableDetail" />
-            
-            
+            <PropertyRef Name="DetailDesc" />
+            <PropertyRef Name="DetailStatus" />
           </Key>
           <Property Name="IdCatalog" Type="int" Nullable="false" />
           <Property Name="IdTable" Type="varchar" MaxLength="50" Nullable="false" />
@@ -508,6 +508,23 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="strPhoneNumber" Type="varchar" Mode="In" />
           <Parameter Name="btStatus" Type="bit" Mode="In" />
         </Function>
+        <Function Name="GNTranUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="strLogin" Type="varchar" Mode="In" />
+          <Parameter Name="strPassword" Type="varchar" Mode="In" />
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="InOut" />
+          <Parameter Name="btStatus" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNTranUserAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="IdOption" Type="int" Mode="In" />
+          <Parameter Name="blnVisible" Type="int" Mode="In" />
+          <Parameter Name="blnCreate" Type="int" Mode="In" />
+          <Parameter Name="blnSearch" Type="int" Mode="In" />
+          <Parameter Name="blnEdit" Type="int" Mode="In" />
+          <Parameter Name="blnDelete" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="MMEnterprisesModelStoreContainer">
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" Schema="dbo" store:Type="Tables" />
@@ -626,7 +643,8 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <End Role="UserAcces" EntitySet="UserAcces" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MMEnterprisesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -637,7 +655,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="IdCatalog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdTable" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CatalogDetails" Relationship="Self.FK_CatalogDetail_Catalog" FromRole="Catalog" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_CatalogDetail_Catalog" FromRole="Catalog" ToRole="CatalogDetail" />
         </EntityType>
         <EntityType Name="CatalogDetail">
           <Key>
@@ -649,14 +667,14 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Catalog" Relationship="Self.FK_CatalogDetail_Catalog" FromRole="CatalogDetail" ToRole="Catalog" />
-          <NavigationProperty Name="People" Relationship="Self.FK_Person_ContactType" FromRole="CatalogDetail" ToRole="Person" />
-          <NavigationProperty Name="People1" Relationship="Self.FK_Person_IdentificationType" FromRole="CatalogDetail" ToRole="Person" />
-          <NavigationProperty Name="People2" Relationship="Self.FK_Person_PersonType" FromRole="CatalogDetail" ToRole="Person" />
-          <NavigationProperty Name="People3" Relationship="Self.FK_Person_Position" FromRole="CatalogDetail" ToRole="Person" />
-          <NavigationProperty Name="PersonContacts" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="CatalogDetail" ToRole="PersonContact" />
-          <NavigationProperty Name="ServiceRequests" Relationship="Self.FK_ServiceRequest_PropertyType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
-          <NavigationProperty Name="ServiceRequests1" Relationship="Self.FK_ServiceRequest_ServiceType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
-          <NavigationProperty Name="ServiceRequests2" Relationship="Self.ServiceConstructionOption" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Person_ContactType" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person1" Relationship="Self.FK_Person_IdentificationType" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person2" Relationship="Self.FK_Person_PersonType" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person3" Relationship="Self.FK_Person_Position" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="CatalogDetail" ToRole="PersonContact" />
+          <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_PropertyType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+          <NavigationProperty Name="ServiceRequest1" Relationship="Self.FK_ServiceRequest_ServiceType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+          <NavigationProperty Name="ServiceRequest2" Relationship="Self.ServiceConstructionOption" FromRole="CatalogDetail" ToRole="ServiceRequest" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -667,7 +685,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="Country1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CountryAreaCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="PersonContacts" Relationship="Self.FK_PersonContact_Country" FromRole="Country" ToRole="PersonContact" />
+          <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_Country" FromRole="Country" ToRole="PersonContact" />
         </EntityType>
         <EntityType Name="OptionMenu">
           <Key>
@@ -678,11 +696,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="IdAssociated" Type="Int32" />
           <Property Name="AssociatedName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Controller" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="OptionMenu1" Relationship="Self.FK_AssociatedMenu_OptionMenu" FromRole="OptionMenu" ToRole="OptionMenu1" />
           <NavigationProperty Name="OptionMenu2" Relationship="Self.FK_AssociatedMenu_OptionMenu" FromRole="OptionMenu1" ToRole="OptionMenu" />
           <NavigationProperty Name="UserAcces" Relationship="Self.FK_UserAcces_OptionMenu" FromRole="OptionMenu" ToRole="UserAcces" />
-          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Controller" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -705,11 +723,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_Person_IdentificationType" FromRole="Person" ToRole="CatalogDetail" />
           <NavigationProperty Name="CatalogDetail2" Relationship="Self.FK_Person_PersonType" FromRole="Person" ToRole="CatalogDetail" />
           <NavigationProperty Name="CatalogDetail3" Relationship="Self.FK_Person_Position" FromRole="Person" ToRole="CatalogDetail" />
-          <NavigationProperty Name="PersonContacts" Relationship="Self.FK_PersonContact_Person" FromRole="Person" ToRole="PersonContact" />
-          <NavigationProperty Name="ServiceRequests" Relationship="Self.FK_ServiceRequest_Person" FromRole="Person" ToRole="ServiceRequest" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_User_Person" FromRole="Person" ToRole="User" />
-          <NavigationProperty Name="Tasks" Relationship="Self.PersonTask" FromRole="Person" ToRole="Task" />
-          <NavigationProperty Name="Tasks1" Relationship="Self.ServiceRequestTask" FromRole="Person" ToRole="Task" />
+          <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_Person" FromRole="Person" ToRole="PersonContact" />
+          <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_Person" FromRole="Person" ToRole="ServiceRequest" />
+          <NavigationProperty Name="User" Relationship="Self.FK_User_Person" FromRole="Person" ToRole="User" />
+          <NavigationProperty Name="Task" Relationship="Self.PersonTask" FromRole="Person" ToRole="Task" />
+          <NavigationProperty Name="Task1" Relationship="Self.ServiceRequestTask" FromRole="Person" ToRole="Task" />
         </EntityType>
         <EntityType Name="PersonContact">
           <Key>
@@ -757,7 +775,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_ServiceRequest_ServiceType" FromRole="ServiceRequest" ToRole="CatalogDetail" />
           <NavigationProperty Name="Person" Relationship="Self.FK_ServiceRequest_Person" FromRole="ServiceRequest" ToRole="Person" />
           <NavigationProperty Name="User" Relationship="Self.FK_ServiceRequest_User" FromRole="ServiceRequest" ToRole="User" />
-          <NavigationProperty Name="CatalogDetails" Relationship="Self.ServiceConstructionOption" FromRole="ServiceRequest" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail2" Relationship="Self.ServiceConstructionOption" FromRole="ServiceRequest" ToRole="CatalogDetail" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -772,8 +790,8 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="HourEnd" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Place" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.FK_Task_User" FromRole="Task" ToRole="User" />
-          <NavigationProperty Name="People" Relationship="Self.PersonTask" FromRole="Task" ToRole="Person" />
-          <NavigationProperty Name="People1" Relationship="Self.ServiceRequestTask" FromRole="Task" ToRole="Person" />
+          <NavigationProperty Name="Person" Relationship="Self.PersonTask" FromRole="Task" ToRole="Person" />
+          <NavigationProperty Name="Person1" Relationship="Self.ServiceRequestTask" FromRole="Task" ToRole="Person" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -785,11 +803,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="Self.FK_User_Person" FromRole="User" ToRole="Person" />
-          <NavigationProperty Name="ServiceRequests" Relationship="Self.FK_ServiceRequest_User" FromRole="User" ToRole="ServiceRequest" />
-          <NavigationProperty Name="Tasks" Relationship="Self.FK_Task_User" FromRole="User" ToRole="Task" />
+          <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_User" FromRole="User" ToRole="ServiceRequest" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_Task_User" FromRole="User" ToRole="Task" />
           <NavigationProperty Name="UserAcces" Relationship="Self.FK_UserAcces_User" FromRole="User" ToRole="UserAcces" />
         </EntityType>
-        <EntityType Name="UserAcce">
+        <EntityType Name="UserAcces">
           <Key>
             <PropertyRef Name="IdUser" />
             <PropertyRef Name="IdOption" />
@@ -803,6 +821,23 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="Delete" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="OptionMenu" Relationship="Self.FK_UserAcces_OptionMenu" FromRole="UserAcces" ToRole="OptionMenu" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserAcces_User" FromRole="UserAcces" ToRole="User" />
+        </EntityType>
+        <EntityType Name="VWListCatalog">
+          <Key>
+            <PropertyRef Name="IdCatalog" />
+            <PropertyRef Name="IdTable" />
+            <PropertyRef Name="IdCatalogDetail" />
+            <PropertyRef Name="IdTableDetail" />
+            <PropertyRef Name="DetailDesc" />
+            <PropertyRef Name="DetailStatus" />
+          </Key>
+          <Property Name="IdCatalog" Type="Int32" Nullable="false" />
+          <Property Name="IdTable" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TableDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IdCatalogDetail" Type="Int32" Nullable="false" />
+          <Property Name="IdTableDetail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DetailDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DetailStatus" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_CatalogDetail_Catalog">
           <End Role="Catalog" Type="Self.Catalog" Multiplicity="1" />
@@ -926,7 +961,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
         </Association>
         <Association Name="FK_UserAcces_OptionMenu">
           <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="1" />
-          <End Role="UserAcces" Type="Self.UserAcce" Multiplicity="*" />
+          <End Role="UserAcces" Type="Self.UserAcces" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="OptionMenu">
               <PropertyRef Name="IdOption" />
@@ -998,7 +1033,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
         </Association>
         <Association Name="FK_UserAcces_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserAcces" Type="Self.UserAcce" Multiplicity="*" />
+          <End Role="UserAcces" Type="Self.UserAcces" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="IdUser" />
@@ -1021,107 +1056,121 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
         </Association>
         <EntityContainer Name="MMEnterprisesEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Catalogs" EntityType="Self.Catalog" />
-          <EntitySet Name="CatalogDetails" EntityType="Self.CatalogDetail" />
-          <EntitySet Name="Countries" EntityType="Self.Country" />
-          <EntitySet Name="OptionMenus" EntityType="Self.OptionMenu" />
-          <EntitySet Name="People" EntityType="Self.Person" />
-          <EntitySet Name="PersonContacts" EntityType="Self.PersonContact" />
-          <EntitySet Name="ServiceRequests" EntityType="Self.ServiceRequest" />
-          <EntitySet Name="Tasks" EntityType="Self.Task" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <EntitySet Name="UserAcces" EntityType="Self.UserAcce" />
+          <EntitySet Name="Catalog" EntityType="Self.Catalog" />
+          <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" />
+          <EntitySet Name="Country" EntityType="Self.Country" />
+          <EntitySet Name="OptionMenu" EntityType="Self.OptionMenu" />
+          <EntitySet Name="Person" EntityType="Self.Person" />
+          <EntitySet Name="PersonContact" EntityType="Self.PersonContact" />
+          <EntitySet Name="ServiceRequest" EntityType="Self.ServiceRequest" />
+          <EntitySet Name="Task" EntityType="Self.Task" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="UserAcces" EntityType="Self.UserAcces" />
+          <EntitySet Name="VWListCatalog" EntityType="Self.VWListCatalog" />
           <AssociationSet Name="FK_CatalogDetail_Catalog" Association="Self.FK_CatalogDetail_Catalog">
-            <End Role="Catalog" EntitySet="Catalogs" />
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
+            <End Role="Catalog" EntitySet="Catalog" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_Person_ContactType" Association="Self.FK_Person_ContactType">
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
-            <End Role="Person" EntitySet="People" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
           </AssociationSet>
           <AssociationSet Name="FK_Person_IdentificationType" Association="Self.FK_Person_IdentificationType">
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
-            <End Role="Person" EntitySet="People" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
           </AssociationSet>
           <AssociationSet Name="FK_Person_PersonType" Association="Self.FK_Person_PersonType">
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
-            <End Role="Person" EntitySet="People" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
           </AssociationSet>
           <AssociationSet Name="FK_Person_Position" Association="Self.FK_Person_Position">
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
-            <End Role="Person" EntitySet="People" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
           </AssociationSet>
           <AssociationSet Name="FK_PersonContact_PhoneNumberType" Association="Self.FK_PersonContact_PhoneNumberType">
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
-            <End Role="PersonContact" EntitySet="PersonContacts" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="PersonContact" EntitySet="PersonContact" />
           </AssociationSet>
           <AssociationSet Name="FK_ServiceRequest_PropertyType" Association="Self.FK_ServiceRequest_PropertyType">
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
-            <End Role="ServiceRequest" EntitySet="ServiceRequests" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
           </AssociationSet>
           <AssociationSet Name="FK_ServiceRequest_ServiceType" Association="Self.FK_ServiceRequest_ServiceType">
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
-            <End Role="ServiceRequest" EntitySet="ServiceRequests" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
           </AssociationSet>
           <AssociationSet Name="FK_PersonContact_Country" Association="Self.FK_PersonContact_Country">
-            <End Role="Country" EntitySet="Countries" />
-            <End Role="PersonContact" EntitySet="PersonContacts" />
+            <End Role="Country" EntitySet="Country" />
+            <End Role="PersonContact" EntitySet="PersonContact" />
           </AssociationSet>
           <AssociationSet Name="FK_AssociatedMenu_OptionMenu" Association="Self.FK_AssociatedMenu_OptionMenu">
-            <End Role="OptionMenu" EntitySet="OptionMenus" />
-            <End Role="OptionMenu1" EntitySet="OptionMenus" />
+            <End Role="OptionMenu" EntitySet="OptionMenu" />
+            <End Role="OptionMenu1" EntitySet="OptionMenu" />
           </AssociationSet>
           <AssociationSet Name="FK_UserAcces_OptionMenu" Association="Self.FK_UserAcces_OptionMenu">
-            <End Role="OptionMenu" EntitySet="OptionMenus" />
+            <End Role="OptionMenu" EntitySet="OptionMenu" />
             <End Role="UserAcces" EntitySet="UserAcces" />
           </AssociationSet>
           <AssociationSet Name="FK_PersonContact_Person" Association="Self.FK_PersonContact_Person">
-            <End Role="Person" EntitySet="People" />
-            <End Role="PersonContact" EntitySet="PersonContacts" />
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonContact" EntitySet="PersonContact" />
           </AssociationSet>
           <AssociationSet Name="FK_ServiceRequest_Person" Association="Self.FK_ServiceRequest_Person">
-            <End Role="Person" EntitySet="People" />
-            <End Role="ServiceRequest" EntitySet="ServiceRequests" />
+            <End Role="Person" EntitySet="Person" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Person" Association="Self.FK_User_Person">
-            <End Role="Person" EntitySet="People" />
-            <End Role="User" EntitySet="Users" />
+            <End Role="Person" EntitySet="Person" />
+            <End Role="User" EntitySet="User" />
           </AssociationSet>
           <AssociationSet Name="FK_ServiceRequest_User" Association="Self.FK_ServiceRequest_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ServiceRequest" EntitySet="ServiceRequests" />
+            <End Role="User" EntitySet="User" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
           </AssociationSet>
           <AssociationSet Name="FK_Task_User" Association="Self.FK_Task_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Task" EntitySet="Tasks" />
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
           <AssociationSet Name="FK_UserAcces_User" Association="Self.FK_UserAcces_User">
-            <End Role="User" EntitySet="Users" />
+            <End Role="User" EntitySet="User" />
             <End Role="UserAcces" EntitySet="UserAcces" />
           </AssociationSet>
           <AssociationSet Name="PersonTask" Association="Self.PersonTask">
-            <End Role="Person" EntitySet="People" />
-            <End Role="Task" EntitySet="Tasks" />
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
           <AssociationSet Name="ServiceConstructionOption" Association="Self.ServiceConstructionOption">
-            <End Role="ServiceRequest" EntitySet="ServiceRequests" />
-            <End Role="CatalogDetail" EntitySet="CatalogDetails" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
           </AssociationSet>
           <AssociationSet Name="ServiceRequestTask" Association="Self.ServiceRequestTask">
-            <End Role="Person" EntitySet="People" />
-            <End Role="Task" EntitySet="Tasks" />
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
-          <EntitySet Name="VWListCatalogs" EntityType="MMEnterprisesModel.VWListCatalog" />
-          <FunctionImport Name="GNListPerson" ReturnType="Collection(MMEnterprisesModel.GNListPerson_Result)">
-            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
-            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
-          <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          <FunctionImport Name="GNAuthenticationUser">
+            <Parameter Name="strLogin" Mode="In" Type="String" />
+            <Parameter Name="strPassword" Mode="In" Type="String" />
+            <Parameter Name="IdUser" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListCountry" ReturnType="Collection(MMEnterprisesModel.GNListCountry_Result)">
             <Parameter Name="IdCountry" Mode="In" Type="Int32" />
             <Parameter Name="IdIsoCountry" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GNListPerson" ReturnType="Collection(MMEnterprisesModel.GNListPerson_Result)">
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListPersonContact" ReturnType="Collection(MMEnterprisesModel.GNListPersonContact_Result)">
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
+            <Parameter Name="IdContact" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListUserAcces" ReturnType="Collection(MMEnterprisesModel.GNListUserAcces_Result)">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNTranPerson">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
@@ -1165,36 +1214,14 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="blnEdit" Mode="In" Type="Int32" />
             <Parameter Name="blnDelete" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GNListPersonContact" ReturnType="Collection(MMEnterprisesModel.GNListPersonContact_Result)">
-            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
-            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
-            <Parameter Name="IdContact" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GNAuthenticationUser">
-            <Parameter Name="strLogin" Mode="In" Type="String" />
-            <Parameter Name="strPassword" Mode="In" Type="String" />
-            <Parameter Name="IdUser" Mode="InOut" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GNListUserAcces" ReturnType="Collection(MMEnterprisesModel.GNListUserAcces_Result)">
-            <Parameter Name="IdUser" Mode="In" Type="Int32" />
-            <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
-          </FunctionImport>
         </EntityContainer>
-        <EntityType Name="VWListCatalog">
-          <Key>
-            <PropertyRef Name="IdCatalog" />
-            <PropertyRef Name="IdTable" />
-            <PropertyRef Name="IdCatalogDetail" />
-            <PropertyRef Name="IdTableDetail" />
-          </Key>
-          <Property Name="IdCatalog" Type="Int32" Nullable="false" />
-          <Property Name="IdTable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TableDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="IdCatalogDetail" Type="Int32" Nullable="false" />
-          <Property Name="IdTableDetail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DetailDesc" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="DetailStatus" Type="Boolean" Nullable="false" />
-        </EntityType>
+        <ComplexType Name="GNListCountry_Result">
+          <Property Type="Int32" Name="IdCountry" Nullable="false" />
+          <Property Type="String" Name="IdIsoCountry" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="Country" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="CountryAreaCode" Nullable="false" MaxLength="10" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
         <ComplexType Name="GNListPerson_Result">
           <Property Type="Int32" Name="IdPerson" Nullable="false" />
           <Property Type="Int32" Name="IdPersonType" Nullable="false" />
@@ -1208,37 +1235,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="String" Name="Address" Nullable="false" MaxLength="300" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="IdContactType" Nullable="true" />
-          <Property Type="String" Name="ContactType" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="ContactType" Nullable="true" MaxLength="200" />
           <Property Type="Int32" Name="IdPosition" Nullable="true" />
-          <Property Type="String" Name="Position" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Position" Nullable="true" MaxLength="200" />
           <Property Type="Boolean" Name="ClientPermission" Nullable="false" />
           <Property Type="Boolean" Name="Status" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="GNListUser_Result">
-          <Property Type="Int32" Name="IdUser" Nullable="false" />
-          <Property Type="Int32" Name="IdPerson" Nullable="false" />
-          <Property Type="String" Name="Login" Nullable="false" MaxLength="20" />
-          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
-          <Property Type="Boolean" Name="Status" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="GNListCountry_Result">
-          <Property Type="Int32" Name="IdCountry" Nullable="false" />
-          <Property Type="String" Name="IdIsoCountry" Nullable="false" MaxLength="6" />
-          <Property Type="String" Name="Country" Nullable="false" MaxLength="30" />
-          <Property Type="String" Name="CountryAreaCode" Nullable="false" MaxLength="10" />
-          <Property Type="Boolean" Name="Status" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="GNListUserAcces_Result">
-          <Property Type="Int32" Name="IdOption" Nullable="false" />
-          <Property Type="String" Name="OptionName" Nullable="true" MaxLength="50" />
-          <Property Type="Boolean" Name="Visible" Nullable="true" />
-          <Property Type="Boolean" Name="Create" Nullable="true" />
-          <Property Type="Boolean" Name="Search" Nullable="true" />
-          <Property Type="Boolean" Name="Edit" Nullable="true" />
-          <Property Type="Boolean" Name="Delete" Nullable="true" />
-          <Property Type="String" Name="Action" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Controller" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="IdAssociated" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GNListPersonContact_Result">
           <Property Type="Int32" Name="IdPersonType" Nullable="false" />
@@ -1251,13 +1252,32 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="String" Name="PhoneNumber" Nullable="false" MaxLength="15" />
           <Property Type="Boolean" Name="Status" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="GNListUser_Result">
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="Int32" Name="IdPerson" Nullable="false" />
+          <Property Type="String" Name="Login" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListUserAcces_Result">
+          <Property Type="Int32" Name="IdOption" Nullable="true" />
+          <Property Type="String" Name="OptionName" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="Visible" Nullable="true" />
+          <Property Type="Boolean" Name="Create" Nullable="true" />
+          <Property Type="Boolean" Name="Search" Nullable="true" />
+          <Property Type="Boolean" Name="Edit" Nullable="true" />
+          <Property Type="Boolean" Name="Delete" Nullable="true" />
+          <Property Type="String" Name="Action" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Controller" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdAssociated" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MMEnterprisesModelStoreContainer" CdmEntityContainer="MMEnterprisesEntities">
-          <EntitySetMapping Name="Catalogs">
+          <EntitySetMapping Name="Catalog">
             <EntityTypeMapping TypeName="MMEnterprisesModel.Catalog">
               <MappingFragment StoreEntitySet="Catalog">
                 <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
@@ -1266,7 +1286,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CatalogDetails">
+          <EntitySetMapping Name="CatalogDetail">
             <EntityTypeMapping TypeName="MMEnterprisesModel.CatalogDetail">
               <MappingFragment StoreEntitySet="CatalogDetail">
                 <ScalarProperty Name="IdCatalogDetail" ColumnName="IdCatalogDetail" />
@@ -1277,7 +1297,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Countries">
+          <EntitySetMapping Name="Country">
             <EntityTypeMapping TypeName="MMEnterprisesModel.Country">
               <MappingFragment StoreEntitySet="Country">
                 <ScalarProperty Name="IdCountry" ColumnName="IdCountry" />
@@ -1288,20 +1308,20 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OptionMenus">
+          <EntitySetMapping Name="OptionMenu">
             <EntityTypeMapping TypeName="MMEnterprisesModel.OptionMenu">
               <MappingFragment StoreEntitySet="OptionMenu">
-                <ScalarProperty Name="Controller" ColumnName="Controller" />
-                <ScalarProperty Name="Action" ColumnName="Action" />
                 <ScalarProperty Name="IdOption" ColumnName="IdOption" />
                 <ScalarProperty Name="OptionName" ColumnName="OptionName" />
                 <ScalarProperty Name="IdAssociated" ColumnName="IdAssociated" />
                 <ScalarProperty Name="AssociatedName" ColumnName="AssociatedName" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="People">
+          <EntitySetMapping Name="Person">
             <EntityTypeMapping TypeName="MMEnterprisesModel.Person">
               <MappingFragment StoreEntitySet="Person">
                 <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
@@ -1320,7 +1340,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PersonContacts">
+          <EntitySetMapping Name="PersonContact">
             <EntityTypeMapping TypeName="MMEnterprisesModel.PersonContact">
               <MappingFragment StoreEntitySet="PersonContact">
                 <ScalarProperty Name="IdContact" ColumnName="IdContact" />
@@ -1332,7 +1352,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ServiceRequests">
+          <EntitySetMapping Name="ServiceRequest">
             <EntityTypeMapping TypeName="MMEnterprisesModel.ServiceRequest">
               <MappingFragment StoreEntitySet="ServiceRequest">
                 <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
@@ -1362,7 +1382,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Tasks">
+          <EntitySetMapping Name="Task">
             <EntityTypeMapping TypeName="MMEnterprisesModel.Task">
               <MappingFragment StoreEntitySet="Task">
                 <ScalarProperty Name="IdTask" ColumnName="IdTask" />
@@ -1376,7 +1396,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
+          <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="MMEnterprisesModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
@@ -1388,7 +1408,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserAcces">
-            <EntityTypeMapping TypeName="MMEnterprisesModel.UserAcce">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.UserAcces">
               <MappingFragment StoreEntitySet="UserAcces">
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
                 <ScalarProperty Name="IdOption" ColumnName="IdOption" />
@@ -1397,6 +1417,19 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="Search" ColumnName="Search" />
                 <ScalarProperty Name="Edit" ColumnName="Edit" />
                 <ScalarProperty Name="Delete" ColumnName="Delete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VWListCatalog">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.VWListCatalog">
+              <MappingFragment StoreEntitySet="VWListCatalog">
+                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
+                <ScalarProperty Name="IdTable" ColumnName="IdTable" />
+                <ScalarProperty Name="TableDesc" ColumnName="TableDesc" />
+                <ScalarProperty Name="IdCatalogDetail" ColumnName="IdCatalogDetail" />
+                <ScalarProperty Name="IdTableDetail" ColumnName="IdTableDetail" />
+                <ScalarProperty Name="DetailDesc" ColumnName="DetailDesc" />
+                <ScalarProperty Name="DetailStatus" ColumnName="DetailStatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1424,19 +1457,18 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               <ScalarProperty Name="IdTask" ColumnName="IdTask" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="VWListCatalogs">
-            <EntityTypeMapping TypeName="MMEnterprisesModel.VWListCatalog">
-              <MappingFragment StoreEntitySet="VWListCatalog">
-                <ScalarProperty Name="DetailStatus" ColumnName="DetailStatus" />
-                <ScalarProperty Name="DetailDesc" ColumnName="DetailDesc" />
-                <ScalarProperty Name="IdTableDetail" ColumnName="IdTableDetail" />
-                <ScalarProperty Name="IdCatalogDetail" ColumnName="IdCatalogDetail" />
-                <ScalarProperty Name="TableDesc" ColumnName="TableDesc" />
-                <ScalarProperty Name="IdTable" ColumnName="IdTable" />
-                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GNAuthenticationUser" FunctionName="MMEnterprisesModel.Store.GNAuthenticationUser" />
+          <FunctionImportMapping FunctionImportName="GNListCountry" FunctionName="MMEnterprisesModel.Store.GNListCountry">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCountry_Result">
+                <ScalarProperty Name="IdCountry" ColumnName="IdCountry" />
+                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GNListPerson" FunctionName="MMEnterprisesModel.Store.GNListPerson">
             <ResultMapping>
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPerson_Result">
@@ -1460,6 +1492,21 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListPersonContact" FunctionName="MMEnterprisesModel.Store.GNListPersonContact">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPersonContact_Result">
+                <ScalarProperty Name="IdPersonType" ColumnName="IdPersonType" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdContact" ColumnName="IdContact" />
+                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
+                <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
+                <ScalarProperty Name="IdPhoneNumberType" ColumnName="IdPhoneNumberType" />
+                <ScalarProperty Name="PhoneNumberType" ColumnName="PhoneNumberType" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GNListUser" FunctionName="MMEnterprisesModel.Store.GNListUser">
             <ResultMapping>
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListUser_Result">
@@ -1471,22 +1518,6 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GNListCountry" FunctionName="MMEnterprisesModel.Store.GNListCountry">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCountry_Result">
-                <ScalarProperty Name="IdCountry" ColumnName="IdCountry" />
-                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
-          <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
-          <FunctionImportMapping FunctionImportName="GNTranUser" FunctionName="MMEnterprisesModel.Store.GNTranUser" />
-          <FunctionImportMapping FunctionImportName="GNTranUserAcces" FunctionName="MMEnterprisesModel.Store.GNTranUserAcces" />
-          <FunctionImportMapping FunctionImportName="GNAuthenticationUser" FunctionName="MMEnterprisesModel.Store.GNAuthenticationUser" />
           <FunctionImportMapping FunctionImportName="GNListUserAcces" FunctionName="MMEnterprisesModel.Store.GNListUserAcces">
             <ResultMapping>
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListUserAcces_Result">
@@ -1505,22 +1536,8 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
           <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
-          <FunctionImportMapping FunctionImportName="GNListPersonContact" FunctionName="MMEnterprisesModel.Store.GNListPersonContact">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPersonContact_Result">
-                <ScalarProperty Name="IdPersonType" ColumnName="IdPersonType" />
-                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
-                <ScalarProperty Name="IdContact" ColumnName="IdContact" />
-                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
-                <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
-                <ScalarProperty Name="IdPhoneNumberType" ColumnName="IdPhoneNumberType" />
-                <ScalarProperty Name="PhoneNumberType" ColumnName="PhoneNumberType" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="GNTranUser" FunctionName="MMEnterprisesModel.Store.GNTranUser" />
+          <FunctionImportMapping FunctionImportName="GNTranUserAcces" FunctionName="MMEnterprisesModel.Store.GNTranUserAcces" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1535,10 +1552,10 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

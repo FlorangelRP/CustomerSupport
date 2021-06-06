@@ -12,7 +12,7 @@ namespace CustomerSupport.BDContext
     using System;
     using System.Collections.Generic;
     
-    public partial class UserAcce
+    public partial class UserAcces
     {
         public int IdUser { get; set; }
         public int IdOption { get; set; }
