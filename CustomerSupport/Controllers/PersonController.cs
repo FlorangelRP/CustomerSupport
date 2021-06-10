@@ -14,6 +14,11 @@ namespace CustomerSupport.Controllers
     {
         public ActionResult ListPerson()
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             return View();
         }
 

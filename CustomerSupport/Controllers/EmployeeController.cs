@@ -18,6 +18,11 @@ namespace CustomerSupport.Controllers
         // GET: Employee
         public ActionResult ListEmployee()
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             return View();
         }
 
@@ -33,6 +38,11 @@ namespace CustomerSupport.Controllers
         // GET: Employee/DetailEmployee/5
         public ActionResult DetailEmployee(int id)
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             MPerson objPersonEmployee = new MPerson();
             objPersonEmployee = PersonController.fnListPerson(id, 2).First(); //2-empleado
             return View(objPersonEmployee);
@@ -41,6 +51,11 @@ namespace CustomerSupport.Controllers
         // GET: Employee/AddEmployee
         public ActionResult AddEmployee()
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             MPerson objPersonEmployee = new MPerson();
             objPersonEmployee.Birthday = DateTime.Now;
             objPersonEmployee.listPersonContact = new List<MPersonContact>();
@@ -95,6 +110,11 @@ namespace CustomerSupport.Controllers
         // GET: Employee/EditEmployee/5
         public ActionResult EditEmployee(int id)
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             MPerson objPersonEmployee = new MPerson();
             objPersonEmployee = PersonController.fnListPerson(id, 2).First(); //2-empleado
 

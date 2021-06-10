@@ -1,8 +1,9 @@
-﻿@*@model IEnumerable<CustomerSupport.Models.MPerson>*@
+﻿@using CustomerSupport.Models
 
 @{
     ViewBag.Title = "Listado de Clientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Action = "ListClient";
 }
 
 <div class="card card-primary">
@@ -13,15 +14,29 @@
 
         <form>
 
-            <div class="row text-right">
-                <div class="col-md-12">
-                    <div class="text-right">
-                        @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
-                        @*<a href="location.href='@Url.Action("Create", "Person")';return false;" class="white_btn">Agregar</a>*@
-                        <button class="white_btn" onclick="location.href='@Url.Action("AddClient", "Client")';return false;">Agregar</button>
+            @{
+                MUserAcces perm = null;
+                if (Session["Usuario"] != null)
+                {
+                    perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+                }
+            }
+            @if (perm != null)
+            {
+                if (perm.Create == true)
+                {
+                    <div class="row text-right">
+                        <div class="col-md-12">
+                            <div class="text-right">
+                                @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
+                                @*<a href="location.href='@Url.Action("Create", "Person")';return false;" class="white_btn">Agregar</a>*@
+                                <button class="white_btn" onclick="location.href='@Url.Action("AddClient", "Client")';return false;">Agregar</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                }
+            }
+
             <div class="table-responsive">
                 <div class="container">
                     <table id="TPerson" class="table table-bordered table-striped">
@@ -34,9 +49,13 @@
                                 <th>Tipo Identificacion</th>
                                 <th>N° Identificacion</th>
                                 <th>Estado</th>
-                                <th class="text-center" colspan="2">Opciones</th>
-                                @*<th></th>*@
-                                @*<th></th>*@
+                                @if (perm != null)
+                                {
+                                    if (perm.Search == true || perm.Edit == true)
+                                    {
+                                        <th class="text-center" colspan="2">Opciones</th>
+                                    }
+                                }
                             </tr>
                         </thead>
                     </table>
@@ -63,7 +82,11 @@
 
     <script>
 
-    var table = $('#TPerson').DataTable({
+        var Permis = @Html.Raw(Json.Encode(perm));
+        Buscar = Permis.Search;
+        Editar = Permis.Edit;
+
+        var table = $('#TPerson').DataTable({
 
             'ajax': {
                 'url': '@Url.Action("GetListClient", "Client")',
@@ -80,7 +103,8 @@
                     { 'data': 'IdentificationType', 'autowidth': true },
                     { 'data': 'NumIdentification', 'autowidth': true },
                     { 'data': 'StatusDesc', 'autowidth': true },
-                    {'data': null, render: function (data, type, row) {
+                    {
+                        'data': null, render: function (data, type, row) {
                             //debugger;
                             if (data != null) {
                                 if (row.IdPerson == null) {
@@ -116,47 +140,49 @@
                     //    }, 'autowidth': true
                     //}
                 ],
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false
-                }],
-            "bAutoWidth": false,
-            "bInfo": false,
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "No existen Registros",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            "columnDefs":
+                [
+                    { "targets": 0, "orderable": false },
+                    { "targets": 6, "bVisible": Editar },
+                    { "targets": 7, "bVisible": Buscar }
+                ],
+                "bAutoWidth": false,
+                "bInfo": false,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No existen Registros",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
                 }
-            }
 
-    });
+        });
 
-    $('#TPerson').on("click", "a.editRow", function () {
-        var data = table.row($(this).parents("tr")).data();
-        $(".editRow").attr("href", '@Url.Action("EditClient", "Client")?id=' + data.IdPerson);
-    });
-    $('#TPerson').on("click", "a.searchRow", function () {
-        var data = table.row($(this).parents("tr")).data();
-        $(".searchRow").attr("href", '@Url.Action("DetailClient", "Client")?id=' + data.IdPerson);
-    });
+        $('#TPerson').on("click", "a.editRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $(".editRow").attr("href", '@Url.Action("EditClient", "Client")?id=' + data.IdPerson);
+        });
+        $('#TPerson').on("click", "a.searchRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $(".searchRow").attr("href", '@Url.Action("DetailClient", "Client")?id=' + data.IdPerson);
+        });
 
     </script>
 }

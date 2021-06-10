@@ -14,6 +14,11 @@ namespace CustomerSupport.Controllers
         // GET: Client
         public ActionResult ListClient()
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             return View();
         }
 
@@ -28,6 +33,11 @@ namespace CustomerSupport.Controllers
         // GET: Client/DetailClient/5
         public ActionResult DetailClient(int id)
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             MPerson objPersonClient = new MPerson();
             objPersonClient = PersonController.fnListPerson(id, 1).First(); //1-cliente
             return View(objPersonClient);
@@ -36,6 +46,11 @@ namespace CustomerSupport.Controllers
         // GET: Client/AddClient
         public ActionResult AddClient()
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             MPerson objPersonClient = new MPerson();
             objPersonClient.Birthday = DateTime.Now;
             objPersonClient.listPersonContact = new List<MPersonContact>();
@@ -91,6 +106,11 @@ namespace CustomerSupport.Controllers
         // GET: Client/EditClient/5
         public ActionResult EditClient(int id)
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             MPerson objPersonClient = new MPerson();
             objPersonClient = PersonController.fnListPerson(id, 1).First(); //1-cliente
 

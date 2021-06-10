@@ -59,14 +59,14 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Nombres:</div>
-                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-alphabet" })
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control text-capitalize input-alphabet" })
                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Apellidos:</div>
-                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control input-alphabet" })
+                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control text-capitalize input-alphabet" })
                                 @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                             </div>
                         </div>

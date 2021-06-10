@@ -433,7 +433,8 @@ new WOW().init();
 		});
 		// Listen for the input event.
 		$(".input-alphabet").on('input', function (evt) {
-			var regEx = /[^a-zA-Z.\s,Ò—]/g;
+			// /[^a-zA-Z.\s,Ò—]/g;  /^[ÒA-Za-z _]*[ÒA-Za-z][ÒA-Za-z _]*$/;
+			var regEx = /[^a-zA-ZÒ—.\s\W]/g;
 			// Allow only alphabet and space.
 			$(this).val($(this).val().replace(regEx, ''));
 		});
