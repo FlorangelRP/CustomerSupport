@@ -151,6 +151,15 @@
     <Compile Include="BDContext\GNListPerson_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListServiceConstructionOption_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListServiceRequest_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListTask_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListUserAcces_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>

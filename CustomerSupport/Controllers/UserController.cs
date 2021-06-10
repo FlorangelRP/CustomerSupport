@@ -37,7 +37,7 @@ namespace CustomerSupport.Controllers
                             Login = result.Login,
                             Status = result.Status,
                             StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null).ToList()
+                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null).ToList()
                                             select new MPerson
                                             {
                                                 IdPerson = result2.IdPerson,
@@ -116,7 +116,7 @@ namespace CustomerSupport.Controllers
                                            Login = result.Login,
                                            Status = result.Status,
                                            StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                                           PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null).ToList()
+                                           PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null).ToList()
                                                                       select new MPerson
                                                                       {
                                                                           IdPerson = result2.IdPerson,
@@ -230,7 +230,7 @@ namespace CustomerSupport.Controllers
                                Login = result.Login,
                                Status = result.Status,
                                StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                               PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null).ToList()
+                               PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null).ToList()
                                                           select new MPerson
                                                           {
                                                               IdPerson = result2.IdPerson,
@@ -403,7 +403,7 @@ namespace CustomerSupport.Controllers
                                Status = result.Status,
                                Password = ObjUser.Desencriptar(result.Password),
                                StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                               PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null).ToList()
+                               PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null).ToList()
                                                           select new MPerson
                                                           {
                                                               IdPerson = result2.IdPerson,

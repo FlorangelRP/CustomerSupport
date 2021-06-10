@@ -11,16 +11,15 @@ namespace CustomerSupport.BDContext
 {
     using System;
     
-    public partial class GNListPersonContact_Result
+    public partial class GNListTask_Result
     {
-        public int IdPersonType { get; set; }
-        public int IdPerson { get; set; }
-        public int IdContact { get; set; }
-        public string IdIsoCountry { get; set; }
-        public string CountryAreaCode { get; set; }
-        public int IdPhoneNumberType { get; set; }
-        public string PhoneNumberType { get; set; }
-        public string PhoneNumber { get; set; }
-        public bool Status { get; set; }
+        public int IdTask { get; set; }
+        public int IdUser { get; set; }
+        public string Activity { get; set; }
+        public System.DateTime DateIni { get; set; }
+        public System.DateTime DateEnd { get; set; }
+        public System.TimeSpan HourIni { get; set; }
+        public System.TimeSpan HourEnd { get; set; }
+        public string Place { get; set; }
     }
 }

@@ -11,16 +11,10 @@ namespace CustomerSupport.BDContext
 {
     using System;
     
-    public partial class GNListPersonContact_Result
+    public partial class GNListServiceConstructionOption_Result
     {
-        public int IdPersonType { get; set; }
-        public int IdPerson { get; set; }
-        public int IdContact { get; set; }
-        public string IdIsoCountry { get; set; }
-        public string CountryAreaCode { get; set; }
-        public int IdPhoneNumberType { get; set; }
-        public string PhoneNumberType { get; set; }
-        public string PhoneNumber { get; set; }
-        public bool Status { get; set; }
+        public int IdServiceRequest { get; set; }
+        public int IdConstructionOption { get; set; }
+        public string ConstructionOption { get; set; }
     }
 }

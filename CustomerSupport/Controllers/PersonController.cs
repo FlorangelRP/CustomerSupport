@@ -31,12 +31,12 @@ namespace CustomerSupport.Controllers
         }
 
 
-        public static List<MPerson> fnListPerson(int? idPerson, int? PersonType)
+        public static List<MPerson> fnListPerson(int? idPerson, int? PersonType, bool? PersonStatus=null)
         {
             List<MPerson> ListPerson = new List<MPerson>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            ListPerson = (from result in db.GNListPerson(idPerson, PersonType).ToList()
+            ListPerson = (from result in db.GNListPerson(idPerson, PersonType, PersonStatus).ToList()
                           select new MPerson
                           {
                               IdPerson = result.IdPerson,

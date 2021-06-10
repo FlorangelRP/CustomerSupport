@@ -10,21 +10,17 @@
 namespace CustomerSupport.BDContext
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class ServiceRequest
+    public partial class GNListServiceRequest_Result
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ServiceRequest()
-        {
-            this.CatalogDetail3 = new HashSet<CatalogDetail>();
-        }
-    
         public int IdServiceRequest { get; set; }
         public int IdServiceType { get; set; }
+        public string ServiceType { get; set; }
         public int IdServiceStatus { get; set; }
+        public string ServiceStatus { get; set; }
         public int IdPerson { get; set; }
         public Nullable<int> IdPropertyType { get; set; }
+        public string PropertyType { get; set; }
         public string Address { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<decimal> ClosingCost { get; set; }
@@ -45,13 +41,5 @@ namespace CustomerSupport.BDContext
         public int IdUser { get; set; }
         public string RegisterUser { get; set; }
         public System.DateTime RegisterDate { get; set; }
-    
-        public virtual CatalogDetail CatalogDetail { get; set; }
-        public virtual CatalogDetail CatalogDetail1 { get; set; }
-        public virtual CatalogDetail CatalogDetail2 { get; set; }
-        public virtual Person Person { get; set; }
-        public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CatalogDetail> CatalogDetail3 { get; set; }
     }
 }
