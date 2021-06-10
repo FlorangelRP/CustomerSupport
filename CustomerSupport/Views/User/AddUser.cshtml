@@ -27,6 +27,18 @@
                                 @*<div class="control-label">Codigo:</div>*@
                                 @Html.HiddenFor(model => model.IdUser, new { @class = "form-control", @disabled = "disabled" })
                                 @Html.ValidationMessageFor(model => model.IdUser, "", new { @class = "text-danger" })
+
+                                @Html.HiddenFor(model => model.PersonEmployee.LastName, new { @id = "LastName" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Name, new { @id = "Name" })
+                                @Html.HiddenFor(model => model.PersonEmployee.NumIdentification, new { @id = "NumIdentification" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Birthday, new {@value=DateTime.Now , @id = "Birthday" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdContactType, new { @id = "IdContactType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPosition, new { @id = "IdPosition" })
+                                @Html.HiddenFor(model => model.PersonEmployee.ClientPermission, new { @id = "ClientPermission" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPersonType, new { @id = "IdPersonType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Address, new { @id = "Address" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Email, new { @id = "Email" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdIdentificationType, new { @id = "IdIdentificationType" })
                             </div>
                         </div>
                     </div>
@@ -35,7 +47,6 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <label>Persona</label><br>
-                                @*<input class="form-control" id="searchClient" value="" placeholder="Seleccione" />*@
                                 @Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
@@ -153,6 +164,7 @@
 
         var OptionId = 0;
         var Item = 0;
+        var ListPersons = [];
 
     function Chk(source) {
 
@@ -193,43 +205,269 @@
             }
 
         }
+    function cargarDataPerson(IdPerson, lstPersons) {
+            if (IdPerson === "") { return false; }
+            debugger;
+            var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
+            var fecha = new Date();
 
-        function ObtenerPersonas (ArrayClient) {
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("GetListPerson", "Person")',
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var itemArray = {};
-                    itemArray.IdPerson = "";
-                    itemArray.LastName = "Seleccione";
-                    msg.push(itemArray);
-                    msg.reverse();
-                    ArrayClient(msg);
+            $("#Birthday").val(fecha.toLocaleDateString("en-US")); //hidden del modelo*/
+            $("#IdContactType").val(1); //hidden del modelo
+            $("#IdPosition").val(objPerson.IdPosition); //hidden del modelo
+            $("#ClientPermission").val(objPerson.ClientPermission); //hidden del modelo
+            $("#IdPersonType").val(objPerson.IdPersonType); //hidden del modelo
+            $("#NumIdentification").val(objPerson.NumIdentification); //hidden del modelo
+            $("#LastName").val(objPerson.LastName); //hidden del modelo
+            $("#Name").val(objPerson.Name); //hidden del modelo
+            $("#Address").val(objPerson.Address); //hidden del modelo
+            $("#Email").val(objPerson.Email); //hidden del modelo
+            $("#IdIdentificationType").val(objPerson.IdIdentificationType); //hidden del modelo
+        }
 
-                    ListPersons = [];
-                    ListPersons = msg;
-                },
-                error: function (msg) {
-                    $("#error > span").text("Error al llenar Lista");
-                }
-            });
+    function ObtenerPersonas() {
+
+            ListPersons = $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                        data: "{}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        global: false,
+                        async: false,
+                        success: function (data) {
+                            var itemArray = {};
+                            itemArray.IdPerson = "";
+                            itemArray.LastName = "";
+                            itemArray.Name = "";
+                            data.push(itemArray);
+                            data.reverse();
+                            return data;
+                         }
+            }).responseJSON;
 
         }
 
-    $(document).ready(function () {
+    function jsonToDate(date, format) {
+            return moment(date).format(format);
+    }
 
-        ObtenerPersonas(function (Lista) {
+     ObtenerPersonas();
 
-                //$('#searchPerson').inputpicker({
-                //    data: ["", "Seleccione",""]
-                //});
+        $(document).ready(function () {
+
+            $("#searchPerson").on('change', function () {
+                var IdPerson = $(this).val();
+
+                cargarDataPerson(IdPerson, ListPersons)
+            });
+
+
+
+            // If the checkbox is checked, display the output text
+            if ($("#chkStatus").checked == true) {
+                $("#labEstatus").text("Activo");
+            } else {
+                $("#labEstatus").text("Inactivo");
+            }
+
+            $("#chkStatus").on('click', function () {
+
+                var IsSelected = $('#chkStatus').is(":checked");
+
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#labEstatus").text("Activo");
+                } else {
+                    $("#labEstatus").text("Inactivo");
+                }
+
+            });
+
+
+            $('#TMenuOptions tbody td img').click(function () {
+
+                    if (this.src.match('details_close')) {
+
+                        /* This row is already open - close it */
+                        this.src = "/Content/assets/images/details_open.png";
+                        var nTr = this.parentNode.parentNode;
+                        oTable.fnClose(nTr);
+                    }
+                    else
+                    {
+                        OptionId = $(this).attr("rel");
+                        this.src = "/Content/assets/images/details_close.png";
+
+                        var IdUser = $("#IdUser").val();
+                        var existe = 0;
+                        var params = {
+                            IdUser: IdUser,
+                            IdAssociated: OptionId
+                        };
+
+                        var nTr = this.parentNode.parentNode;
+                        var objtable = "<table id='TMenuOptionsDetail" + OptionId + "' class='padre display table table-bordered table - striped' > ";
+                        objtable += "<thead> ";
+                        objtable += "<tr> ";
+                        objtable += "<td style='display: none; '>colHid_indexCell</td>";
+                        objtable += "<td style='display: none; '>colHid_IdOption</td>";
+                        objtable += "<td style='display: none; '>colHid_OptionName</td>";
+                        objtable += "<th>Opcion</th> ";
+                        objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,1)' /> Visible </th> ";
+                        objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,2)' /> Crear </th> ";
+                        objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,3)' /> Buscar </th> ";
+                        objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,4)' /> Editar </th> ";
+                        //objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,5)' /> Eliminar </th> ";
+                        objtable += "</tr> ";
+                        objtable += "</thead> ";
+                        nro = 0;
+
+                        /* Open this row */
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '@Url.Action("DetailMenuOption", "User")',
+                            data: params,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            dataSrc: '',
+                            success: function (data) {
+
+
+                                $.each(data, function (index, item) {
+
+                                    @if(Model!=null)
+                                    {
+
+                                        if (Model.UserAccesPadre != null)
+                                        {
+                                            Model.UserAcces.Add(new MUserAcces());
+                                        }
+                                    }
+
+
+                                  /*  Item = index + 1;*/
+
+                                    objtable += "<tbody><tr  id='trMenuOptionsDetail" + item.IdOption + ">";
+                                    objtable += "<td style='display:none'><input name='UserAcces.Index' type = 'hidden' value = '" + item.IdOption + "' /></td > ";
+                                    objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].IdOption' type='hidden' value=" + item.IdOption + " /></td> ";
+                                    objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].OptionName' type='hidden' value=" + item.OptionName + " /></td> ";;
+                                    objtable += "<td>" + item.OptionName + "</td> ";
+
+                                    //objtable += "<td>" + item.OptionName + "</td>";
+
+
+                                    var modelo = @Html.Raw(Json.Encode(Model.UserAcces));
+
+                                    var Array = modelo.filter(word => word.IdOption == item.IdOption)
+
+                                    var visible = false;
+                                    var crear = false;
+                                    var buscar = false;
+                                    var Editar = false;
+                                    var Eliminar = false;
+
+
+                                    if (Array.length == 1) {
+                                        visible = Array[0].Visible;
+                                        crear = Array[0].Create;
+                                        buscar = Array[0].Search;
+                                        Editar = Array[0].Edit;
+                                        Eliminar = Array[0].Delete;
+                                    }
+
+                                    if (visible == true) {
+                                        objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=true></td>";
+                                    }
+                                    else {
+                                        objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=false ></td>";
+                                    }
+
+                                    if (crear == true) {
+                                        objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=true></td>";
+                                    }
+                                    else {
+                                        objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=false></td>";
+                                    }
+
+                                    if (buscar== true) {
+                                        objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=true></td>";
+                                    }
+                                    else {
+                                        objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=false></td>";
+                                    }
+
+
+                                    if (Editar == true) {
+                                        objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=true></td>";
+                                    }
+                                    else {
+                                        objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=false></td>";
+                                    }
+
+
+                                    //if (Eliminar== true) {
+                                    //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=true></td>";
+                                    //}
+                                    //else {
+                                    //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=false></td>";
+                                    //}
+
+                                    existe = 1;
+                                });
+
+                                if (existe == 1)
+                                    objtable += "</tbody></table>";
+                                else
+                                    objtable = "";
+
+                                oTable.fnOpen(nTr, objtable, 'details');
+
+
+
+                            }
+                        });
+                    }
+                });
+
+
+            /* Initialize table and make first column non-sortable*/
+            oTable = $('#TMenuOptions').dataTable({
+                "bJQueryUI": true,
+                "Columns": [{ "bSortable": false, "bSearchable": false,"Width":"5%" },
+                    null
+                ],
+                "bAutoWidth": false,
+                "bInfo": false,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No existen Registros",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
 
             $('#searchPerson').inputpicker({
-                data: Lista,
-                fields: ['Name','LastName'],
+                data: ListPersons,
+                fields: ['Name', 'LastName'],
                 fieldText: 'Name',
                 fieldValue: 'IdPerson',
                 headShow: true,
@@ -238,213 +476,8 @@
                 pagination: false,
                 responsive: true
             });
-
-
             $('#searchClient').val("");
         });
 
-        // If the checkbox is checked, display the output text
-        if ($("#chkStatus").checked == true) {
-            $("#labEstatus").text("Activo");
-        } else {
-            $("#labEstatus").text("Inactivo");
-        }
-
-        $("#chkStatus").on('click', function () {
-
-            var IsSelected = $('#chkStatus').is(":checked");
-
-            // If the checkbox is checked, display the output text
-            if (IsSelected == true) {
-                $("#labEstatus").text("Activo");
-            } else {
-                $("#labEstatus").text("Inactivo");
-            }
-
-        });
-
-
-        $('#TMenuOptions tbody td img').click(function () {
-
-                if (this.src.match('details_close')) {
-
-                    /* This row is already open - close it */
-                    this.src = "/Content/assets/images/details_open.png";
-                    var nTr = this.parentNode.parentNode;
-                    oTable.fnClose(nTr);
-                }
-                else
-                {
-                    OptionId = $(this).attr("rel");
-                    this.src = "/Content/assets/images/details_close.png";
-
-                    var IdUser = $("#IdUser").val();
-                    var existe = 0;
-                    var params = {
-                        IdUser: IdUser,
-                        IdAssociated: OptionId
-                    };
-
-                    var nTr = this.parentNode.parentNode;
-                    var objtable = "<table id='TMenuOptionsDetail" + OptionId + "' class='padre display table table-bordered table - striped' > ";
-                    objtable += "<thead> ";
-                    objtable += "<tr> ";
-                    objtable += "<td style='display: none; '>colHid_indexCell</td>";
-                    objtable += "<td style='display: none; '>colHid_IdOption</td>";
-                    objtable += "<td style='display: none; '>colHid_OptionName</td>";
-                    objtable += "<th>Opcion</th> ";
-                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,1)' /> Visible </th> ";
-                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,2)' /> Crear </th> ";
-                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,3)' /> Buscar </th> ";
-                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,4)' /> Editar </th> ";
-                    //objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,5)' /> Eliminar </th> ";
-                    objtable += "</tr> ";
-                    objtable += "</thead> ";
-                    nro = 0;
-
-                    /* Open this row */
-
-                    $.ajax({
-                        type: 'GET',
-                        url: '@Url.Action("DetailMenuOption", "User")',
-                        data: params,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        dataSrc: '',
-                        success: function (data) {
-
-
-                            $.each(data, function (index, item) {
-
-                                @if(Model!=null)
-                                {
-
-                                    if (Model.UserAccesPadre != null)
-                                    {
-                                        Model.UserAcces.Add(new MUserAcces());
-                                    }
-                                }
-
-
-                              /*  Item = index + 1;*/
-
-                                objtable += "<tbody><tr  id='trMenuOptionsDetail" + item.IdOption + ">";
-                                objtable += "<td style='display:none'><input name='UserAcces.Index' type = 'hidden' value = '" + item.IdOption + "' /></td > ";
-                                objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].IdOption' type='hidden' value=" + item.IdOption + " /></td> ";
-                                objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].OptionName' type='hidden' value=" + item.OptionName + " /></td> ";;
-                                objtable += "<td>" + item.OptionName + "</td> ";
-
-                                //objtable += "<td>" + item.OptionName + "</td>";
-
-
-                                var modelo = @Html.Raw(Json.Encode(Model.UserAcces));
-
-                                var Array = modelo.filter(word => word.IdOption == item.IdOption)
-
-                                var visible = false;
-                                var crear = false;
-                                var buscar = false;
-                                var Editar = false;
-                                var Eliminar = false;
-
-
-                                if (Array.length == 1) {
-                                    visible = Array[0].Visible;
-                                    crear = Array[0].Create;
-                                    buscar = Array[0].Search;
-                                    Editar = Array[0].Edit;
-                                    Eliminar = Array[0].Delete;
-                                }
-
-                                if (visible == true) {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=true></td>";
-                                }
-                                else {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=false ></td>";
-                                }
-
-                                if (crear == true) {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=true></td>";
-                                }
-                                else {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=false></td>";
-                                }
-
-                                if (buscar== true) {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=true></td>";
-                                }
-                                else {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=false></td>";
-                                }
-
-
-                                if (Editar == true) {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=true></td>";
-                                }
-                                else {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=false></td>";
-                                }
-
-
-                                //if (Eliminar== true) {
-                                //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=true></td>";
-                                //}
-                                //else {
-                                //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=false></td>";
-                                //}
-
-                                existe = 1;
-                            });
-
-                            if (existe == 1)
-                                objtable += "</tbody></table>";
-                            else
-                                objtable = "";
-
-                            oTable.fnOpen(nTr, objtable, 'details');
-
-
-
-                        }
-                    });
-                }
-            });
-
-
-        /* Initialize table and make first column non-sortable*/
-        oTable = $('#TMenuOptions').dataTable({
-            "bJQueryUI": true,
-            "Columns": [{ "bSortable": false, "bSearchable": false,"Width":"5%" },
-                null
-            ],
-            "bAutoWidth": false,
-            "bInfo": false,
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "No existen Registros",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        });
-
-        });
     </script>
 }
