@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c68e4ebdf47f447a88cb3caac2411440" Name="Diagram1">
+      <Diagram DiagramId="c68e4ebdf47f447a88cb3caac2411440" Name="Diagram1" ZoomLevel="47">
         <EntityTypeShape EntityType="MMEnterprisesModel.Catalog" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.CatalogDetail" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.Country" Width="1.5" PointX="5.25" PointY="4.625" IsExpanded="true" />
@@ -12,7 +12,6 @@
         <EntityTypeShape EntityType="MMEnterprisesModel.Person" Width="1.5" PointX="5.25" PointY="8" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.PersonContact" Width="1.5" PointX="7.5" PointY="9.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.ServiceRequest" Width="1.5" PointX="9.75" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.Task" Width="1.5" PointX="12.75" PointY="14.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.User" Width="1.5" PointX="7.5" PointY="20.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.UserAcces" Width="1.5" PointX="9.75" PointY="20.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.VWListCatalog" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
@@ -32,11 +31,12 @@
         <AssociationConnector Association="MMEnterprisesModel.FK_ServiceRequest_Person" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.FK_User_Person" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.FK_ServiceRequest_User" ManuallyRouted="false" />
-        <AssociationConnector Association="MMEnterprisesModel.FK_Task_User" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.FK_UserAcces_User" ManuallyRouted="false" />
-        <AssociationConnector Association="MMEnterprisesModel.PersonTask" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.ServiceConstructionOption" ManuallyRouted="false" />
-        <AssociationConnector Association="MMEnterprisesModel.ServiceRequestTask" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Task" Width="1.5" PointX="12.75" PointY="14" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_Task_User" />
+        <AssociationConnector Association="MMEnterprisesModel.PersonTask" />
+        <AssociationConnector Association="MMEnterprisesModel.ServiceRequestTask" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

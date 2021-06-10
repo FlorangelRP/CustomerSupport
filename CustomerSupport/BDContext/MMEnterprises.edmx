@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Catalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -140,6 +140,7 @@
           <Property Name="HourIni" Type="time" Precision="7" Nullable="false" />
           <Property Name="HourEnd" Type="time" Precision="7" Nullable="false" />
           <Property Name="Place" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -164,8 +165,8 @@
           <Property Name="Edit" Type="bit" Nullable="false" />
           <Property Name="Delete" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="VWListCatalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -585,6 +586,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="HourIni" Type="time" Mode="In" />
           <Parameter Name="HourEnd" Type="time" Mode="In" />
           <Parameter Name="Place" Type="varchar" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
         </Function>
         <Function Name="GNTranUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdPerson" Type="int" Mode="In" />
@@ -725,8 +727,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <End Role="UserAcces" EntitySet="UserAcces" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MMEnterprisesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -809,9 +810,9 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_Person" FromRole="Person" ToRole="PersonContact" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_Person" FromRole="Person" ToRole="ServiceRequest" />
           <NavigationProperty Name="User" Relationship="Self.FK_User_Person" FromRole="Person" ToRole="User" />
-          <NavigationProperty Name="Task" Relationship="Self.PersonTask" FromRole="Person" ToRole="Task" />
-          <NavigationProperty Name="Task1" Relationship="Self.ServiceRequestTask" FromRole="Person" ToRole="Task" />
-        </EntityType>
+          <NavigationProperty Name="Task" Relationship="MMEnterprisesModel.PersonTask" FromRole="Person" ToRole="Task" />
+          <NavigationProperty Name="Task1" Relationship="MMEnterprisesModel.ServiceRequestTask" FromRole="Person" ToRole="Task" />
+          </EntityType>
         <EntityType Name="PersonContact">
           <Key>
             <PropertyRef Name="IdContact" />
@@ -862,22 +863,6 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <NavigationProperty Name="User" Relationship="Self.FK_ServiceRequest_User" FromRole="ServiceRequest" ToRole="User" />
           <NavigationProperty Name="CatalogDetail3" Relationship="Self.ServiceConstructionOption" FromRole="ServiceRequest" ToRole="CatalogDetail" />
         </EntityType>
-        <EntityType Name="Task">
-          <Key>
-            <PropertyRef Name="IdTask" />
-          </Key>
-          <Property Name="IdTask" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdUser" Type="Int32" Nullable="false" />
-          <Property Name="Activity" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DateIni" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="HourIni" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="HourEnd" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="Place" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Task_User" FromRole="Task" ToRole="User" />
-          <NavigationProperty Name="Person" Relationship="Self.PersonTask" FromRole="Task" ToRole="Person" />
-          <NavigationProperty Name="Person1" Relationship="Self.ServiceRequestTask" FromRole="Task" ToRole="Person" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="IdUser" />
@@ -889,8 +874,8 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="Self.FK_User_Person" FromRole="User" ToRole="Person" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_User" FromRole="User" ToRole="ServiceRequest" />
-          <NavigationProperty Name="Task" Relationship="Self.FK_Task_User" FromRole="User" ToRole="Task" />
           <NavigationProperty Name="UserAcces" Relationship="Self.FK_UserAcces_User" FromRole="User" ToRole="UserAcces" />
+          <NavigationProperty Name="Task" Relationship="MMEnterprisesModel.FK_Task_User" FromRole="User" ToRole="Task" />
         </EntityType>
         <EntityType Name="UserAcces">
           <Key>
@@ -1116,18 +1101,6 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Task_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Task" Type="Self.Task" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="IdUser" />
-            </Principal>
-            <Dependent Role="Task">
-              <PropertyRef Name="IdUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserAcces_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="UserAcces" Type="Self.UserAcces" Multiplicity="*" />
@@ -1140,17 +1113,9 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PersonTask">
-          <End Role="Person" Type="Self.Person" Multiplicity="*" />
-          <End Role="Task" Type="Self.Task" Multiplicity="*" />
-        </Association>
         <Association Name="ServiceConstructionOption">
           <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
           <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="*" />
-        </Association>
-        <Association Name="ServiceRequestTask">
-          <End Role="Person" Type="Self.Person" Multiplicity="*" />
-          <End Role="Task" Type="Self.Task" Multiplicity="*" />
         </Association>
         <EntityContainer Name="MMEnterprisesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Catalog" EntityType="Self.Catalog" />
@@ -1160,7 +1125,6 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <EntitySet Name="Person" EntityType="Self.Person" />
           <EntitySet Name="PersonContact" EntityType="Self.PersonContact" />
           <EntitySet Name="ServiceRequest" EntityType="Self.ServiceRequest" />
-          <EntitySet Name="Task" EntityType="Self.Task" />
           <EntitySet Name="User" EntityType="Self.User" />
           <EntitySet Name="UserAcces" EntityType="Self.UserAcces" />
           <EntitySet Name="VWListCatalog" EntityType="Self.VWListCatalog" />
@@ -1228,25 +1192,13 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <End Role="User" EntitySet="User" />
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
           </AssociationSet>
-          <AssociationSet Name="FK_Task_User" Association="Self.FK_Task_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Task" EntitySet="Task" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserAcces_User" Association="Self.FK_UserAcces_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserAcces" EntitySet="UserAcces" />
           </AssociationSet>
-          <AssociationSet Name="PersonTask" Association="Self.PersonTask">
-            <End Role="Person" EntitySet="Person" />
-            <End Role="Task" EntitySet="Task" />
-          </AssociationSet>
           <AssociationSet Name="ServiceConstructionOption" Association="Self.ServiceConstructionOption">
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
-          </AssociationSet>
-          <AssociationSet Name="ServiceRequestTask" Association="Self.ServiceRequestTask">
-            <End Role="Person" EntitySet="Person" />
-            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
           <FunctionImport Name="GNAuthenticationUser">
             <Parameter Name="strLogin" Mode="In" Type="String" />
@@ -1285,7 +1237,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
-            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          <Parameter Name="IdUser" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListUserAcces" ReturnType="Collection(MMEnterprisesModel.GNListUserAcces_Result)">
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
@@ -1362,6 +1314,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="HourIni" Mode="In" Type="Time" />
             <Parameter Name="HourEnd" Mode="In" Type="Time" />
             <Parameter Name="Place" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GNTranUser">
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
@@ -1380,6 +1333,19 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="blnEdit" Mode="In" Type="Int32" />
             <Parameter Name="blnDelete" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Task" EntityType="MMEnterprisesModel.Task" />
+          <AssociationSet Name="FK_Task_User" Association="MMEnterprisesModel.FK_Task_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="PersonTask" Association="MMEnterprisesModel.PersonTask">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="ServiceRequestTask" Association="MMEnterprisesModel.ServiceRequestTask">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="GNListCountry_Result">
           <Property Type="Int32" Name="IdCountry" Nullable="false" />
@@ -1482,6 +1448,43 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="String" Name="Controller" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="IdAssociated" Nullable="true" />
         </ComplexType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="IdTask" />
+          </Key>
+          <Property Name="IdTask" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <Property Name="Activity" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateIni" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HourIni" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="HourEnd" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Place" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="MMEnterprisesModel.FK_Task_User" FromRole="Task" ToRole="User" />
+          <NavigationProperty Name="Person" Relationship="MMEnterprisesModel.PersonTask" FromRole="Task" ToRole="Person" />
+          <NavigationProperty Name="Person1" Relationship="MMEnterprisesModel.ServiceRequestTask" FromRole="Task" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_Task_User">
+          <End Type="MMEnterprisesModel.User" Role="User" Multiplicity="1" />
+          <End Type="MMEnterprisesModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonTask">
+          <End Type="MMEnterprisesModel.Person" Role="Person" Multiplicity="*" />
+          <End Type="MMEnterprisesModel.Task" Role="Task" Multiplicity="*" />
+        </Association>
+        <Association Name="ServiceRequestTask">
+          <End Type="MMEnterprisesModel.Person" Role="Person" Multiplicity="*" />
+          <End Type="MMEnterprisesModel.Task" Role="Task" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1594,20 +1597,6 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Task">
-            <EntityTypeMapping TypeName="MMEnterprisesModel.Task">
-              <MappingFragment StoreEntitySet="Task">
-                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
-                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
-                <ScalarProperty Name="Activity" ColumnName="Activity" />
-                <ScalarProperty Name="DateIni" ColumnName="DateIni" />
-                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
-                <ScalarProperty Name="HourIni" ColumnName="HourIni" />
-                <ScalarProperty Name="HourEnd" ColumnName="HourEnd" />
-                <ScalarProperty Name="Place" ColumnName="Place" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="MMEnterprisesModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -1645,28 +1634,12 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="PersonTask" TypeName="MMEnterprisesModel.PersonTask" StoreEntitySet="PersonTask">
-            <EndProperty Name="Person">
-              <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
-            </EndProperty>
-            <EndProperty Name="Task">
-              <ScalarProperty Name="IdTask" ColumnName="IdTask" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="ServiceConstructionOption" TypeName="MMEnterprisesModel.ServiceConstructionOption" StoreEntitySet="ServiceConstructionOption">
             <EndProperty Name="ServiceRequest">
               <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
             </EndProperty>
             <EndProperty Name="CatalogDetail">
               <ScalarProperty Name="IdCatalogDetail" ColumnName="IdConstructionOption" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="ServiceRequestTask" TypeName="MMEnterprisesModel.ServiceRequestTask" StoreEntitySet="ServiceRequestTask">
-            <EndProperty Name="Person">
-              <ScalarProperty Name="IdPerson" ColumnName="IdServiceRequest" />
-            </EndProperty>
-            <EndProperty Name="Task">
-              <ScalarProperty Name="IdTask" ColumnName="IdTask" />
             </EndProperty>
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="GNAuthenticationUser" FunctionName="MMEnterprisesModel.Store.GNAuthenticationUser" />
@@ -1811,6 +1784,37 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <FunctionImportMapping FunctionImportName="GNTranTask" FunctionName="MMEnterprisesModel.Store.GNTranTask" />
           <FunctionImportMapping FunctionImportName="GNTranUser" FunctionName="MMEnterprisesModel.Store.GNTranUser" />
           <FunctionImportMapping FunctionImportName="GNTranUserAcces" FunctionName="MMEnterprisesModel.Store.GNTranUserAcces" />
+          <EntitySetMapping Name="Task">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
+                <ScalarProperty Name="HourEnd" ColumnName="HourEnd" />
+                <ScalarProperty Name="HourIni" ColumnName="HourIni" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateIni" ColumnName="DateIni" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PersonTask" TypeName="MMEnterprisesModel.PersonTask" StoreEntitySet="PersonTask">
+            <EndProperty Name="Task">
+              <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+            </EndProperty>
+            <EndProperty Name="Person">
+              <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ServiceRequestTask" TypeName="MMEnterprisesModel.ServiceRequestTask" StoreEntitySet="ServiceRequestTask">
+            <EndProperty Name="Task">
+              <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+            </EndProperty>
+            <EndProperty Name="Person">
+              <ScalarProperty Name="IdPerson" ColumnName="IdServiceRequest" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
