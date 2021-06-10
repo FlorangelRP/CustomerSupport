@@ -20,10 +20,11 @@ namespace CustomerSupport.Controllers
         public ActionResult GetListPerson(int? IdPersonType = null)
         {
             List<MPerson> ListPerson = new List<MPerson>();
-            ListPerson = PersonController.fnListPerson(null, IdPersonType); 
+            ListPerson = fnListPerson(null, IdPersonType); 
 
             return Json(ListPerson, JsonRequestBehavior.AllowGet); 
         }
+
 
         public static List<MPerson> fnListPerson(int? idPerson, int? PersonType)
         {

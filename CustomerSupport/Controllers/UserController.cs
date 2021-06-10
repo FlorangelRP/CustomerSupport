@@ -453,6 +453,9 @@ namespace CustomerSupport.Controllers
                                           }).ToList();
 
 
+                if (TempData["Success"] != null)
+                    ViewBag.SuccessSave = TempData["Success"];
+
                 return View(ObjUser);
             }
         }
@@ -476,7 +479,7 @@ namespace CustomerSupport.Controllers
                     if (IdUser > 0)
                     {
 
-                        ViewBag.SuccessSave = "Datos grabados exitosamente, Código de Usuario: (" + IdUser + ").";
+                        TempData["Success"] = "Datos grabados exitosamente, Código de Usuario: (" + IdUser + ").";
                         return RedirectToAction("EditUser", new { id = objUser.IdUser });
                     }
                     else
