@@ -15,7 +15,7 @@ namespace CustomerSupport.Models
         public System.TimeSpan HourIni { get; set; }
         public System.TimeSpan HourEnd { get; set; }
         public string Place { get; set; }
-        public List<MDetailTask> ListDetailTask { get; set; }
+        public bool Status { get; set; }
 
     }
 }

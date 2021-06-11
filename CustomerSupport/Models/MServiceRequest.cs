@@ -7,12 +7,19 @@ namespace CustomerSupport.Models
 {
     public class MServiceRequest
     {
+        public MServiceRequest()
+        {
+            listConstructionOption = new List<MServiceConstructionOption>();
+        }
+
         public int IdServiceRequest { get; set; }
         public int IdServiceType { get; set; }
         public string ServiceType { get; set; } //descripcion del tipo de servicio
+        public int IdServiceStatus { get; set; }
+        public string ServiceStatus { get; set; } //descripcion del estatus del servicio
         public int IdPerson { get; set; }
-        public MPerson PersonClient { get; set; } //aqui se llenaria con linq 
         public Nullable<int> IdPropertyType { get; set; }
+        public string PropertyType { get; set; } //descripcion de tipo de propiedad
         public string Address { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<decimal> ClosingCost { get; set; }
@@ -30,10 +37,10 @@ namespace CustomerSupport.Models
         public Nullable<bool> Plane { get; set; }
         public Nullable<bool> Financing { get; set; }
         public string Note { get; set; }
-        public int IdStatus { get; set; } //OJOOOOO falto crear en la tabla de base de datos
         public int IdUser { get; set; }
         public string RegisterUser { get; set; }
         public System.DateTime RegisterDate { get; set; }
-
+        public List<MServiceConstructionOption> listConstructionOption { get; set; } //lista las opciones de construccion para tipo de servicios Construccion/Planos
+        public List<MTask> listTask { get; set; }
     }
 }
