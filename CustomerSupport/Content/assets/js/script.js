@@ -438,4 +438,14 @@ new WOW().init();
 			// Allow only alphabet and space.
 			$(this).val($(this).val().replace(regEx, ''));
 		});
+		// Listen for the input event.
+		$(".input-decimal").on('input', function (evt) {
+			// solo permite escribir numeros, separador decimal (.) y backspace
+			var regExAlphatet = /[^0-9-.]/g;
+			$(this).val($(this).val().replace(regExAlphatet, ''));
 
+			//debe comenzar con numero, punto decimal obligatorio, y dos decimales
+			//var regexp = /^\d+\.\d{2}$/;
+			//$(this).val($(this).val().replace(regexp, ''));
+
+		});

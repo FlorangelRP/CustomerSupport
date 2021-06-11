@@ -48,13 +48,13 @@
 
 
                                                         @*@Html.HiddenFor(model => model.PersonClient.Birthday, new { @value = DateTime.Now, @id = "Birthday" })
-                                                        @Html.HiddenFor(model => model.PersonClient.IdContactType, new { @id = "IdContactType" })
-                                                        @Html.HiddenFor(model => model.PersonClient.IdPosition, new { @id = "IdPosition" })
-                                                        @Html.HiddenFor(model => model.PersonClient.ClientPermission, new { @id = "ClientPermission" })
-                                                        @Html.HiddenFor(model => model.PersonClient.IdPersonType, new { @id = "IdPersonType" })
-                                                        @Html.HiddenFor(model => model.PersonClient.Address, new { @id = "Address" })
-                                                        @Html.HiddenFor(model => model.PersonClient.Email, new { @id = "Email" })
-                                                        @Html.HiddenFor(model => model.PersonClient.IdIdentificationType, new { @id = "IdIdentificationType" })*@
+                                            @Html.HiddenFor(model => model.PersonClient.IdContactType, new { @id = "IdContactType" })
+                                            @Html.HiddenFor(model => model.PersonClient.IdPosition, new { @id = "IdPosition" })
+                                            @Html.HiddenFor(model => model.PersonClient.ClientPermission, new { @id = "ClientPermission" })
+                                            @Html.HiddenFor(model => model.PersonClient.IdPersonType, new { @id = "IdPersonType" })
+                                            @Html.HiddenFor(model => model.PersonClient.Address, new { @id = "Address" })
+                                            @Html.HiddenFor(model => model.PersonClient.Email, new { @id = "Email" })
+                                            @Html.HiddenFor(model => model.PersonClient.IdIdentificationType, new { @id = "IdIdentificationType" })*@
                                                     </div>
                                                 </div>
                                             </div>
@@ -137,7 +137,7 @@
                                                     <div class="form-group">
                                                         <div class="control-label">Numero Solicitud:</div>
                                                         @Html.TextBoxFor(model => model.IdServiceRequest, new { @class = "form-control", @disabled = "disabled" })
-                                                        @Html.ValidationMessageFor(model => model.IdServiceRequest, "", new { @class = "text-danger" })
+                                                        @*@Html.ValidationMessageFor(model => model.IdServiceRequest, "", new { @class = "text-danger" })*@
                                                     </div>
                                                 </div>
                                             </div>
@@ -145,20 +145,20 @@
                                             <div id="serviceCompras">
                                                 @Html.Partial("_PartialAddServiceBuy")
                                             </div>
-                                            <div id="servicePlanos">
+                                            <div id="serviceConstruccionPlanos">
                                                 @Html.Partial("_PartialAddServiceBuilding")
                                             </div>
-                                            <div id="serviceConstruccion">
+                                            @*<div id="serviceConstruccion">
                                                 @Html.Partial("_PartialAddServiceBuilding")
-                                            </div>
+                                            </div>*@
                                             <div id="serviceRefinanciamiento">
                                                 @Html.Partial("_PartialAddRefinancing")
                                             </div>
-                                            <div id="servicePrestamos">
+                                            @*<div id="servicePrestamos">
                                                 <br>
                                                 <h1>En construccion ....</h1>
                                                 <br>
-                                            </div>
+                                            </div>*@
                                             <div id="serviceLivingTrust">
                                                 @Html.Partial("_PartialAddLivingTrust")
                                             </div>
@@ -167,12 +167,10 @@
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                         <div class="control-label">Via de Contacto:</div>
-                                                        <select name="personType" id="personType" class="form-control select2" style="width: 100%;">
-                                                            <option value="1">Instagram</option>
-                                                            <option value="2">Facebook</option>
-                                                            <option value="3">Videos Publicitarios</option>
-                                                            <option value="4">Recomendacion</option>
+                                                        <select id="lst_ContactType" class="form-control select2" style="width: 100%;">
                                                         </select>
+                                                        @Html.HiddenFor(model => model.IdContactType, new { @id = "inpIdContactType" })
+                                                        @Html.ValidationMessageFor(model => model.IdContactType, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -202,13 +200,22 @@
 
                     <br>
                     <br>
+
                     <div class="row">
                         <div class="col-md-offset-2 col-md-10">
                             <div class="form-group">
                                 <div class="text-center">
-                                    <a href="location.href='@Url.Action("Create", "ServiceRequest")';return false;" class="white_btn">Grabar</a>
+                                    @*<a href="location.href='@Url.Action("Create", "ServiceRequest")';return false;" class="white_btn">Grabar</a>*@
+                                    <button class="white_btn" type="submit">Grabar</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 text-center">
+                            <span class="text-success">@ViewBag.SuccessSave</span>
+                            <span class="text-danger">@ViewBag.ErrorSave</span>
                         </div>
                     </div>
 
@@ -318,6 +325,13 @@
 
         }
 
+        $("#serviceCompras").hide();
+        //$("#servicePlanos").hide();
+        //$("#serviceConstruccion").hide();
+        $("#serviceConstruccionPlanos").hide();
+        $("#serviceRefinanciamiento").hide();
+        //$("#servicePrestamos").hide();
+        $("#serviceLivingTrust").hide();
 
         $(document).ready(function () {
 
@@ -338,85 +352,6 @@
                 responsive: true
             });
             $('#searchPerson').val("");
-
-
-
-            $("#serviceCompras").show();
-            $("#servicePlanos").hide();
-            $("#serviceConstruccion").hide();
-            $("#serviceRefinanciamiento").hide();
-            $("#servicePrestamos").hide();
-            $("#serviceLivingTrust").hide();
-
-
-            $("#ServiceType").on('change', function () {
-
-                var selectValue = $(this).val();
-                //var selecDesc = $('select[id="SelpersonType"] option:selected').text()
-                //alert(selectValue);
-                //debugger;
-
-                switch (selectValue) {
-                    case "1":
-                        $("#serviceCompras").show();
-                        $("#servicePlanos").hide();
-                        $("#serviceConstruccion").hide();
-                        $("#serviceRefinanciamiento").hide();
-                        $("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").hide();
-                        break;
-                    case "2":
-                        $("#serviceCompras").hide();
-                        $("#servicePlanos").show();
-                        $("#serviceConstruccion").hide();
-                        $("#serviceRefinanciamiento").hide();
-                        $("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").hide();
-                        break;
-                    case "3":
-                        $("#serviceCompras").hide();
-                        $("#servicePlanos").hide();
-                        $("#serviceConstruccion").show();
-                        $("#serviceRefinanciamiento").hide();
-                        $("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").hide();
-                        break;
-                    case "4":
-                        $("#serviceCompras").hide();
-                        $("#servicePlanos").hide();
-                        $("#serviceConstruccion").hide();
-                        $("#serviceRefinanciamiento").show();
-                        $("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").hide();
-                        break;
-                    case "5":
-                        $("#serviceCompras").hide();
-                        $("#servicePlanos").hide();
-                        $("#serviceConstruccion").hide();
-                        $("#serviceRefinanciamiento").hide();
-                        $("#servicePrestamos").show();
-                        $("#serviceLivingTrust").hide();
-                        break;
-                    case "6":
-                        $("#serviceCompras").hide();
-                        $("#servicePlanos").hide();
-                        $("#serviceConstruccion").hide();
-                        $("#serviceRefinanciamiento").hide();
-                        $("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").show();
-                        break;
-                    default:
-                        $("#serviceCompras").hide();
-                        $("#servicePlanos").hide();
-                        $("#serviceConstruccion").hide();
-                        $("#serviceRefinanciamiento").hide();
-                        $("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").hide();
-                        break;
-
-                }
-
-            });
 
 
             // If the checkbox is checked, display the output text
@@ -455,6 +390,67 @@
                 var selectValue = $(this).val();
                 //$("#inpIdServiceType").val(selectValue);
                 changeCodeInputHiddenList("lst_ServiceType", "inpIdServiceType", selectValue);
+
+                var selecDesc = $('select[id="lst_ServiceType"] option:selected').text();
+
+                switch (selecDesc) {
+                    case "Compras":
+                        $("#serviceCompras").show();
+                        //$("#servicePlanos").hide();
+                        //$("#serviceConstruccion").hide();
+                        $("#serviceConstruccionPlanos").hide();
+                        $("#serviceRefinanciamiento").hide();
+                        //$("#servicePrestamos").hide();
+                        $("#serviceLivingTrust").hide();
+                        break;
+                    case "Planos":
+                    case "Construcción":
+                        $("#serviceCompras").hide();
+                        //$("#servicePlanos").hide();
+                        //$("#serviceConstruccion").hide();
+                        $("#serviceConstruccionPlanos").show();
+                        $("#serviceRefinanciamiento").hide();
+                        //$("#servicePrestamos").hide();
+                        $("#serviceLivingTrust").hide();
+                        break;
+                    //case "Construcción":
+                    //    $("#serviceCompras").hide();
+                    //    //$("#servicePlanos").hide();
+                    //    //$("#serviceConstruccion").hide();
+                    //    $("#serviceConstruccionPlanos").show();
+                    //    $("#serviceRefinanciamiento").hide();
+                    //    //$("#servicePrestamos").hide();
+                    //    $("#serviceLivingTrust").hide();
+                    //    break;
+                    case "Refinanciamiento":
+                        $("#serviceCompras").hide();
+                        //$("#servicePlanos").hide();
+                        //$("#serviceConstruccion").hide();
+                        $("#serviceConstruccionPlanos").hide();
+                        $("#serviceRefinanciamiento").show();
+                        //$("#servicePrestamos").hide();
+                        $("#serviceLivingTrust").hide();
+                        break;
+                    case "Living Trust":
+                        $("#serviceCompras").hide();
+                        //$("#servicePlanos").hide();
+                        //$("#serviceConstruccion").hide();
+                        $("#serviceConstruccionPlanos").hide();
+                        $("#serviceRefinanciamiento").hide();
+                        //$("#servicePrestamos").hide();
+                        $("#serviceLivingTrust").show();
+                        break;
+                    default:
+                        $("#serviceCompras").hide();
+                        //$("#servicePlanos").hide();
+                        //$("#serviceConstruccion").hide();
+                        $("#serviceConstruccionPlanos").hide();
+                        $("#serviceRefinanciamiento").hide();
+                        //$("#servicePrestamos").hide();
+                        $("#serviceLivingTrust").hide();
+                        break;
+
+                }
             });
 
             $.ajax({
@@ -486,6 +482,193 @@
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de tipos de identificacion");
+                }
+
+            });
+
+            $("#lst_ContactType").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpIdContactType").val(selectValue);
+                changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", selectValue);
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"CONTACTTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_ContactType").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ContactType").append(option);
+                    });
+
+                    document.getElementById('lst_ContactType').value = "0";
+
+                    changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de cargos");
+                }
+
+            });
+
+            $("#lst_PropertyType").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpIdPropertyType").val(selectValue);
+                changeCodeInputHiddenList("lst_PropertyType", "inpIdPropertyType", selectValue);
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PROPERTYTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_PropertyType").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_PropertyType").append(option);
+                    });
+
+                    document.getElementById('lst_PropertyType').value = "0";
+
+                    changeCodeInputHiddenList("lst_PropertyType", "inpIdPropertyType", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de tipos de propiedad");
+                }
+
+            });
+
+            $("#lstBuild_PropertyType").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpBuild_IdPropertyType").val(selectValue);
+                changeCodeInputHiddenList("lstBuild_PropertyType", "inpBuild_IdPropertyType", selectValue);
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PROPERTYTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lstBuild_PropertyType").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lstBuild_PropertyType").append(option);
+                    });
+
+                    document.getElementById('lstBuild_PropertyType').value = "0";
+
+                    changeCodeInputHiddenList("lstBuild_PropertyType", "inpBuild_IdPropertyType", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de tipos de propiedad");
+                }
+
+            });
+
+
+            $("#lstRefin_PropertyType").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpRefin_IdPropertyType").val(selectValue);
+                changeCodeInputHiddenList("lstRefin_PropertyType", "inpRefin_IdPropertyType", selectValue);
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PROPERTYTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lstRefin_PropertyType").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lstRefin_PropertyType").append(option);
+                    });
+
+                    document.getElementById('lstRefin_PropertyType').value = "0";
+
+                    changeCodeInputHiddenList("lstRefin_PropertyType", "inpRefin_IdPropertyType", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de tipos de propiedad");
+                }
+
+            });
+
+
+            $("#lstLiv_PropertyType").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpLiv_IdPropertyType").val(selectValue);
+                changeCodeInputHiddenList("lstLiv_PropertyType", "inpLiv_IdPropertyType", selectValue);
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PROPERTYTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lstLiv_PropertyType").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lstLiv_PropertyType").append(option);
+                    });
+
+                    document.getElementById('lstLiv_PropertyType').value = "0";
+
+                    changeCodeInputHiddenList("lstLiv_PropertyType", "inpLiv_IdPropertyType", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de tipos de propiedad");
                 }
 
             });

@@ -4,17 +4,10 @@
     <div class="col-md-6">
         <div class="form-group">
             <div class="control-label">Tipo de Propiedad:</div>
-            @*@Html.EditorFor(model => model.IdIdentificationType, new { htmlAttributes = new { @class = "form-control" } })*@
-            @*@Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })*@
-            <select name="ProperyType" id="ProperyType" class="form-control select2" style="width: 100%;">
-                <option value="1">SRF (Single Family Resident)</option>
-                <option value="2">Condominio</option>
-                <option value="3">De 1 a 2 Unidades</option>
-                <option value="4">De 3 a 4 Unidades</option>
-                <option value="5">De 5 o mas Unidades</option>
-                <option value="6">Comercial</option>
-                <option value="7">Residencial</option>
+            <select id="lstRefin_PropertyType" class="form-control select2" style="width: 100%;">
             </select>
+            @Html.HiddenFor(model => model.IdPropertyType, new { @id = "inpRefin_IdPropertyType" })
+            @Html.ValidationMessageFor(model => model.IdPropertyType, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
@@ -27,8 +20,8 @@
             @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
         </div>
     </div>
-@*</div>
-<div class="row">*@
+    @*</div>
+        <div class="row">*@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Loan Amount:</div>
@@ -36,8 +29,8 @@
             @Html.ValidationMessageFor(model => model.LoanAmount, "", new { @class = "text-danger" })
         </div>
     </div>
-@*</div>
-<div class="row">*@
+    @*</div>
+        <div class="row">*@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Deuda Actual de la Hipoteca:</div>
@@ -80,3 +73,16 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+
+
+        });
+
+    </script>
+}
