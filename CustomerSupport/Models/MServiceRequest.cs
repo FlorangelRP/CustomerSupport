@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -18,6 +19,9 @@ namespace CustomerSupport.Models
         public int IdServiceStatus { get; set; }
         public string ServiceStatus { get; set; } //descripcion del estatus del servicio
         public int IdPerson { get; set; }
+        public MPerson PersonClient { get; set; }
+        public Nullable<int> IdContactType { get; set; }
+        public string ContactType { get; set; } //descripcion de la via de contacto
         public Nullable<int> IdPropertyType { get; set; }
         public string PropertyType { get; set; } //descripcion de tipo de propiedad
         public string Address { get; set; }
@@ -39,7 +43,10 @@ namespace CustomerSupport.Models
         public string Note { get; set; }
         public int IdUser { get; set; }
         public string RegisterUser { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public System.DateTime RegisterDate { get; set; }
+
         public List<MServiceConstructionOption> listConstructionOption { get; set; } //lista las opciones de construccion para tipo de servicios Construccion/Planos
         public List<MTask> listTask { get; set; }
     }
