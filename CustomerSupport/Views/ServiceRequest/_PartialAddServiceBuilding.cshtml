@@ -4,17 +4,10 @@
     <div class="col-md-6">
         <div class="form-group">
             <div class="control-label">Tipo de Propiedad:</div>
-            @*@Html.EditorFor(model => model.IdIdentificationType, new { htmlAttributes = new { @class = "form-control" } })*@
-            @*@Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })*@
-            <select name="ProperyType" id="ProperyType" class="form-control select2" style="width: 100%;">
-                <option value="1">SRF (Single Family Resident)</option>
-                <option value="2">Condominio</option>
-                <option value="3">De 1 a 2 Unidades</option>
-                <option value="4">De 3 a 4 Unidades</option>
-                <option value="5">De 5 o mas Unidades</option>
-                <option value="6">Comercial</option>
-                <option value="7">Residencial</option>
+            <select id="lstBuild_PropertyType" class="form-control select2" style="width: 100%;">
             </select>
+            @Html.HiddenFor(model => model.IdPropertyType, new { @id = "inpBuild_IdPropertyType" })
+            @Html.ValidationMessageFor(model => model.IdPropertyType, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
@@ -33,7 +26,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Valor Estimado:</div>
-            @Html.TextBoxFor(model => model.EstimatedValue, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.EstimatedValue, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.EstimatedValue, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -43,15 +36,17 @@
 
             <label class="ss_radioButton">
                 Si
-                <input type="radio" checked="checked" name="radio">
+                @*<input type="radio" checked="checked" name="radio">*@
+                @Html.RadioButtonFor(model => model.Plane, true)
                 <span class="checkmark"></span>
             </label>
             <label class="ss_radioButton">
                 No
-                <input type="radio" name="radio">
+                @*<input type="radio" name="radio">*@
+                @Html.RadioButtonFor(model => model.Plane, false, new { @checked = "checked" })
                 <span class="checkmark"></span>
             </label>
-
+            @Html.ValidationMessageFor(model => model.Plane, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
@@ -93,29 +88,44 @@
 
             <label class="ss_radioButton">
                 Si
-                <input type="radio" checked="checked" name="radio">
+                @*<input type="radio" checked="checked" name="radio">*@
+                @Html.RadioButtonFor(model => model.Financing, true)
                 <span class="checkmark"></span>
             </label>
             <label class="ss_radioButton">
                 No
-                <input type="radio" name="radio">
+                @*<input type="radio" name="radio">*@
+                @Html.RadioButtonFor(model => model.Financing, false, new { @checked = "checked" })
                 <span class="checkmark"></span>
             </label>
-
+            @Html.ValidationMessageFor(model => model.Financing, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Ingreso Promedio:</div>
-            @Html.TextBoxFor(model => model.MonthlyIncome, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Deudas/Pagos Promedio:</div>
-            @Html.TextBoxFor(model => model.DebtPayment, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.DebtPayment, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+
+
+        });
+
+    </script>
+}
