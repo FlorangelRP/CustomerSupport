@@ -48,13 +48,13 @@
 
 
                                                         @*@Html.HiddenFor(model => model.PersonClient.Birthday, new { @value = DateTime.Now, @id = "Birthday" })
-                                            @Html.HiddenFor(model => model.PersonClient.IdContactType, new { @id = "IdContactType" })
-                                            @Html.HiddenFor(model => model.PersonClient.IdPosition, new { @id = "IdPosition" })
-                                            @Html.HiddenFor(model => model.PersonClient.ClientPermission, new { @id = "ClientPermission" })
-                                            @Html.HiddenFor(model => model.PersonClient.IdPersonType, new { @id = "IdPersonType" })
-                                            @Html.HiddenFor(model => model.PersonClient.Address, new { @id = "Address" })
-                                            @Html.HiddenFor(model => model.PersonClient.Email, new { @id = "Email" })
-                                            @Html.HiddenFor(model => model.PersonClient.IdIdentificationType, new { @id = "IdIdentificationType" })*@
+                                                        @Html.HiddenFor(model => model.PersonClient.IdContactType, new { @id = "IdContactType" })
+                                                        @Html.HiddenFor(model => model.PersonClient.IdPosition, new { @id = "IdPosition" })
+                                                        @Html.HiddenFor(model => model.PersonClient.ClientPermission, new { @id = "ClientPermission" })
+                                                        @Html.HiddenFor(model => model.PersonClient.IdPersonType, new { @id = "IdPersonType" })
+                                                        @Html.HiddenFor(model => model.PersonClient.Address, new { @id = "Address" })
+                                                        @Html.HiddenFor(model => model.PersonClient.Email, new { @id = "Email" })
+                                                        @Html.HiddenFor(model => model.PersonClient.IdIdentificationType, new { @id = "IdIdentificationType" })*@
                                                     </div>
                                                 </div>
                                             </div>
@@ -135,8 +135,9 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <div class="control-label">Numero Solicitud:</div>
-                                                        @Html.TextBoxFor(model => model.IdServiceRequest, new { @class = "form-control", @disabled = "disabled" })
+                                                        @*<div class="control-label">Numero Solicitud:</div>*@
+                                                        @Html.HiddenFor(model => model.IdServiceRequest)
+                                                        @*@Html.TextBoxFor(model => model.IdServiceRequest, new { @class = "form-control", @disabled = "disabled" })*@
                                                         @*@Html.ValidationMessageFor(model => model.IdServiceRequest, "", new { @class = "text-danger" })*@
                                                     </div>
                                                 </div>
@@ -183,8 +184,85 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                @Html.Partial("_PartialDetailTask")
+                                            <div class="row pt-2 pb-3">
+
+                                                <div class="col-md-12">
+
+                                                    <div class="accordion border" id="accordionCita">
+                                                        <div class="card collapsed-card">
+                                                            <div class="card-header" id="headingCita">
+                                                                <h2 class="mb-0">
+                                                                    <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardCita" aria-expanded="false" aria-controls="collapseCita">
+                                                                        Cita
+                                                                    </button>
+                                                                </h2>
+                                                            </div>
+
+                                                            <div id="collapseCardCita" class="collapse" aria-labelledby="headingCita" data-parent="#accordionCita">
+
+                                                                <div class="card-body">
+                                                                    @* @Html.Partial("_PartialDetailTask")*@
+
+                                                                    @{
+                                                                        Model.listTask.Add(new MTask());
+                                                                    }
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label>Encargado:</label><br>
+                                                                                @Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione", @value = "" })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Nombres:</div>
+                                                                                <label id="lbPersonEmployeeLastName"></label>
+                                                                                @*@Html.TextBoxFor(model => model.listTask[0].PersonEmployeeName, new { @class = "form-control" })*@
+                                                                                @*@Html.ValidationMessageFor(model => model.listTask[0].PersonEmployeeName, "", new { @class = "text-danger" })*@
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Apellidos:</div>
+                                                                                <label id="lbPersonEmployeeName"></label>
+                                                                                @*@Html.TextBoxFor(model => model.listTask[0].PersonEmployeeLastName, new { @class = "form-control" })*@
+                                                                                @*@Html.ValidationMessageFor(model => model.listTask[0].PersonEmployeeLastName, "", new { @class = "text-danger" })*@
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Fecha:</div>
+                                                                                @Html.TextBoxFor(model => model.listTask[0].DateIni, new { @class = "form-control", @type = "date" })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].DateIni, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Hora:</div>
+                                                                                @Html.TextBoxFor(model => model.listTask[0].HourIni, new { @class = "form-control", @type = "hour" })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].HourIni, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Direccion:</div>
+                                                                                @Html.TextAreaFor(model => model.listTask[0].Place, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].Place, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
                                             </div>
 
                                         </div>
@@ -247,7 +325,9 @@
     <script>
 
         var ListPersons = [];
+        var ListPersonsEmployee = [];
 
+        //CLIENTE--------------------------------------------------------------------------------
         function cargarDataPerson(IdPerson, lstPersons) {
 
             if (IdPerson === "") {
@@ -302,6 +382,49 @@
 
         }
         ObtenerPersonas();
+        //FIN CLIENTE---------------------------------------------------------------------------
+
+        //EMPLEADO--------------------------------------------------------------------------------
+        function cargarDataPersonEmployee(IdPersonEmployee, lstPersonsEmployee) {
+
+            if (IdPersonEmployee === "") {
+                document.getElementById('lbPersonEmployeeName').innerText = "";
+                document.getElementById('lbPersonEmployeeLastName').innerText = "";
+                return false;
+            }
+
+            var objPerson = lstPersonsEmployee.find((m) => m.IdPerson == IdPersonEmployee);
+
+            document.getElementById('lbPersonEmployeeName').innerText = objPerson.Name;
+            document.getElementById('lbPersonEmployeeLastName').innerText = objPerson.LastName;
+
+        }
+
+        function ObtenerPersonasEmployee() {
+
+            ListPersonsEmployee = $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                        data: "{}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        global: false,
+                        async: false,
+                        success: function (data) {
+                            var itemArray = {};
+                            itemArray.IdPerson = "";
+                            itemArray.LastName = "";
+                            itemArray.Name = "";
+                            data.push(itemArray);
+                            data.reverse();
+                            return data;
+                         }
+            }).responseJSON;
+
+        }
+        ObtenerPersonasEmployee();
+        //FIN EMPLEADO---------------------------------------------------------------------------
+
 
         function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
             //debugger;
@@ -333,8 +456,97 @@
         //$("#servicePrestamos").hide();
         $("#serviceLivingTrust").hide();
 
+
+
+        function deleteRowConstructionOption(id) {
+            var controlToBeRemoved = "#trConstructionOption" + id;
+            $(controlToBeRemoved).remove();
+        }
+
+        function addRowConstructionOption() {
+
+
+            @{
+                Model.listConstructionOption.Add(new MServiceConstructionOption());
+            }
+
+            //obtenemos los valores a insertar
+            var strIdConstructionOption = $("#lst_ConstructionOption").val();
+            var strConstructionOption = $('select[id="lst_ConstructionOption"] option:selected').text();
+
+            //debugger;
+            if (strIdConstructionOption != "") {
+
+                //-------------------------
+
+                var index = document.getElementById('TConstructionOption').rows.length;
+                //alert(index);
+
+                var colHid_indexCell = "<td style='display:none'><input name='listConstructionOption.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                var colHid_IdConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].IdConstructionOption' type='hidden' value='" + strIdConstructionOption + "' /></td> ";
+                var colHid_ConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].ConstructionOption' type = 'hidden' value = '" + strConstructionOption + "' /></td> ";
+
+                var colIdConstructionOption = "<td>" + strIdConstructionOption + "</td> ";
+                var colConstructionOption = "<td name='ConstOption'>" + strConstructionOption + "</td> ";
+                var colDelete = "<td><div class='btn_option pt-0'><a onclick='deleteRowConstructionOption(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+                //Busca si la operacion de construccion ya existe para no duplicar
+                var isFound = doSearchConstructionOption(strConstructionOption, "ConstOption", 'TConstructionOption');
+
+                if (!isFound) {
+
+                    //insertamos los valores en la tabla
+                    var newRow = "<tr id='trConstructionOption" + index + "'>" +
+                        colHid_indexCell + colHid_IdConstructionOption + colHid_ConstructionOption +
+                        colIdConstructionOption + colConstructionOption + colDelete + "</tr>";
+
+                    $("#TConstructionOption").append(newRow);
+
+                    //--------------------------
+
+                    //limpiamos los valores ya agregados
+                    document.getElementById('lst_ConstructionOption').value = "";
+                }
+
+            }
+
+        }
+
+        function doSearchConstructionOption(searchText, colName, tableName) {
+
+            const tableReg = document.getElementById(tableName);
+            //const tableReg = document.getElementById('TConstructionOption');
+            let position = 0;
+            let found = false;
+
+            // Recorremos todas las filas con contenido de la tabla
+            for (let i = 1; i < tableReg.rows.length; i++) {
+
+                const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                let searchCol = colName; //+ i.toString();
+                const compareWith = cellsOfRow[searchCol].innerHTML.toLowerCase();
+
+                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
+                if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
+                    found = true;
+                    position = i;
+                    break;
+                }
+
+            }
+            //si lo encontro, se elimina
+            //if (found) {
+            //    //document.getElementById('TConstructionOption').deleteRow(position);
+            //    document.getElementById(tableName).deleteRow(position);
+            //}
+
+            return found;
+        }
+
+
         $(document).ready(function () {
 
+            //CLIENTE INPUTPICKER
             $("#searchPerson").on('change', function () {
                 var IdPerson = $(this).val();
                 cargarDataPerson(IdPerson, ListPersons)
@@ -352,6 +564,26 @@
                 responsive: true
             });
             $('#searchPerson').val("");
+
+            //EMPLEADO INPUTPICKER
+            $("#searchEmployee").on('change', function () {
+                var IdPersonEmployee = $(this).val();
+                cargarDataPersonEmployee(IdPersonEmployee, ListPersonsEmployee)
+            });
+
+            $('#searchEmployee').inputpicker({
+                data: ListPersonsEmployee,
+                fields: ['Name', 'LastName'],
+                fieldText: 'Name',
+                fieldValue: 'IdPerson',
+                headShow: true,
+                filterOpen: true,
+                selectMode: null,
+                pagination: false,
+                responsive: true
+            });
+            $('#searchEmployee').val("");
+
 
 
             // If the checkbox is checked, display the output text
@@ -669,6 +901,36 @@
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de tipos de propiedad");
+                }
+
+            });
+
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"CONSTRUCTIONOPTION",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("");
+                    $("#lst_ConstructionOption").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ConstructionOption").append(option);
+                    });
+
+                    document.getElementById('lst_ConstructionOption').value = "";
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Opciones de Construccion");
                 }
 
             });

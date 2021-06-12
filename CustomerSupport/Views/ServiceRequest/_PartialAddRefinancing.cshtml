@@ -16,7 +16,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Valor Estimado de la Propiedad:</div>
-            @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.Price, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -25,7 +25,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Loan Amount:</div>
-            @Html.TextBoxFor(model => model.LoanAmount, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.LoanAmount, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.LoanAmount, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -34,7 +34,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Deuda Actual de la Hipoteca:</div>
-            @Html.TextBoxFor(model => model.CurrentDebt, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.CurrentDebt, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.CurrentDebt, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -44,14 +44,14 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Ingreso Promedio:</div>
-            @Html.TextBoxFor(model => model.MonthlyIncome, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Deudas/Pagos Promedio:</div>
-            @Html.TextBoxFor(model => model.DebtPayment, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.DebtPayment, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -61,14 +61,14 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">PITI:</div>
-            @Html.TextBoxFor(model => model.Piti, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.Piti, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.Piti, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">RATIOS:</div>
-            @Html.TextBoxFor(model => model.Ratios, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.Ratios, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.Ratios, "", new { @class = "text-danger" })
         </div>
     </div>
