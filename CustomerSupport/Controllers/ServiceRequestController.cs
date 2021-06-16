@@ -50,12 +50,16 @@ namespace CustomerSupport.Controllers
         [HttpPost]
         public ActionResult AddServiceRequest(MServiceRequest objServiceRequest)
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
             try
             {
                 if (ModelState.IsValid)
                 {
                     //valores por defecto
-                    //......
+                    objServiceRequest.IdUser = ((MUser)Session["Usuario"]).IdUser;
                     //------------------
 
                     string mensaje = "";
@@ -145,20 +149,197 @@ namespace CustomerSupport.Controllers
                 paramOutIdServiceRequest.Direction = System.Data.ParameterDirection.InputOutput;
                 paramOutIdServiceRequest.Value = objServiceRequest.IdServiceRequest;
 
-                //SqlParameter paramIdContactType = new SqlParameter();
-                //paramIdContactType.ParameterName = "@IdContactType";
-                //paramIdContactType.SqlDbType = System.Data.SqlDbType.Int;
-                //paramIdContactType.Direction = System.Data.ParameterDirection.Input;
-                //paramIdContactType.IsNullable = true;
-                //if (objPerson.IdContactType != null)
-                //{
-                //    paramIdContactType.Value = objPerson.IdContactType;
-                //}
-                //else
-                //{
-                //    paramIdContactType.Value = DBNull.Value;
-                //}
+                SqlParameter paramIdContactType = new SqlParameter();
+                paramIdContactType.ParameterName = "@IdContactType";
+                if (objServiceRequest.IdContactType != null)
+                {
+                    paramIdContactType.Value = objServiceRequest.IdContactType;
+                }
+                else
+                {
+                    paramIdContactType.Value = DBNull.Value;
+                }
+                SqlParameter paramIdPropertyType = new SqlParameter();
+                paramIdPropertyType.ParameterName = "@IdPropertyType";
+                if (objServiceRequest.IdPropertyType != null)
+                {
+                    paramIdPropertyType.Value = objServiceRequest.IdPropertyType;
+                }
+                else
+                {
+                    paramIdPropertyType.Value = DBNull.Value;
+                }
+                SqlParameter paramPrice = new SqlParameter();
+                paramPrice.ParameterName = "@Price";
+                if (objServiceRequest.Price != null)
+                {
+                    paramPrice.Value = objServiceRequest.Price;
+                }
+                else
+                {
+                    paramPrice.Value = DBNull.Value;
+                }
+                SqlParameter paramClosingCost = new SqlParameter();
+                paramClosingCost.ParameterName = "@ClosingCost";
+                if (objServiceRequest.ClosingCost != null)
+                {
+                    paramClosingCost.Value = objServiceRequest.ClosingCost;
+                }
+                else
+                {
+                    paramClosingCost.Value = DBNull.Value;
+                }
+                SqlParameter paramMonthlyIncome = new SqlParameter();
+                paramMonthlyIncome.ParameterName = "@MonthlyIncome";
+                if (objServiceRequest.MonthlyIncome != null)
+                {
+                    paramMonthlyIncome.Value = objServiceRequest.MonthlyIncome;
+                }
+                else
+                {
+                    paramMonthlyIncome.Value = DBNull.Value;
+                }
+                SqlParameter paramDebtPayment = new SqlParameter();
+                paramDebtPayment.ParameterName = "@DebtPayment";
+                if (objServiceRequest.DebtPayment != null)
+                {
+                    paramDebtPayment.Value = objServiceRequest.DebtPayment;
+                }
+                else
+                {
+                    paramDebtPayment.Value = DBNull.Value;
+                }
+                SqlParameter paramPiti = new SqlParameter();
+                paramPiti.ParameterName = "@Piti";
+                if (objServiceRequest.Piti != null)
+                {
+                    paramPiti.Value = objServiceRequest.Piti;
+                }
+                else
+                {
+                    paramPiti.Value = DBNull.Value;
+                }
+                SqlParameter paramRatios = new SqlParameter();
+                paramRatios.ParameterName = "@Ratios";
+                if (objServiceRequest.Ratios != null)
+                {
+                    paramRatios.Value = objServiceRequest.Ratios;
+                }
+                else
+                {
+                    paramRatios.Value = DBNull.Value;
+                }
+                SqlParameter paramEstimatedValue = new SqlParameter();
+                paramEstimatedValue.ParameterName = "@EstimatedValue";
+                if (objServiceRequest.EstimatedValue != null)
+                {
+                    paramEstimatedValue.Value = objServiceRequest.EstimatedValue;
+                }
+                else
+                {
+                    paramEstimatedValue.Value = DBNull.Value;
+                }
+                SqlParameter paramLoanAmount = new SqlParameter();
+                paramLoanAmount.ParameterName = "@LoanAmount";
+                if (objServiceRequest.LoanAmount != null)
+                {
+                    paramLoanAmount.Value = objServiceRequest.LoanAmount;
+                }
+                else
+                {
+                    paramLoanAmount.Value = DBNull.Value;
+                }
+                SqlParameter paramCurrentDebt = new SqlParameter();
+                paramCurrentDebt.ParameterName = "@CurrentDebt";
+                if (objServiceRequest.CurrentDebt != null)
+                {
+                    paramCurrentDebt.Value = objServiceRequest.CurrentDebt;
+                }
+                else
+                {
+                    paramCurrentDebt.Value = DBNull.Value;
+                }
+                SqlParameter paramPlane = new SqlParameter();
+                paramPlane.ParameterName = "@Plane";
+                if (objServiceRequest.Plane != null)
+                {
+                    paramPlane.Value = objServiceRequest.Plane;
+                }
+                else
+                {
+                    paramPlane.Value = DBNull.Value;
+                }
+                SqlParameter paramFinancing = new SqlParameter();
+                paramFinancing.ParameterName = "@Financing";
+                if (objServiceRequest.Financing != null)
+                {
+                    paramFinancing.Value = objServiceRequest.Financing;
+                }
+                else
+                {
+                    paramFinancing.Value = DBNull.Value;
+                }
 
+                SqlParameter paramAddress = new SqlParameter();
+                paramAddress.ParameterName = "@Address";
+                if (objServiceRequest.Address != null)
+                {
+                    paramAddress.Value = objServiceRequest.Address;
+                }
+                else
+                {
+                    paramAddress.Value = DBNull.Value;
+                }
+                SqlParameter paramAssets = new SqlParameter();
+                paramAssets.ParameterName = "@Assets";
+                if (objServiceRequest.Assets != null)
+                {
+                    paramAssets.Value = objServiceRequest.Assets;
+                }
+                else
+                {
+                    paramAssets.Value = DBNull.Value;
+                }
+                SqlParameter paramBeneficiaries = new SqlParameter();
+                paramBeneficiaries.ParameterName = "@Beneficiaries";
+                if (objServiceRequest.Beneficiaries != null)
+                {
+                    paramBeneficiaries.Value = objServiceRequest.Beneficiaries;
+                }
+                else
+                {
+                    paramBeneficiaries.Value = DBNull.Value;
+                }
+                SqlParameter paramProcess = new SqlParameter();
+                paramProcess.ParameterName = "@Process";
+                if (objServiceRequest.Process != null)
+                {
+                    paramProcess.Value = objServiceRequest.Process;
+                }
+                else
+                {
+                    paramProcess.Value = DBNull.Value;
+                }
+                SqlParameter paramWish = new SqlParameter();
+                paramWish.ParameterName = "@Wish";
+                if (objServiceRequest.Wish != null)
+                {
+                    paramWish.Value = objServiceRequest.Wish;
+                }
+                else
+                {
+                    paramWish.Value = DBNull.Value;
+                }
+                SqlParameter paramNote = new SqlParameter();
+                paramNote.ParameterName = "@Note";
+                if (objServiceRequest.Note != null)
+                {
+                    paramNote.Value = objServiceRequest.Note;
+                }
+                else
+                {
+                    paramNote.Value = DBNull.Value;
+                }
 
                 SqlResultService = db.Database.ExecuteSqlCommand("GNTranServiceRequest @TransactionType, @IdServiceRequest OUT, @IdServiceType, @IdServiceStatus, @IdPerson " +
                                                         " ,@IdContactType, @IdPropertyType ,@Address, @Price, @ClosingCost, @MonthlyIncome, @DebtPayment " +
@@ -170,25 +351,25 @@ namespace CustomerSupport.Controllers
                             new SqlParameter("@IdServiceType", objServiceRequest.IdServiceType),
                             new SqlParameter("@IdServiceStatus", objServiceRequest.IdServiceStatus),
                             new SqlParameter("@IdPerson", objServiceRequest.IdPerson),
-                            new SqlParameter("@IdContactType", objServiceRequest.IdContactType),
-                            new SqlParameter("@IdPropertyType", objServiceRequest.IdPropertyType),
-                            new SqlParameter("@Address", objServiceRequest.Address),
-                            new SqlParameter("@Price", objServiceRequest.Price),
-                            new SqlParameter("@ClosingCost", objServiceRequest.ClosingCost),
-                            new SqlParameter("@MonthlyIncome", objServiceRequest.MonthlyIncome),
-                            new SqlParameter("@DebtPayment", objServiceRequest.DebtPayment),
-                            new SqlParameter("@Piti", objServiceRequest.Piti),
-                            new SqlParameter("@Ratios", objServiceRequest.Ratios),
-                            new SqlParameter("@EstimatedValue", objServiceRequest.EstimatedValue),
-                            new SqlParameter("@LoanAmount", objServiceRequest.LoanAmount),
-                            new SqlParameter("@CurrentDebt", objServiceRequest.CurrentDebt),
-                            new SqlParameter("@Assets", objServiceRequest.Assets),
-                            new SqlParameter("@Beneficiaries", objServiceRequest.Beneficiaries),
-                            new SqlParameter("@Process", objServiceRequest.Process),
-                            new SqlParameter("@Wish", objServiceRequest.Wish),
-                            new SqlParameter("@Plane", objServiceRequest.Plane),
-                            new SqlParameter("@Financing", objServiceRequest.Financing),
-                            new SqlParameter("@Note", objServiceRequest.Note),
+                            paramIdContactType,
+                            paramIdPropertyType,
+                            paramAddress,
+                            paramPrice,
+                            paramClosingCost,
+                            paramMonthlyIncome,
+                            paramDebtPayment,
+                            paramPiti,
+                            paramRatios,
+                            paramEstimatedValue,
+                            paramLoanAmount,
+                            paramCurrentDebt,
+                            paramAssets,
+                            paramBeneficiaries,
+                            paramProcess,
+                            paramWish,
+                            paramPlane,
+                            paramFinancing,
+                            paramNote,
                             new SqlParameter("@IdUser", objServiceRequest.IdUser)
                         }
                     );
