@@ -31,6 +31,9 @@ namespace CustomerSupport.Models
         public Nullable<decimal> Price { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        public Nullable<decimal> DownPayment { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> ClosingCost { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]

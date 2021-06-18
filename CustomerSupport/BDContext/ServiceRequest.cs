@@ -28,6 +28,7 @@ namespace CustomerSupport.BDContext
         public Nullable<int> IdPropertyType { get; set; }
         public string Address { get; set; }
         public Nullable<decimal> Price { get; set; }
+        public Nullable<decimal> DownPayment { get; set; }
         public Nullable<decimal> ClosingCost { get; set; }
         public Nullable<decimal> MonthlyIncome { get; set; }
         public Nullable<decimal> DebtPayment { get; set; }

@@ -134,76 +134,76 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BDContext\Catalog.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\CatalogDetail.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\Country.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListCountry_Result.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListPersonContact_Result.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListPerson_Result.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListServiceConstructionOption_Result.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListServiceRequest_Result.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListTask_Result.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListUserAcces_Result.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListUser_Result.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\MMEnterprices.Context.cs">
+    <Compile Include="BDContext\MMEnterprises.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MMEnterprices.Context.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\MMEnterprices.cs">
+    <Compile Include="BDContext\MMEnterprises.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\MMEnterprices.Designer.cs">
+    <Compile Include="BDContext\MMEnterprises.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MMEnterprices.edmx</DependentUpon>
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
     </Compile>
     <Compile Include="BDContext\OptionMenu.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\Person.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\PersonContact.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\ServiceRequest.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\Task.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\User.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\UserAcces.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\VWListCatalog.cs">
-      <DependentUpon>MMEnterprices.tt</DependentUpon>
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -229,15 +229,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BDContext\MMEnterprices.Context.tt">
+    <Content Include="BDContext\MMEnterprises.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MMEnterprices.edmx</DependentUpon>
-      <LastGenOutput>MMEnterprices.Context.cs</LastGenOutput>
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
+      <LastGenOutput>MMEnterprises.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="BDContext\MMEnterprices.tt">
+    <Content Include="BDContext\MMEnterprises.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MMEnterprices.edmx</DependentUpon>
-      <LastGenOutput>MMEnterprices.cs</LastGenOutput>
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
+      <LastGenOutput>MMEnterprises.cs</LastGenOutput>
     </Content>
     <Content Include="Content\assets\css\animate.css" />
     <Content Include="Content\assets\css\bootstrap.css" />
@@ -476,12 +476,12 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <EntityDeploy Include="BDContext\MMEnterprices.edmx">
+    <EntityDeploy Include="BDContext\MMEnterprises.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MMEnterprices.Designer.cs</LastGenOutput>
+      <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="BDContext\MMEnterprices.edmx.diagram">
-      <DependentUpon>MMEnterprices.edmx</DependentUpon>
+    <Content Include="BDContext\MMEnterprises.edmx.diagram">
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

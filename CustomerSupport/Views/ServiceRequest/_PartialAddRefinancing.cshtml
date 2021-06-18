@@ -11,13 +11,22 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="control-label">Direccion de la Propiedad:</div>
+            @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = 3, @cols = 10, @id="inpRefin_Address" })
+            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Valor Estimado de la Propiedad:</div>
-            @Html.TextBoxFor(model => model.Price, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
-            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(model => model.EstimatedValue, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_EstimatedValue" })
+            @Html.ValidationMessageFor(model => model.EstimatedValue, "", new { @class = "text-danger" })
         </div>
     </div>
     @*</div>
@@ -44,14 +53,14 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Ingreso Promedio:</div>
-            @Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+            @Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_MonthlyIncome" })
             @Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Deudas/Pagos Promedio:</div>
-            @Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+            @Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_DebtPayment" })
             @Html.ValidationMessageFor(model => model.DebtPayment, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -61,14 +70,14 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">PITI:</div>
-            @Html.TextBoxFor(model => model.Piti, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+            @Html.TextBoxFor(model => model.Piti, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_Piti" })
             @Html.ValidationMessageFor(model => model.Piti, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">RATIOS:</div>
-            @Html.TextBoxFor(model => model.Ratios, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+            @Html.TextBoxFor(model => model.Ratios, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_Ratios" })
             @Html.ValidationMessageFor(model => model.Ratios, "", new { @class = "text-danger" })
         </div>
     </div>

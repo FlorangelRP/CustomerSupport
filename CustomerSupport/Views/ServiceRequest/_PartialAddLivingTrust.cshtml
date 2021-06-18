@@ -1,6 +1,6 @@
 ﻿@model CustomerSupport.Models.MServiceRequest
 
-<div class="row">
+@*<div class="row">
     <div class="col-md-6">
         <div class="form-group">
             <div class="control-label">Tipo de Propiedad:</div>
@@ -10,13 +10,13 @@
             @Html.ValidationMessageFor(model => model.IdPropertyType, "", new { @class = "text-danger" })
         </div>
     </div>
-</div>
+</div>*@
 
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
             <div class="control-label">Que tipos de bienes desea agregar?</div>
-            @Html.TextAreaFor(model => model.Assets, new { @class = "form-constrol", @rows = 3, @cols = 10 })
+            @Html.TextAreaFor(model => model.Assets, new { @class = "form-control", @rows = 3, @cols = 10 })
             @Html.ValidationMessageFor(model => model.Assets, "", new { @class = "text-danger" })
         </div>
     </div>

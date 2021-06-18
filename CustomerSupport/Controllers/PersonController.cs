@@ -148,47 +148,50 @@ namespace CustomerSupport.Controllers
                 {
                     if (objPerson.listPersonContact != null)
                     {
-
-                        //si va a actualizar, se eliminan los telefonos de contacto para volver a insertar
-                        if (TransactionType == "U")
-                        {
-                            SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
-                            paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
-
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
-                                                                        ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
-                                new SqlParameter[]{
-                                    new SqlParameter("@TransactionType", TransactionType),
-                                    paramOutIdContact,
-                                    new SqlParameter("@IdPerson", IdPerson),
-                                    new SqlParameter("@IdPhoneNumberType", DBNull.Value),
-                                    new SqlParameter("@strIdIsoCountry", DBNull.Value),
-                                    new SqlParameter("@strPhoneNumber", DBNull.Value),
-                                    new SqlParameter("@btStatus", DBNull.Value)
-                                }
-                            );
-                        }
-
-                        //Inserta los telefonos de contacto
-                        foreach (var item in objPerson.listPersonContact)
+                        if (objPerson.listPersonContact.Count()>0)
                         {
 
-                            SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
-                            paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+                            //si va a actualizar, se eliminan los telefonos de contacto para volver a insertar
+                            if (TransactionType == "U")
+                            {
+                                SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
+                                paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
 
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
-                                                                        ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
-                                new SqlParameter[]{
-                                    new SqlParameter("@TransactionType", "I"),
-                                    paramOutIdContact,
-                                    new SqlParameter("@IdPerson", IdPerson),
-                                    new SqlParameter("@IdPhoneNumberType", item.IdPhoneNumberType),
-                                    new SqlParameter("@strIdIsoCountry", item.IdIsoCountry),
-                                    new SqlParameter("@strPhoneNumber", item.PhoneNumber),
-                                    new SqlParameter("@btStatus", true)
-                                }
-                            );
-                            IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
+                                SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
+                                                                            ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
+                                    new SqlParameter[]{
+                                        new SqlParameter("@TransactionType", TransactionType),
+                                        paramOutIdContact,
+                                        new SqlParameter("@IdPerson", IdPerson),
+                                        new SqlParameter("@IdPhoneNumberType", DBNull.Value),
+                                        new SqlParameter("@strIdIsoCountry", DBNull.Value),
+                                        new SqlParameter("@strPhoneNumber", DBNull.Value),
+                                        new SqlParameter("@btStatus", DBNull.Value)
+                                    }
+                                );
+                            }
+
+                            //Inserta los telefonos de contacto
+                            foreach (var item in objPerson.listPersonContact)
+                            {
+
+                                SqlParameter paramOutIdContact = new SqlParameter("@IdContact", System.Data.SqlDbType.Int);
+                                paramOutIdContact.Direction = System.Data.ParameterDirection.Output;
+
+                                SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonContact @TransactionType, @IdContact OUT, @IdPerson " +
+                                                                            ", @IdPhoneNumberType, @strIdIsoCountry, @strPhoneNumber, @btStatus ",
+                                    new SqlParameter[]{
+                                        new SqlParameter("@TransactionType", "I"),
+                                        paramOutIdContact,
+                                        new SqlParameter("@IdPerson", IdPerson),
+                                        new SqlParameter("@IdPhoneNumberType", item.IdPhoneNumberType),
+                                        new SqlParameter("@strIdIsoCountry", item.IdIsoCountry),
+                                        new SqlParameter("@strPhoneNumber", item.PhoneNumber),
+                                        new SqlParameter("@btStatus", true)
+                                    }
+                                );
+                                IdContact = Int32.Parse(paramOutIdContact.Value.ToString());
+                            }
                         }
                     }
 

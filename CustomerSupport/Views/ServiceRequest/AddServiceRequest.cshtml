@@ -43,7 +43,7 @@
                                                 <div class="col-md-10">
                                                     <div class="form-group">
                                                         <label>Cliente:</label><br>
-                                                        @Html.TextBoxFor(model => model.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })
+                                                        @Html.TextBoxFor(model => model.IdPerson, new { @id = "searchPerson", @class = "form-control", @placeholder = "Seleccione" })
                                                         @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
 
 
@@ -219,7 +219,7 @@
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <label>Representante:</label><br>
-                                                                                @Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione", @value = "" })
+                                                                                @Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @class = "form-control", @placeholder = "Seleccione" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })
                                                                             </div>
                                                                         </div>
@@ -258,13 +258,13 @@
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Hora:</div>
-                                                                                @Html.TextBoxFor(model => model.listTask[0].HourIni, new { @class = "form-control", @type = "hour" })
+                                                                                @Html.TextBoxFor(model => model.listTask[0].HourIni, new { @class = "form-control", @type = "time" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].HourIni, "", new { @class = "text-danger" })
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <div class="control-label">Direccion:</div>
+                                                                                <div class="control-label">Lugar:</div>
                                                                                 @Html.TextAreaFor(model => model.listTask[0].Place, new { @class = "form-control", @rows = 3, @cols = 10 })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].Place, "", new { @class = "text-danger" })
                                                                             </div>
@@ -655,6 +655,7 @@
 
             });
 
+
             $("#lst_ServiceType").on('change', function () {
 
                 var selectValue = $(this).val();
@@ -692,14 +693,13 @@
                     showServiceType($('select[id="lst_ServiceType"] option:selected').text());
                 },
                 error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de tipos de identificacion");
+                    $("#error > span").text("Error al llenar lista de Servicios");
                 }
 
             });
 
             $("#lst_ContactType").on('change', function () {
                 var selectValue = $(this).val();
-                //$("#inpIdContactType").val(selectValue);
                 changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", selectValue);
             });
 
@@ -729,14 +729,14 @@
                     changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", "");
                 },
                 error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de cargos");
+                    $("#error > span").text("Error al llenar lista de Via de Contacto");
                 }
 
             });
 
             $("#lst_ServiceStatus").on('change', function () {
                 var selectValue = $(this).val();
-                changeCodeInputHiddenList("lst_ServiceStatus", "IdServiceStatus", selectValue);
+                changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", selectValue);
             });
 
             $.ajax({
@@ -763,7 +763,7 @@
 
                     document.getElementById('lst_ServiceStatus').value = "0";
 
-                    changeCodeInputHiddenList("lst_ServiceStatus", "IdServiceStatus", "");
+                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de Estados de Solicitud");
@@ -774,7 +774,6 @@
 
             $("#lst_PropertyType").on('change', function () {
                 var selectValue = $(this).val();
-                //$("#inpIdPropertyType").val(selectValue);
                 changeCodeInputHiddenList("lst_PropertyType", "inpIdPropertyType", selectValue);
             });
 
@@ -811,7 +810,6 @@
 
             $("#lstBuild_PropertyType").on('change', function () {
                 var selectValue = $(this).val();
-                //$("#inpBuild_IdPropertyType").val(selectValue);
                 changeCodeInputHiddenList("lstBuild_PropertyType", "inpBuild_IdPropertyType", selectValue);
             });
 
@@ -831,7 +829,7 @@
                     $(msg).each(function () {
                         var option = $(document.createElement('option'));
                         option.text(this.DetailDesc);
-                        option.val(this.IdCatalogDetail); //Identity
+                        option.val(this.IdCatalogDetail); //Identitys
 
                         $("#lstBuild_PropertyType").append(option);
                     });
@@ -846,10 +844,8 @@
 
             });
 
-
             $("#lstRefin_PropertyType").on('change', function () {
                 var selectValue = $(this).val();
-                //$("#inpRefin_IdPropertyType").val(selectValue);
                 changeCodeInputHiddenList("lstRefin_PropertyType", "inpRefin_IdPropertyType", selectValue);
             });
 
@@ -884,14 +880,12 @@
 
             });
 
+            //$("#lstLiv_PropertyType").on('change', function () {
+            //    var selectValue = $(this).val();
+            //    changeCodeInputHiddenList("lstLiv_PropertyType", "inpLiv_IdPropertyType", selectValue);
+            //});
 
-            $("#lstLiv_PropertyType").on('change', function () {
-                var selectValue = $(this).val();
-                //$("#inpLiv_IdPropertyType").val(selectValue);
-                changeCodeInputHiddenList("lstLiv_PropertyType", "inpLiv_IdPropertyType", selectValue);
-            });
-
-            $.ajax({
+            @*$.ajax({
                 type: "GET",
                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PROPERTYTYPE",
                 data: "{}",
@@ -920,7 +914,7 @@
                     $("#error > span").text("Error al llenar lista de tipos de propiedad");
                 }
 
-            });
+            });*@
 
 
             $.ajax({

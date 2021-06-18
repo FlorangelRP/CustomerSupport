@@ -69,7 +69,7 @@ namespace CustomerSupport.Controllers
                     if (resultDb != 0)
                     {
                         TempData["Success"] = mensaje + "Nro. de servicio generado : (" + IdService + ").";
-                        return RedirectToAction("AddEmployee");
+                        return RedirectToAction("AddServiceRequest");
                     }
                     else
                     {
@@ -178,6 +178,16 @@ namespace CustomerSupport.Controllers
                 else
                 {
                     paramPrice.Value = DBNull.Value;
+                }
+                SqlParameter paramDownPayment = new SqlParameter();
+                paramDownPayment.ParameterName = "@DownPayment";
+                if (objServiceRequest.DownPayment != null)
+                {
+                    paramDownPayment.Value = objServiceRequest.DownPayment;
+                }
+                else
+                {
+                    paramDownPayment.Value = DBNull.Value;
                 }
                 SqlParameter paramClosingCost = new SqlParameter();
                 paramClosingCost.ParameterName = "@ClosingCost";
@@ -342,7 +352,7 @@ namespace CustomerSupport.Controllers
                 }
 
                 SqlResultService = db.Database.ExecuteSqlCommand("GNTranServiceRequest @TransactionType, @IdServiceRequest OUT, @IdServiceType, @IdServiceStatus, @IdPerson " +
-                                                        " ,@IdContactType, @IdPropertyType ,@Address, @Price, @ClosingCost, @MonthlyIncome, @DebtPayment " +
+                                                        " ,@IdContactType, @IdPropertyType ,@Address, @Price, @DownPayment, @ClosingCost, @MonthlyIncome, @DebtPayment " +
                                                         " ,@Piti, @Ratios, @EstimatedValue, @LoanAmount, @CurrentDebt, @Assets, @Beneficiaries " +
                                                         " ,@Process, @Wish, @Plane, @Financing, @Note, @IdUser ",
                         new SqlParameter[]{
@@ -355,6 +365,7 @@ namespace CustomerSupport.Controllers
                             paramIdPropertyType,
                             paramAddress,
                             paramPrice,
+                            paramDownPayment,
                             paramClosingCost,
                             paramMonthlyIncome,
                             paramDebtPayment,
@@ -381,102 +392,107 @@ namespace CustomerSupport.Controllers
                     //OPCIONES DE CONSTRUCCION
                     if (objServiceRequest.listConstructionOption != null)
                     {
-
-                        //si va a actualizar, se eliminan las opciones de construccion, para volverlas a insertar
-                        if (TransactionType == "U")
+                        if (objServiceRequest.listConstructionOption.Count()>0)
                         {
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceConstructionOption @TransactionType, @IdServiceRequest, @IdConstructionOption ",
-                                new SqlParameter[]{
-                                    new SqlParameter("@TransactionType", TransactionType),
-                                    new SqlParameter("@IdServiceRequest", IdServiceRequest),
-                                    new SqlParameter("@IdConstructionOption", DBNull.Value)
-                                }
-                            );
-                        }
+                            //si va a actualizar, se eliminan las opciones de construccion, para volverlas a insertar
+                            if (TransactionType == "U")
+                            {
+                                SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceConstructionOption @TransactionType, @IdServiceRequest, @IdConstructionOption ",
+                                    new SqlParameter[]{
+                                        new SqlParameter("@TransactionType", TransactionType),
+                                        new SqlParameter("@IdServiceRequest", IdServiceRequest),
+                                        new SqlParameter("@IdConstructionOption", DBNull.Value)
+                                    }
+                                );
+                            }
 
-                        //Inserta las opciones de construccion
-                        foreach (var item in objServiceRequest.listConstructionOption)
-                        {
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceConstructionOption @TransactionType, @IdServiceRequest, @IdConstructionOption ",
-                                new SqlParameter[]{
-                                    new SqlParameter("@TransactionType", TransactionType),
-                                    new SqlParameter("@IdServiceRequest", IdServiceRequest),
-                                    new SqlParameter("@IdConstructionOption", item.IdConstructionOption)
-                                }
-                            );
+                            //Inserta las opciones de construccion
+                            foreach (var item in objServiceRequest.listConstructionOption)
+                            {
+                                SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceConstructionOption @TransactionType, @IdServiceRequest, @IdConstructionOption ",
+                                    new SqlParameter[]{
+                                        new SqlParameter("@TransactionType", TransactionType),
+                                        new SqlParameter("@IdServiceRequest", IdServiceRequest),
+                                        new SqlParameter("@IdConstructionOption", item.IdConstructionOption)
+                                    }
+                                );
+                            }
                         }
                     }
 
                     //ACTIVIDAD/CITA
                     if (objServiceRequest.listTask != null)
                     {
-                        int IdTask;
-
-                        //INVOLUCRADOS EN LA TASK
-                        //Si esta actualizando, elimina los involucrados para volver a insertar (Por ahora 1 Solo)
-                        if (TransactionType == "U")
+                        if (objServiceRequest.listTask.Count()>0)
                         {
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson ",
-                                new SqlParameter[]{
-                                new SqlParameter("@TransactionType", TransactionType),
-                                new SqlParameter("@IdTask", ((MTask)objServiceRequest.listTask.First()).IdTask),
-                                new SqlParameter("@IdPerson", DBNull.Value)
-                                }
-                            );
-                        }
+                            int IdTask;
 
-                        //(Inserta/Actualiza) las actividades del Servicio
-                        foreach (var item in objServiceRequest.listTask)
-                        {
-                            SqlParameter paramOutIdTask = new SqlParameter();
-                            paramOutIdTask.ParameterName = "@IdTask";
-                            paramOutIdTask.SqlDbType = System.Data.SqlDbType.Int;
-                            paramOutIdTask.Direction = System.Data.ParameterDirection.InputOutput;
-                            paramOutIdTask.Value = item.IdTask;
-
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranTask @TransactionType, @IdTask OUT, @IdUser, @Activity " +
-                                                                    " ,@DateIni, @DateEnd, @HourIni, @HourEnd, @Place, @Status ",
-                                new SqlParameter[]{
-                                    new SqlParameter("@TransactionType", TransactionType),
-                                    paramOutIdTask,
-                                    new SqlParameter("@IdUser", item.IdUser),
-                                    new SqlParameter("@Activity", item.Activity),
-                                    new SqlParameter("@DateIni", item.DateIni),
-                                    new SqlParameter("@DateEnd", item.DateEnd),
-                                    new SqlParameter("@HourIni", item.HourIni),
-                                    new SqlParameter("@HourEnd", item.HourEnd),
-                                    new SqlParameter("@Place", item.Place),
-                                    new SqlParameter("@Status", item.Status)
-                                }
-                            );
-
-                            IdTask = Int32.Parse(paramOutIdServiceRequest.Value.ToString());
-
-
-                            if (IdTask != 0) 
+                            //INVOLUCRADOS EN LA TASK
+                            //Si esta actualizando, elimina los involucrados para volver a insertar (Por ahora 1 Solo)
+                            if (TransactionType == "U")
                             {
-                                //Se asocia la actividad con el servicio si esta insertando
-                                if (TransactionType == "I")
-                                {
-                                    SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceRequestTask @TransactionType, @IdTask, @IdServiceRequest ",
-                                        new SqlParameter[]{
-                                        new SqlParameter("@TransactionType", TransactionType),
-                                        new SqlParameter("@IdTask", IdTask),
-                                        new SqlParameter("@IdServiceRequest", IdServiceRequest)
-                                        }
-                                    );
-                                }
-
-                                //INVOLUCRADOS EN LA TASK                                
-                                //Inserta los involucarados
                                 SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson ",
                                     new SqlParameter[]{
-                                            new SqlParameter("@TransactionType", TransactionType),
-                                            new SqlParameter("@IdTask", IdTask),
-                                            new SqlParameter("@IdPerson", item.IdPersonEmployee)
+                                        new SqlParameter("@TransactionType", TransactionType),
+                                        new SqlParameter("@IdTask", ((MTask)objServiceRequest.listTask.First()).IdTask),
+                                        new SqlParameter("@IdPerson", DBNull.Value)
+                                    }
+                                );
+                            }
+
+                            //(Inserta/Actualiza) las actividades del Servicio
+                            foreach (var item in objServiceRequest.listTask)
+                            {
+                                SqlParameter paramOutIdTask = new SqlParameter();
+                                paramOutIdTask.ParameterName = "@IdTask";
+                                paramOutIdTask.SqlDbType = System.Data.SqlDbType.Int;
+                                paramOutIdTask.Direction = System.Data.ParameterDirection.InputOutput;
+                                paramOutIdTask.Value = item.IdTask;
+
+                                SqlResult = db.Database.ExecuteSqlCommand("GNTranTask @TransactionType, @IdTask OUT, @IdUser, @Activity " +
+                                                                        " ,@DateIni, @DateEnd, @HourIni, @HourEnd, @Place, @Status ",
+                                    new SqlParameter[]{
+                                        new SqlParameter("@TransactionType", TransactionType),
+                                        paramOutIdTask,
+                                        new SqlParameter("@IdUser", objServiceRequest.IdUser), //Debe ser item.IdUser si se graba desde otra vista
+                                        new SqlParameter("@Activity", item.Activity),
+                                        new SqlParameter("@DateIni", item.DateIni),
+                                        new SqlParameter("@DateEnd", item.DateIni), //Debe ser item.DateEnd cuando el campo en la vista esta habilitado
+                                        new SqlParameter("@HourIni", item.HourIni),
+                                        new SqlParameter("@HourEnd", item.HourIni), //Debe ser item.HourEnd cuando el campo en la vista esta habilitado
+                                        new SqlParameter("@Place", item.Place),
+                                        new SqlParameter("@Status", true) //Debe ser item.Status cuando el campo en la vista esta habilitado
                                     }
                                 );
 
+                                IdTask = Int32.Parse(paramOutIdTask.Value.ToString());
+
+
+                                if (IdTask != 0)
+                                {
+                                    //Se asocia la actividad con el servicio si esta insertando
+                                    if (TransactionType == "I")
+                                    {
+                                        SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceRequestTask @TransactionType, @IdTask, @IdServiceRequest ",
+                                            new SqlParameter[]{
+                                                new SqlParameter("@TransactionType", TransactionType),
+                                                new SqlParameter("@IdTask", IdTask),
+                                                new SqlParameter("@IdServiceRequest", IdServiceRequest)
+                                            }
+                                        );
+                                    }
+
+                                    //INVOLUCRADOS EN LA TASK                                
+                                    //Inserta los involucarados
+                                    SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson ",
+                                        new SqlParameter[]{
+                                            new SqlParameter("@TransactionType", TransactionType),
+                                            new SqlParameter("@IdTask", IdTask),
+                                            new SqlParameter("@IdPerson", item.IdPersonEmployee)
+                                        }
+                                    );
+
+                                }
                             }
                         }
                     }

@@ -270,6 +270,23 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranPersonContact", transactionTypeParameter, idContact, idPersonParameter, idPhoneNumberTypeParameter, strIdIsoCountryParameter, strPhoneNumberParameter, btStatusParameter);
         }
     
+        public virtual int GNTranPersonTask(string transactionType, Nullable<int> idTask, Nullable<int> idPerson)
+        {
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
+            var idTaskParameter = idTask.HasValue ?
+                new ObjectParameter("IdTask", idTask) :
+                new ObjectParameter("IdTask", typeof(int));
+    
+            var idPersonParameter = idPerson.HasValue ?
+                new ObjectParameter("IdPerson", idPerson) :
+                new ObjectParameter("IdPerson", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranPersonTask", transactionTypeParameter, idTaskParameter, idPersonParameter);
+        }
+    
         public virtual int GNTranServiceConstructionOption(string transactionType, Nullable<int> idServiceRequest, Nullable<int> idConstructionOption)
         {
             var transactionTypeParameter = transactionType != null ?
@@ -287,7 +304,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranServiceConstructionOption", transactionTypeParameter, idServiceRequestParameter, idConstructionOptionParameter);
         }
     
-        public virtual int GNTranServiceRequest(string transactionType, ObjectParameter idServiceRequest, Nullable<int> idServiceType, Nullable<int> idServiceStatus, Nullable<int> idPerson, Nullable<int> idContactType, Nullable<int> idPropertyType, string address, Nullable<decimal> price, Nullable<decimal> closingCost, Nullable<decimal> monthlyIncome, Nullable<decimal> debtPayment, Nullable<decimal> piti, Nullable<decimal> ratios, Nullable<decimal> estimatedValue, Nullable<decimal> loanAmount, Nullable<decimal> currentDebt, string assets, string beneficiaries, string process, string wish, Nullable<bool> plane, Nullable<bool> financing, string note, Nullable<int> idUser)
+        public virtual int GNTranServiceRequest(string transactionType, ObjectParameter idServiceRequest, Nullable<int> idServiceType, Nullable<int> idServiceStatus, Nullable<int> idPerson, Nullable<int> idContactType, Nullable<int> idPropertyType, string address, Nullable<decimal> price, Nullable<decimal> downPayment, Nullable<decimal> closingCost, Nullable<decimal> monthlyIncome, Nullable<decimal> debtPayment, Nullable<decimal> piti, Nullable<decimal> ratios, Nullable<decimal> estimatedValue, Nullable<decimal> loanAmount, Nullable<decimal> currentDebt, string assets, string beneficiaries, string process, string wish, Nullable<bool> plane, Nullable<bool> financing, string note, Nullable<int> idUser)
         {
             var transactionTypeParameter = transactionType != null ?
                 new ObjectParameter("TransactionType", transactionType) :
@@ -320,6 +337,10 @@ namespace CustomerSupport.BDContext
             var priceParameter = price.HasValue ?
                 new ObjectParameter("Price", price) :
                 new ObjectParameter("Price", typeof(decimal));
+    
+            var downPaymentParameter = downPayment.HasValue ?
+                new ObjectParameter("DownPayment", downPayment) :
+                new ObjectParameter("DownPayment", typeof(decimal));
     
             var closingCostParameter = closingCost.HasValue ?
                 new ObjectParameter("ClosingCost", closingCost) :
@@ -385,7 +406,7 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdUser", idUser) :
                 new ObjectParameter("IdUser", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranServiceRequest", transactionTypeParameter, idServiceRequest, idServiceTypeParameter, idServiceStatusParameter, idPersonParameter, idContactTypeParameter, idPropertyTypeParameter, addressParameter, priceParameter, closingCostParameter, monthlyIncomeParameter, debtPaymentParameter, pitiParameter, ratiosParameter, estimatedValueParameter, loanAmountParameter, currentDebtParameter, assetsParameter, beneficiariesParameter, processParameter, wishParameter, planeParameter, financingParameter, noteParameter, idUserParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranServiceRequest", transactionTypeParameter, idServiceRequest, idServiceTypeParameter, idServiceStatusParameter, idPersonParameter, idContactTypeParameter, idPropertyTypeParameter, addressParameter, priceParameter, downPaymentParameter, closingCostParameter, monthlyIncomeParameter, debtPaymentParameter, pitiParameter, ratiosParameter, estimatedValueParameter, loanAmountParameter, currentDebtParameter, assetsParameter, beneficiariesParameter, processParameter, wishParameter, planeParameter, financingParameter, noteParameter, idUserParameter);
         }
     
         public virtual int GNTranServiceRequestTask(string transactionType, Nullable<int> idTask, Nullable<int> idServiceRequest)
