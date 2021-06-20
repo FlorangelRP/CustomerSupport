@@ -18,6 +18,7 @@ namespace CustomerSupport.Controllers
 
         public ActionResult GetListServiceRequest()
         {
+
             List<MServiceRequest> ListServiceRequest = new List<MServiceRequest>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
             ListServiceRequest = fnListServiceRequest(null, null,null,null,null);
@@ -73,5 +74,17 @@ namespace CustomerSupport.Controllers
 
         }
 
+        // GET: Employee/DetailServiceRequest/5
+        public ActionResult DetailServiceRequest(int id)
+        {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            MServiceRequest objServiceRequest = new MServiceRequest();
+            objServiceRequest = fnListServiceRequest(id,null,null,null,null).First();
+            return View(objServiceRequest);
+        }
     }
 }

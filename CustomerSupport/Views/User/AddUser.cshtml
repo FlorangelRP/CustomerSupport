@@ -245,6 +245,14 @@
                          }
             }).responseJSON;
 
+        debugger;
+        if ($("#searchPerson").val() != "") {
+            cargarDataPerson($("#searchPerson").val(), ListPersons)
+        }
+
+    
+
+
         }
 
     function jsonToDate(date, format) {

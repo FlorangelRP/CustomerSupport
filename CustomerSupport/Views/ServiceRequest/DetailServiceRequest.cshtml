@@ -1,0 +1,502 @@
+﻿@model CustomerSupport.Models.MServiceRequest
+
+@{
+    ViewBag.Title = "Detalle Solicitud de Servicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        <div class="m-0 row justify-content-center">
+            <div class="form-horizontal col-md-12">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="accordion border" id="accordionClient">
+                            <div class="card collapsed-card">
+                                <div class="card-header" id="headingClient">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardClient" aria-expanded="false" aria-controls="collapseClient">
+                                            Datos del Cliente
+                                        </button>
+                                    </h2>
+                                </div>
+
+                                <div id="collapseCardClient" class="collapse" aria-labelledby="headingClient" data-parent="#accordionClient">
+
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Tipo de Identificacion:</div>
+                                                    <label id="lbIdentificationType"></label>
+                                                    @Html.DisplayFor(model => model.PersonClient.IdentificationType)
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Numero de Identificacion:</div>
+                                                    <label id="lbNumIdentification"></label>
+                                                    @Html.DisplayFor(model => model.PersonClient.NumIdentification)
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Nombres:</div>
+                                                    <label id="lbName"></label>
+                                                    @Html.DisplayFor(model => model.PersonClient.Name)
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Apellidos:</div>
+                                                    <label id="lbLastName"></label>
+                                                    @Html.DisplayFor(model => model.PersonClient.LastName)
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="accordion border" id="accordionService">
+                            <div class="card collapsed-card">
+                                <div class="card-header" id="headingService">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardService" aria-expanded="false" aria-controls="collapseService">
+                                            Datos del Servicio
+                                        </button>
+                                    </h2>
+                                </div>
+
+                                <div id="collapseCardService" class="collapsed" aria-labelledby="headingService" data-parent="#accordionService">
+
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div id="divServiceType" class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Tipo de Servicio:</div>
+                                                    @Html.DisplayFor(model => model.ServiceType)
+                                                </div>
+                                            </div>
+
+                                            <div id="divIdServiceRequest" class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Número Solicitud:</div>
+                                                    @Html.DisplayFor(model => model.IdServiceRequest)
+                                                </div>
+                                            </div>
+
+                                            <div id="divServiceStatus" class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Estado:</div>
+                                                    @Html.DisplayFor(model => model.ServiceStatus)
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        @if (Model.ServiceType == "Compra")
+                                        {
+
+                                            <div id="serviceCompras">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
+                                                            @Html.DisplayFor(model => model.PropertyType)
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Direccion de la Propiedad:</div>
+                                                            @Html.DisplayFor(model => model.Address, new { @rows = 3, @cols = 10 })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Precio de Compra:</div>
+                                                            @Html.DisplayFor(model => model.Price, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Closing Cost:</div>
+                                                            @Html.DisplayFor(model => model.ClosingCost, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Ingreso Promedio:</div>
+                                                            @Html.DisplayFor(model => model.MonthlyIncome, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Deudas/Pagos Promedio:</div>
+                                                            @Html.DisplayFor(model => model.DebtPayment, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">PITI:</div>
+                                                            @Html.DisplayFor(model => model.Piti, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">RATIOS:</div>
+                                                            @Html.DisplayFor(model => model.Ratios, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @if (Model.ServiceType == "Planos" || Model.ServiceType == "Construccion")
+                                        {
+                                            <div id="serviceConstruccionPlanos">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
+                                                            @Html.DisplayFor(model => model.IdPropertyType)
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Direccion de la Propiedad:</div>
+                                                            @Html.DisplayFor(model => model.Address, new { @rows = 3, @cols = 10 })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Valor Estimado:</div>
+                                                            @Html.DisplayFor(model => model.EstimatedValue, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Tiene Planos?</div>
+
+                                                            <label class="ss_radioButton">
+                                                                Si
+                                                                @*<input type="radio" checked="checked" name="radio">*@
+                                                                @Html.RadioButtonFor(model => model.Plane, true, new { disabled = "disabled" })
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                            <label class="ss_radioButton">
+                                                                No
+                                                                @*<input type="radio" name="radio">*@
+                                                                @Html.RadioButtonFor(model => model.Plane, false, new { @checked = "checked", disabled = "disabled" })
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row pt-2 pb-3">
+
+                                                    <div class="col-md-12">
+
+                                                        <div class="accordion border" id="accordionContact">
+                                                            <div class="card collapsed-card">
+                                                                <div class="card-header" id="headingContact">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardContact" aria-expanded="false" aria-controls="collapseContact">
+                                                                            Operación de construcción
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+
+                                                                <div id="collapseCardContact" class="collapse" aria-labelledby="headingContact" data-parent="#accordionContact">
+
+                                                                    <div class="card-body">
+
+                                                                        <div class="row pt-3">
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+                                                                                    <div class="table-responsive">
+                                                                                        <div class="container">
+
+                                                                                            <table id="TServiceConstructionOption" class="table table-bordered table-striped">
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th>Código</th>
+                                                                                                        <th>Descripción</th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                                    @foreach (var item in Model.listConstructionOption)
+                                                                                                    {
+                                                                                                        <tr>
+                                                                                                            <td>@item.IdConstructionOption</td>
+                                                                                                            <td>@item.ConstructionOption</td>
+                                                                                                        </tr>
+                                                                                                    }
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Necesita Financiamiento?</div>
+
+                                                            <label class="ss_radioButton">
+                                                                Si
+                                                                @Html.RadioButtonFor(model => model.Financing, true, new { disabled = "disabled" })
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                            <label class="ss_radioButton">
+                                                                No
+                                                                @Html.RadioButtonFor(model => model.Financing, false, new { @checked = "checked", disabled = "disabled" })
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Ingreso Promedio:</div>
+                                                            @Html.DisplayFor(model => model.MonthlyIncome, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Deudas/Pagos Promedio:</div>
+                                                            @Html.DisplayFor(model => model.DebtPayment, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        }
+
+                                        @if (Model.ServiceType == "Refinanciamiento")
+                                        {
+                                            <div id="serviceRefinanciamiento">
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
+                                                            @Html.HiddenFor(model => model.PropertyType)
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Valor Estimado de la Propiedad:</div>
+                                                            @Html.DisplayFor(model => model.Price, "{0:N2}")
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Loan Amount:</div>
+                                                            @Html.DisplayFor(model => model.LoanAmount)
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Deuda Actual de la Hipoteca:</div>
+                                                            @Html.DisplayFor(model => model.CurrentDebt, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Ingreso Promedio:</div>
+                                                            @Html.DisplayFor(model => model.MonthlyIncome, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Deudas/Pagos Promedio:</div>
+                                                            @Html.DisplayFor(model => model.DebtPayment, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">PITI:</div>
+                                                            @Html.DisplayFor(model => model.Piti)
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">RATIOS:</div>
+                                                            @Html.DisplayFor(model => model.Ratios)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @if (Model.ServiceType == "Living Trust")
+                                        {
+                                            <div id="serviceLivingTrust">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
+                                                            @Html.HiddenFor(model => model.PropertyType)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Que tipos de bienes desea agregar?</div>
+                                                            @Html.DisplayFor(model => model.Assets, new {@rows = 3, @cols = 10 })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Tiene Beneficiarios?</div>
+
+                                                            <label class="ss_radioButton">
+                                                                Si
+                                                                <input id="btnRadioSI" type="radio" checked="checked" name="radio" disabled="disabled">
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                            <label class="ss_radioButton">
+                                                                No
+                                                                <input id="btnRadioNO" type="radio" name="radio" disabled="disabled">
+                                                                <span class="checkmark"></span>
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+                                                    <div id="divBeneficiarios" class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Beneficiarios:</div>
+                                                            @Html.DisplayFor(model => model.Beneficiaries, new { @rows = 3, @cols = 10 })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Explicacion breve del proceso:</div>
+                                                            @Html.DisplayFor(model => model.Process, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Desea que:</div>
+                                                            @Html.DisplayFor(model => model.Wish, new { @rows = 3, @cols = 10 })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        }
+
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Via de Contacto:</div>
+                                                    @Html.DisplayFor(model => model.ContactType)
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Notas:</div>
+                                                    @Html.DisplayFor(model => model.Note)
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*<div class="row">
+            @Html.Partial("_PartialDetailTask")
+        </div>*@
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br />
+        <div>
+            @Html.ActionLink("Regresar a la Lista", "ListServiceRequest")
+        </div>
+
+    </div>
+</div>
+
+

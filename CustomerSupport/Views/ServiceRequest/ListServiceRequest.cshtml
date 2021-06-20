@@ -40,7 +40,7 @@
 
             <div class="table-responsive">
                 <div class="container">
-                    <table id="TPerson" class="table table-bordered table-striped">
+                    <table id="TServiceRequest" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Numero</th>
@@ -68,7 +68,8 @@
 </div>
 
 @section Scripts {
-    <script scr="~/Content/assets/js/moment.min.js"></script>
+    @*<script scr="~/Content/assets/js/moment.min.js"></script>*@
+    <script scr="~/Content/assets/js/datetime.js"></script>
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -79,41 +80,16 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script scr="~/Content/assets/js/dataTables.dateTime.min.js"></script>
-    <script>
+    @*<script scr="~/Content/assets/js/dataTables.dateTime.min.js"></script>*@
+<script>
 
           var Permis = @Html.Raw(Json.Encode(perm));
         Buscar = Permis.Search;
         Editar = Permis.Edit;
 
-        // Date renderer for DataTables from cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js
-        $.fn.dataTable.render.moment = function (from, to, locale) {
-            // Argument shifting
-            debugger;
-            if (arguments.length === 1) {
-                locale = 'en';
-                to = from;
-                from = 'YYYY-MM-DD';
-            }
-            else if (arguments.length === 2) {
-                locale = 'en';
-            }
+        // UMD
 
-            return function (d, type, row) {
-                if (!d) {
-                    return type === 'sort' || type === 'type' ? 0 : d;
-                }
-
-                var m = window.moment(d, from, locale, true);
-
-                // Order and type get a number value from Moment, everything else
-                // sees the rendered value
-                return m.format(type === 'sort' || type === 'type' ? 'x' : to);
-            };
-        };
-
-
-    var table = $('#TPerson').DataTable({
+    var table = $('#TServiceRequest').DataTable({
 
             'ajax': {
                 'url': '@Url.Action("GetListServiceRequest", "ServiceRequest")',
@@ -127,7 +103,14 @@
                     { 'data': 'ServiceType', 'autowidth': true },
                     { 'data': 'PersonClient.Name', 'autowidth': true },
                     { 'data': 'PersonClient.LastName', 'autowidth': true },
-                    { 'data': 'RegisterDate', 'render': '$.fn.dataTable.render.moment("M/D/YYYY")' ,'autowidth': true },
+                    {
+                        'data': 'RegisterDate',
+                        'render': function (jsonDate) {
+                            var date = new Date(parseInt(jsonDate.substr(6)));
+                            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                            return ("0" + date.getDate()).slice(-2) + '-' + month + '-' + date.getFullYear();
+                        }
+                    },
                     { 'data': 'ServiceStatus', 'autowidth': true },
                     {
                         'data': null, render: function (data, type, row) {
@@ -200,5 +183,16 @@
 
     });
 
-    </script>
+        //var consultar = function (tbody, table) {
+    $('#TServiceRequest').on("click", "a.searchRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+        $(".searchRow").attr("href", '@Url.Action("DetailServiceRequest", "ServiceRequest")?id=' + data.IdServiceRequest);
+        });
+    //}
+
+    $('#TServiceRequest').on("click", "a.editRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+        $(".editRow").attr("href", '@Url.Action("EditServiceRequest", "ServiceRequest")?id=' + data.IdServiceRequest);
+        });
+</script>
 }

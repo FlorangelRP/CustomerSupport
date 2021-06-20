@@ -64,6 +64,7 @@ namespace CustomerSupport.Models
         public string RegisterUser { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:d}")]
+        [DataType(DataType.Date)]
         public System.DateTime RegisterDate { get; set; }
 
         public List<MServiceConstructionOption> listConstructionOption { get; set; } //lista las opciones de construccion para tipo de servicios Construccion/Planos

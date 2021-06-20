@@ -615,6 +615,7 @@
     <Content Include="Views\Employee\EditEmployee.cshtml" />
     <Content Include="Views\Client\DetailClient.cshtml" />
     <Content Include="Views\Client\EditClient.cshtml" />
+    <Content Include="Views\ServiceRequest\DetailServiceRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
