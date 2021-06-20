@@ -11,6 +11,7 @@ namespace CustomerSupport.Models
         public MServiceRequest()
         {
             listConstructionOption = new List<MServiceConstructionOption>();
+            listTask = new List<MTask>();
         }
 
         public int IdServiceRequest { get; set; }
@@ -28,6 +29,9 @@ namespace CustomerSupport.Models
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> Price { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        public Nullable<decimal> DownPayment { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> ClosingCost { get; set; }
@@ -68,6 +72,6 @@ namespace CustomerSupport.Models
         public System.DateTime RegisterDate { get; set; }
 
         public List<MServiceConstructionOption> listConstructionOption { get; set; } //lista las opciones de construccion para tipo de servicios Construccion/Planos
-        public List<MTask> listTask { get; set; }
+        public List<MTask> listTask { get; set; } //para la cita, pero luego podrian ser varias actividades
     }
 }

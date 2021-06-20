@@ -508,18 +508,18 @@
 
                 var colPhoneNumberType = "<td>" + strPhoneNumberType + "</td> ";
                 var colCountryAreaCode = "<td>" + strCountryAreaCode + "</td> ";
-                var colPhoneNumber = "<td name = 'PhoneNumber_" + index + "'>" + strPhoneNumber + "</td> ";
+                var colPhoneNumber = "<td name='PhoneNumber'>" + strPhoneNumber + "</td> ";
                 var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
 
                 //Si el numero a insertar ya existe lo elimina para luego volver a insertarlo y asi evitar duplicados
-                var isFound = doSearchForDelete(strPhoneNumber, "PhoneNumber_");
+                var isFound = doSearchForDelete(strPhoneNumber, "PhoneNumber");
                 //alert(isFound);
 
                 //insertamos los valores en la tabla
                 var newRow = "<tr id='trContact" + index + "'>" +
                     colHid_indexCell + colHid_IdPhoneNumberType + colHid_IdIsoCountry + colHid_PhoneNumber + colHid_PhoneNumberType + colHid_CountryAreaCode +
                     colPhoneNumberType + colCountryAreaCode + colPhoneNumber + colDelete + "</tr>";
-                debugger;
+                //debugger;
                 $("#TPersonContact").append(newRow);
 
                 //--------------------------
@@ -546,7 +546,7 @@
                 const compareWith = cellsOfRow[searchCol].innerHTML.toLowerCase();
 
                 // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
-                if (compareWith.indexOf(searchText) > -1) {
+                if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
                     found = true;
                     position = i;
                     break;
@@ -560,9 +560,9 @@
         }
 
         function searchDescription(code, idList) {
-            debugger;
+            //debugger;
             var Description = $("#" + idList + " option[value='" + code + "']").text();
-            alert(Description);
+            //alert(Description);
             return Description;
         }
 

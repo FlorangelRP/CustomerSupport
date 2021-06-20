@@ -43,18 +43,21 @@
                                                 <div class="col-md-10">
                                                     <div class="form-group">
                                                         <label>Cliente:</label><br>
-                                                        @Html.TextBoxFor(model => model.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })
+                                                        @Html.TextBoxFor(model => model.IdPerson, new { @id = "searchPerson", @class = "form-control", @placeholder = "Seleccione" })
                                                         @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
 
 
-                                                        @*@Html.HiddenFor(model => model.PersonClient.Birthday, new { @value = DateTime.Now, @id = "Birthday" })
-                                            @Html.HiddenFor(model => model.PersonClient.IdContactType, new { @id = "IdContactType" })
-                                            @Html.HiddenFor(model => model.PersonClient.IdPosition, new { @id = "IdPosition" })
-                                            @Html.HiddenFor(model => model.PersonClient.ClientPermission, new { @id = "ClientPermission" })
-                                            @Html.HiddenFor(model => model.PersonClient.IdPersonType, new { @id = "IdPersonType" })
-                                            @Html.HiddenFor(model => model.PersonClient.Address, new { @id = "Address" })
-                                            @Html.HiddenFor(model => model.PersonClient.Email, new { @id = "Email" })
-                                            @Html.HiddenFor(model => model.PersonClient.IdIdentificationType, new { @id = "IdIdentificationType" })*@
+
+                                                        @*@Html.HiddenFor(model => model.PersonClient.IdIdentificationType, new { @id = "IdIdentificationType" })*@
+                                                        @*@Html.HiddenFor(model => model.PersonClient.NumIdentification, new { @id = "NumIdentification" })*@
+                                                        @*@Html.HiddenFor(model => model.PersonClient.Name, new { @id = "Name" })*@
+                                                        @*@Html.HiddenFor(model => model.PersonClient.LastName, new { @id = "LastName" })*@
+                                                        @Html.HiddenFor(model => model.PersonClient.Birthday, new { @value = DateTime.Now, @id = "Birthday" })
+                                                        @Html.HiddenFor(model => model.PersonClient.Address, new { @id = "Address" })
+                                                        @Html.HiddenFor(model => model.PersonClient.Email, new { @id = "Email" })
+                                                        @Html.HiddenFor(model => model.PersonClient.IdContactType, new { @id = "IdContactType" })
+                                                        @Html.HiddenFor(model => model.PersonClient.IdPosition, new { @id = "IdPosition" })
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -66,7 +69,7 @@
                                                     <div class="form-group">
                                                         <div class="control-label font-weight-bold">Tipo de Identificacion:</div>
                                                         <label id="lbIdentificationType"></label>
-                                                        @Html.HiddenFor(model => model.PersonClient.IdentificationType, new { @id = "IdentificationType" })
+                                                        @Html.HiddenFor(model => model.PersonClient.IdIdentificationType, new { @id = "IdIdentificationType" })
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -135,8 +138,15 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <div class="control-label">Numero Solicitud:</div>
-                                                        @Html.TextBoxFor(model => model.IdServiceRequest, new { @class = "form-control", @disabled = "disabled" })
+                                                        <div class="control-label">Estado del Servicio:</div>
+                                                        <select id="lst_ServiceStatus" class="form-control select2" style="width: 100%;">
+                                                        </select>
+                                                        @Html.HiddenFor(model => model.IdServiceStatus, new { @id = "inpIdServiceStatus" })
+                                                        @Html.ValidationMessageFor(model => model.IdServiceStatus, "", new { @class = "text-danger" })
+
+                                                        @*<div class="control-label">Numero Solicitud:</div>*@
+                                                        @Html.HiddenFor(model => model.IdServiceRequest)
+                                                        @*@Html.TextBoxFor(model => model.IdServiceRequest, new { @class = "form-control", @disabled = "disabled" })*@
                                                         @*@Html.ValidationMessageFor(model => model.IdServiceRequest, "", new { @class = "text-danger" })*@
                                                     </div>
                                                 </div>
@@ -183,8 +193,92 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                @Html.Partial("_PartialDetailTask")
+                                            <div class="row pt-2 pb-3">
+
+                                                <div class="col-md-12">
+
+                                                    <div class="accordion border" id="accordionCita">
+                                                        <div class="card collapsed-card">
+                                                            <div class="card-header" id="headingCita">
+                                                                <h2 class="mb-0">
+                                                                    <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardCita" aria-expanded="false" aria-controls="collapseCita">
+                                                                        Cita
+                                                                    </button>
+                                                                </h2>
+                                                            </div>
+
+                                                            <div id="collapseCardCita" class="collapse" aria-labelledby="headingCita" data-parent="#accordionCita">
+
+                                                                <div class="card-body">
+                                                                    @* @Html.Partial("_PartialDetailTask")*@
+
+                                                                    @{
+                                                                        Model.listTask.Add(new MTask());
+                                                                    }
+                                                                    <div class="row">
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group">
+                                                                                <label>Representante:</label><br>
+                                                                                @Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @class = "form-control", @placeholder = "Seleccione" })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Nombres:</div>
+                                                                                <label id="lbPersonEmployeeName"></label>
+                                                                                @*@Html.TextBoxFor(model => model.listTask[0].PersonEmployeeName, new { @class = "form-control" })*@
+                                                                                @*@Html.ValidationMessageFor(model => model.listTask[0].PersonEmployeeName, "", new { @class = "text-danger" })*@
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Apellidos:</div>
+                                                                                <label id="lbPersonEmployeeLastName"></label>
+                                                                                @*@Html.TextBoxFor(model => model.listTask[0].PersonEmployeeLastName, new { @class = "form-control" })*@
+                                                                                @*@Html.ValidationMessageFor(model => model.listTask[0].PersonEmployeeLastName, "", new { @class = "text-danger" })*@
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Actividad a realizar:</div>
+                                                                                @Html.TextAreaFor(model => model.listTask[0].Activity, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].Activity, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Fecha:</div>
+                                                                                @Html.TextBoxFor(model => model.listTask[0].DateIni, new { @class = "form-control", @type = "date" })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].DateIni, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Hora:</div>
+                                                                                @Html.TextBoxFor(model => model.listTask[0].HourIni, new { @class = "form-control", @type = "time" })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].HourIni, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Lugar:</div>
+                                                                                @Html.TextAreaFor(model => model.listTask[0].Place, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].Place, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
                                             </div>
 
                                         </div>
@@ -247,7 +341,9 @@
     <script>
 
         var ListPersons = [];
+        var ListPersonsEmployee = [];
 
+        //CLIENTE--------------------------------------------------------------------------------
         function cargarDataPerson(IdPerson, lstPersons) {
 
             if (IdPerson === "") {
@@ -265,18 +361,17 @@
             document.getElementById('lbName').innerText = objPerson.Name;
             document.getElementById('lbLastName').innerText = objPerson.LastName;
 
-            //var fecha = new Date();
-            //$("#Birthday").val(fecha.toLocaleDateString("en-US")); //hidden del modelo*/
-            //$("#IdContactType").val(1); //hidden del modelo
-            //$("#IdPosition").val(objPerson.IdPosition); //hidden del modelo
-            //$("#ClientPermission").val(objPerson.ClientPermission); //hidden del modelo
-            //$("#IdPersonType").val(objPerson.IdPersonType); //hidden del modelo
-            //$("#NumIdentification").val(objPerson.NumIdentification); //hidden del modelo
-            //$("#LastName").val(objPerson.LastName); //hidden del modelo
-            //$("#Name").val(objPerson.Name); //hidden del modelo
-            //$("#Address").val(objPerson.Address); //hidden del modelo
-            //$("#Email").val(objPerson.Email); //hidden del modelo
-            //$("#IdIdentificationType").val(objPerson.IdIdentificationType); //hidden del modelo
+            var fecha = new Date();
+            $("#IdIdentificationType").val(objPerson.IdIdentificationType); //hidden del modelo
+            $("#NumIdentification").val(objPerson.NumIdentification); //hidden del modelo
+            $("#Name").val(objPerson.Name); //hidden del modelo
+            $("#LastName").val(objPerson.LastName); //hidden del modelo
+            $("#Birthday").val(fecha.toLocaleDateString("en-US")); //hidden del modelo  objPerson.Birthday
+            $("#Address").val(objPerson.Address); //hidden del modelo
+            $("#Email").val(objPerson.Email); //hidden del modelo
+            $("#IdContactType").val(objPerson.IdContactType); //hidden del modelo
+            $("#IdPosition").val(1); //hidden del modelo
+
         }
 
         function ObtenerPersonas() {
@@ -302,6 +397,85 @@
 
         }
         ObtenerPersonas();
+        //FIN CLIENTE---------------------------------------------------------------------------
+
+        //EMPLEADO--------------------------------------------------------------------------------
+        function cargarDataPersonEmployee(IdPersonEmployee, lstPersonsEmployee) {
+
+            if (IdPersonEmployee === "") {
+                document.getElementById('lbPersonEmployeeName').innerText = "";
+                document.getElementById('lbPersonEmployeeLastName').innerText = "";
+                return false;
+            }
+
+            var objPerson = lstPersonsEmployee.find((m) => m.IdPerson == IdPersonEmployee);
+
+            document.getElementById('lbPersonEmployeeName').innerText = objPerson.Name;
+            document.getElementById('lbPersonEmployeeLastName').innerText = objPerson.LastName;
+
+        }
+
+        function ObtenerPersonasEmployee() {
+
+            ListPersonsEmployee = $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                        data: "{}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        global: false,
+                        async: false,
+                        success: function (data) {
+                            var itemArray = {};
+                            itemArray.IdPerson = "";
+                            itemArray.LastName = "";
+                            itemArray.Name = "";
+                            data.push(itemArray);
+                            data.reverse();
+                            return data;
+                         }
+            }).responseJSON;
+
+        }
+        ObtenerPersonasEmployee();
+        //FIN EMPLEADO---------------------------------------------------------------------------
+
+        function showServiceType(strDescServiceType) {
+            switch (strDescServiceType) {
+                case "Compras":
+                    $("#serviceCompras").show();
+                    $("#serviceConstruccionPlanos").hide();
+                    $("#serviceRefinanciamiento").hide();
+                    $("#serviceLivingTrust").hide();
+                    break;
+                case "Planos":
+                case "Construcción":
+                    $("#serviceCompras").hide();
+                    $("#serviceConstruccionPlanos").show();
+                    $("#serviceRefinanciamiento").hide();
+                    $("#serviceLivingTrust").hide();
+                    break;
+                case "Refinanciamiento":
+                    $("#serviceCompras").hide();
+                    $("#serviceConstruccionPlanos").hide();
+                    $("#serviceRefinanciamiento").show();
+                    $("#serviceLivingTrust").hide();
+                    break;
+                case "Living Trust":
+                    $("#serviceCompras").hide();
+                    $("#serviceConstruccionPlanos").hide();
+                    $("#serviceRefinanciamiento").hide();
+                    $("#serviceLivingTrust").show();
+                    break;
+                default:
+                    $("#serviceCompras").hide();
+                    $("#serviceConstruccionPlanos").hide();
+                    $("#serviceRefinanciamiento").hide();
+                    $("#serviceLivingTrust").hide();
+                    break;
+            };
+        }
+
 
         function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
             //debugger;
@@ -325,16 +499,96 @@
 
         }
 
-        $("#serviceCompras").hide();
-        //$("#servicePlanos").hide();
-        //$("#serviceConstruccion").hide();
-        $("#serviceConstruccionPlanos").hide();
-        $("#serviceRefinanciamiento").hide();
-        //$("#servicePrestamos").hide();
-        $("#serviceLivingTrust").hide();
+
+        function deleteRowConstructionOption(id) {
+            var controlToBeRemoved = "#trConstructionOption" + id;
+            $(controlToBeRemoved).remove();
+        }
+
+        function addRowConstructionOption() {
+
+
+            @{
+                Model.listConstructionOption.Add(new MServiceConstructionOption());
+            }
+
+            //obtenemos los valores a insertar
+            var strIdConstructionOption = $("#lst_ConstructionOption").val();
+            var strConstructionOption = $('select[id="lst_ConstructionOption"] option:selected').text();
+
+            //debugger;
+            if (strIdConstructionOption != "") {
+
+                //-------------------------
+
+                var index = document.getElementById('TConstructionOption').rows.length;
+                //alert(index);
+
+                var colHid_indexCell = "<td style='display:none'><input name='listConstructionOption.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                var colHid_IdConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].IdConstructionOption' type='hidden' value='" + strIdConstructionOption + "' /></td> ";
+                var colHid_ConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].ConstructionOption' type = 'hidden' value = '" + strConstructionOption + "' /></td> ";
+
+                var colIdConstructionOption = "<td>" + strIdConstructionOption + "</td> ";
+                var colConstructionOption = "<td name='ConstOption'>" + strConstructionOption + "</td> ";
+                var colDelete = "<td><div class='btn_option pt-0'><a onclick='deleteRowConstructionOption(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+                //Busca si la operacion de construccion ya existe para no duplicar
+                var isFound = doSearchConstructionOption(strConstructionOption, "ConstOption", 'TConstructionOption');
+
+                if (!isFound) {
+
+                    //insertamos los valores en la tabla
+                    var newRow = "<tr id='trConstructionOption" + index + "'>" +
+                        colHid_indexCell + colHid_IdConstructionOption + colHid_ConstructionOption +
+                        colIdConstructionOption + colConstructionOption + colDelete + "</tr>";
+
+                    $("#TConstructionOption").append(newRow);
+
+                    //--------------------------
+
+                    //limpiamos los valores ya agregados
+                    document.getElementById('lst_ConstructionOption').value = "";
+                }
+
+            }
+
+        }
+
+        function doSearchConstructionOption(searchText, colName, tableName) {
+
+            const tableReg = document.getElementById(tableName);
+            //const tableReg = document.getElementById('TConstructionOption');
+            let position = 0;
+            let found = false;
+
+            // Recorremos todas las filas con contenido de la tabla
+            for (let i = 1; i < tableReg.rows.length; i++) {
+
+                const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                let searchCol = colName; //+ i.toString();
+                const compareWith = cellsOfRow[searchCol].innerHTML.toLowerCase();
+
+                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
+                if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
+                    found = true;
+                    position = i;
+                    break;
+                }
+
+            }
+            //si lo encontro, se elimina
+            //if (found) {
+            //    //document.getElementById('TConstructionOption').deleteRow(position);
+            //    document.getElementById(tableName).deleteRow(position);
+            //}
+
+            return found;
+        }
+
 
         $(document).ready(function () {
 
+            //CLIENTE INPUTPICKER
             $("#searchPerson").on('change', function () {
                 var IdPerson = $(this).val();
                 cargarDataPerson(IdPerson, ListPersons)
@@ -353,10 +607,29 @@
             });
             $('#searchPerson').val("");
 
+            //EMPLEADO INPUTPICKER
+            $("#searchEmployee").on('change', function () {
+                var IdPersonEmployee = $(this).val();
+                cargarDataPersonEmployee(IdPersonEmployee, ListPersonsEmployee)
+            });
+
+            $('#searchEmployee').inputpicker({
+                data: ListPersonsEmployee,
+                fields: ['Name', 'LastName'],
+                fieldText: 'Name',
+                fieldValue: 'IdPerson',
+                headShow: true,
+                filterOpen: true,
+                selectMode: null,
+                pagination: false,
+                responsive: true
+            });
+            $('#searchEmployee').val("");
+
+
 
             // If the checkbox is checked, display the output text
             if ($('#btnRadioSI').is(":checked") == true) {
-                //alert('SIIII');
                 $("#divBeneficiarios").show();
             } else {
                 $("#divBeneficiarios").hide();
@@ -366,8 +639,6 @@
             $("#btnRadioSI").on('click', function () {
 
                 var IsSelected = $('#btnRadioSI').is(":checked");
-                //alert('SIIII');
-
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
                     $("#divBeneficiarios").show();
@@ -377,8 +648,6 @@
             $("#btnRadioNO").on('click', function () {
 
                 var IsSelected = $('#btnRadioNO').is(":checked");
-                //alert('NOOO');
-
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
                     $("#divBeneficiarios").hide();
@@ -386,71 +655,14 @@
 
             });
 
+
             $("#lst_ServiceType").on('change', function () {
+
                 var selectValue = $(this).val();
-                //$("#inpIdServiceType").val(selectValue);
                 changeCodeInputHiddenList("lst_ServiceType", "inpIdServiceType", selectValue);
 
                 var selecDesc = $('select[id="lst_ServiceType"] option:selected').text();
-
-                switch (selecDesc) {
-                    case "Compras":
-                        $("#serviceCompras").show();
-                        //$("#servicePlanos").hide();
-                        //$("#serviceConstruccion").hide();
-                        $("#serviceConstruccionPlanos").hide();
-                        $("#serviceRefinanciamiento").hide();
-                        //$("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").hide();
-                        break;
-                    case "Planos":
-                    case "Construcción":
-                        $("#serviceCompras").hide();
-                        //$("#servicePlanos").hide();
-                        //$("#serviceConstruccion").hide();
-                        $("#serviceConstruccionPlanos").show();
-                        $("#serviceRefinanciamiento").hide();
-                        //$("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").hide();
-                        break;
-                    //case "Construcción":
-                    //    $("#serviceCompras").hide();
-                    //    //$("#servicePlanos").hide();
-                    //    //$("#serviceConstruccion").hide();
-                    //    $("#serviceConstruccionPlanos").show();
-                    //    $("#serviceRefinanciamiento").hide();
-                    //    //$("#servicePrestamos").hide();
-                    //    $("#serviceLivingTrust").hide();
-                    //    break;
-                    case "Refinanciamiento":
-                        $("#serviceCompras").hide();
-                        //$("#servicePlanos").hide();
-                        //$("#serviceConstruccion").hide();
-                        $("#serviceConstruccionPlanos").hide();
-                        $("#serviceRefinanciamiento").show();
-                        //$("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").hide();
-                        break;
-                    case "Living Trust":
-                        $("#serviceCompras").hide();
-                        //$("#servicePlanos").hide();
-                        //$("#serviceConstruccion").hide();
-                        $("#serviceConstruccionPlanos").hide();
-                        $("#serviceRefinanciamiento").hide();
-                        //$("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").show();
-                        break;
-                    default:
-                        $("#serviceCompras").hide();
-                        //$("#servicePlanos").hide();
-                        //$("#serviceConstruccion").hide();
-                        $("#serviceConstruccionPlanos").hide();
-                        $("#serviceRefinanciamiento").hide();
-                        //$("#servicePrestamos").hide();
-                        $("#serviceLivingTrust").hide();
-                        break;
-
-                }
+                showServiceType(selecDesc);
             });
 
             $.ajax({
@@ -478,17 +690,16 @@
                     document.getElementById('lst_ServiceType').value = "0";
 
                     changeCodeInputHiddenList("lst_ServiceType", "inpIdServiceType", "");
-
+                    showServiceType($('select[id="lst_ServiceType"] option:selected').text());
                 },
                 error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de tipos de identificacion");
+                    $("#error > span").text("Error al llenar lista de Servicios");
                 }
 
             });
 
             $("#lst_ContactType").on('change', function () {
                 var selectValue = $(this).val();
-                //$("#inpIdContactType").val(selectValue);
                 changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", selectValue);
             });
 
@@ -518,14 +729,51 @@
                     changeCodeInputHiddenList("lst_ContactType", "inpIdContactType", "");
                 },
                 error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de cargos");
+                    $("#error > span").text("Error al llenar lista de Via de Contacto");
                 }
 
             });
 
+            $("#lst_ServiceStatus").on('change', function () {
+                var selectValue = $(this).val();
+                changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", selectValue);
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"SERVICESTATUS",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_ServiceStatus").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ServiceStatus").append(option);
+                    });
+
+                    document.getElementById('lst_ServiceStatus').value = "0";
+
+                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Estados de Solicitud");
+                }
+
+            });
+
+
             $("#lst_PropertyType").on('change', function () {
                 var selectValue = $(this).val();
-                //$("#inpIdPropertyType").val(selectValue);
                 changeCodeInputHiddenList("lst_PropertyType", "inpIdPropertyType", selectValue);
             });
 
@@ -562,7 +810,6 @@
 
             $("#lstBuild_PropertyType").on('change', function () {
                 var selectValue = $(this).val();
-                //$("#inpBuild_IdPropertyType").val(selectValue);
                 changeCodeInputHiddenList("lstBuild_PropertyType", "inpBuild_IdPropertyType", selectValue);
             });
 
@@ -582,7 +829,7 @@
                     $(msg).each(function () {
                         var option = $(document.createElement('option'));
                         option.text(this.DetailDesc);
-                        option.val(this.IdCatalogDetail); //Identity
+                        option.val(this.IdCatalogDetail); //Identitys
 
                         $("#lstBuild_PropertyType").append(option);
                     });
@@ -597,10 +844,8 @@
 
             });
 
-
             $("#lstRefin_PropertyType").on('change', function () {
                 var selectValue = $(this).val();
-                //$("#inpRefin_IdPropertyType").val(selectValue);
                 changeCodeInputHiddenList("lstRefin_PropertyType", "inpRefin_IdPropertyType", selectValue);
             });
 
@@ -635,14 +880,12 @@
 
             });
 
+            //$("#lstLiv_PropertyType").on('change', function () {
+            //    var selectValue = $(this).val();
+            //    changeCodeInputHiddenList("lstLiv_PropertyType", "inpLiv_IdPropertyType", selectValue);
+            //});
 
-            $("#lstLiv_PropertyType").on('change', function () {
-                var selectValue = $(this).val();
-                //$("#inpLiv_IdPropertyType").val(selectValue);
-                changeCodeInputHiddenList("lstLiv_PropertyType", "inpLiv_IdPropertyType", selectValue);
-            });
-
-            $.ajax({
+            @*$.ajax({
                 type: "GET",
                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PROPERTYTYPE",
                 data: "{}",
@@ -671,10 +914,44 @@
                     $("#error > span").text("Error al llenar lista de tipos de propiedad");
                 }
 
+            });*@
+
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"CONSTRUCTIONOPTION",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("");
+                    $("#lst_ConstructionOption").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ConstructionOption").append(option);
+                    });
+
+                    document.getElementById('lst_ConstructionOption').value = "";
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Opciones de Construccion");
+                }
+
             });
 
 
         });
+
+        cargarDataPerson($("#searchPerson").val(), ListPersons);
+        cargarDataPersonEmployee($("#searchEmployee").val(), ListPersonsEmployee);
+
 
     </script>
 }

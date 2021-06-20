@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Catalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -102,6 +102,7 @@
           <Property Name="IdPropertyType" Type="int" />
           <Property Name="Address" Type="varchar" MaxLength="500" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DownPayment" Type="decimal" Precision="18" Scale="2" />
           <Property Name="ClosingCost" Type="decimal" Precision="18" Scale="2" />
           <Property Name="MonthlyIncome" Type="decimal" Precision="18" Scale="2" />
           <Property Name="DebtPayment" Type="decimal" Precision="18" Scale="2" />
@@ -554,6 +555,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="strPhoneNumber" Type="varchar" Mode="In" />
           <Parameter Name="btStatus" Type="bit" Mode="In" />
         </Function>
+        <Function Name="GNTranPersonTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdTask" Type="int" Mode="In" />
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+        </Function>
         <Function Name="GNTranServiceConstructionOption" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TransactionType" Type="char" Mode="In" />
           <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
@@ -569,6 +575,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="IdPropertyType" Type="int" Mode="In" />
           <Parameter Name="Address" Type="varchar" Mode="In" />
           <Parameter Name="Price" Type="decimal" Mode="In" />
+          <Parameter Name="DownPayment" Type="decimal" Mode="In" />
           <Parameter Name="ClosingCost" Type="decimal" Mode="In" />
           <Parameter Name="MonthlyIncome" Type="decimal" Mode="In" />
           <Parameter Name="DebtPayment" Type="decimal" Mode="In" />
@@ -746,8 +753,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <End Role="UserAcces" EntitySet="UserAcces" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MMEnterprisesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -860,6 +866,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="IdPropertyType" Type="Int32" />
           <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DownPayment" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="ClosingCost" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="MonthlyIncome" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="DebtPayment" Type="Decimal" Precision="18" Scale="2" />
@@ -1327,7 +1334,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="Status" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
-            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          <Parameter Name="IdUser" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListUserAcces" ReturnType="Collection(MMEnterprisesModel.GNListUserAcces_Result)">
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
@@ -1358,6 +1365,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="strPhoneNumber" Mode="In" Type="String" />
             <Parameter Name="btStatus" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <FunctionImport Name="GNTranPersonTask">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="GNTranServiceConstructionOption">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
             <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
@@ -1373,6 +1385,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="IdPropertyType" Mode="In" Type="Int32" />
             <Parameter Name="Address" Mode="In" Type="String" />
             <Parameter Name="Price" Mode="In" Type="Decimal" />
+            <Parameter Name="DownPayment" Mode="In" Type="Decimal" />
             <Parameter Name="ClosingCost" Mode="In" Type="Decimal" />
             <Parameter Name="MonthlyIncome" Mode="In" Type="Decimal" />
             <Parameter Name="DebtPayment" Mode="In" Type="Decimal" />
@@ -1480,6 +1493,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="String" Name="PropertyType" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
           <Property Type="Decimal" Name="Price" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DownPayment" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="ClosingCost" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="MonthlyIncome" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="DebtPayment" Nullable="true" Precision="18" Scale="2" />
@@ -1621,6 +1635,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="IdPropertyType" ColumnName="IdPropertyType" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DownPayment" ColumnName="DownPayment" />
                 <ScalarProperty Name="ClosingCost" ColumnName="ClosingCost" />
                 <ScalarProperty Name="MonthlyIncome" ColumnName="MonthlyIncome" />
                 <ScalarProperty Name="DebtPayment" ColumnName="DebtPayment" />
@@ -1792,6 +1807,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="PropertyType" ColumnName="PropertyType" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DownPayment" ColumnName="DownPayment" />
                 <ScalarProperty Name="ClosingCost" ColumnName="ClosingCost" />
                 <ScalarProperty Name="MonthlyIncome" ColumnName="MonthlyIncome" />
                 <ScalarProperty Name="DebtPayment" ColumnName="DebtPayment" />
@@ -1857,6 +1873,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
           <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
+          <FunctionImportMapping FunctionImportName="GNTranPersonTask" FunctionName="MMEnterprisesModel.Store.GNTranPersonTask" />
           <FunctionImportMapping FunctionImportName="GNTranServiceConstructionOption" FunctionName="MMEnterprisesModel.Store.GNTranServiceConstructionOption" />
           <FunctionImportMapping FunctionImportName="GNTranServiceRequest" FunctionName="MMEnterprisesModel.Store.GNTranServiceRequest" />
           <FunctionImportMapping FunctionImportName="GNTranServiceRequestTask" FunctionName="MMEnterprisesModel.Store.GNTranServiceRequestTask" />
