@@ -43,7 +43,7 @@
                                                 <div class="col-md-10">
                                                     <div class="form-group">
                                                         <label>Cliente:</label><br>
-                                                        @Html.TextBoxFor(model => model.IdPerson, new { @id = "searchPerson", @class = "form-control", @placeholder = "Seleccione" })
+                                                        @Html.TextBoxFor(model => model.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione" })
                                                         @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
 
 
@@ -148,6 +148,8 @@
                                                         @Html.HiddenFor(model => model.IdServiceRequest)
                                                         @*@Html.TextBoxFor(model => model.IdServiceRequest, new { @class = "form-control", @disabled = "disabled" })*@
                                                         @*@Html.ValidationMessageFor(model => model.IdServiceRequest, "", new { @class = "text-danger" })*@
+
+                                                        @Html.HiddenFor(model => model.Address, new { @id = "PropertyAddress" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,16 +161,16 @@
                                                 @Html.Partial("_PartialAddServiceBuilding")
                                             </div>
                                             @*<div id="serviceConstruccion">
-                                                @Html.Partial("_PartialAddServiceBuilding")
-                                            </div>*@
+                                                    @Html.Partial("_PartialAddServiceBuilding")
+                                                </div>*@
                                             <div id="serviceRefinanciamiento">
                                                 @Html.Partial("_PartialAddRefinancing")
                                             </div>
                                             @*<div id="servicePrestamos">
-                                                <br>
-                                                <h1>En construccion ....</h1>
-                                                <br>
-                                            </div>*@
+                                                    <br>
+                                                    <h1>En construccion ....</h1>
+                                                    <br>
+                                                </div>*@
                                             <div id="serviceLivingTrust">
                                                 @Html.Partial("_PartialAddLivingTrust")
                                             </div>
@@ -219,7 +221,7 @@
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <label>Representante:</label><br>
-                                                                                @Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @class = "form-control", @placeholder = "Seleccione" })
+                                                                                @Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })
                                                                             </div>
                                                                         </div>
@@ -326,7 +328,7 @@
 </div>
 
 @section Scripts {
-
+        
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -346,7 +348,7 @@
         //CLIENTE--------------------------------------------------------------------------------
         function cargarDataPerson(IdPerson, lstPersons) {
 
-            if (IdPerson === "") {
+            if (IdPerson === "" || IdPerson === "0") {
                 document.getElementById('lbIdentificationType').innerText = "";
                 document.getElementById('lbNumIdentification').innerText = "";
                 document.getElementById('lbName').innerText = "";
@@ -378,7 +380,7 @@
 
             ListPersons = $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=1',
+                url: '@Url.Action("GetListPerson", "Person")?idPersonType=1&PersonStatus=true',
                         data: "{}",
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -397,12 +399,25 @@
 
         }
         ObtenerPersonas();
+
+        $('#searchPerson').inputpicker({
+            data: ListPersons,
+            fields: ['Name', 'LastName'],
+            fieldText: 'Name',
+            fieldValue: 'IdPerson',
+            headShow: true,
+            filterOpen: true,
+            selectMode: null,
+            pagination: false,
+            responsive: true
+        });
+        //$('#searchPerson').val("");
         //FIN CLIENTE---------------------------------------------------------------------------
 
         //EMPLEADO--------------------------------------------------------------------------------
         function cargarDataPersonEmployee(IdPersonEmployee, lstPersonsEmployee) {
 
-            if (IdPersonEmployee === "") {
+            if (IdPersonEmployee === "" || IdPersonEmployee === "0") {
                 document.getElementById('lbPersonEmployeeName').innerText = "";
                 document.getElementById('lbPersonEmployeeLastName').innerText = "";
                 return false;
@@ -419,7 +434,7 @@
 
             ListPersonsEmployee = $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2&PersonStatus=true',
                         data: "{}",
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -593,26 +608,13 @@
                 var IdPerson = $(this).val();
                 cargarDataPerson(IdPerson, ListPersons)
             });
-
-            $('#searchPerson').inputpicker({
-                data: ListPersons,
-                fields: ['Name', 'LastName'],
-                fieldText: 'Name',
-                fieldValue: 'IdPerson',
-                headShow: true,
-                filterOpen: true,
-                selectMode: null,
-                pagination: false,
-                responsive: true
-            });
-            $('#searchPerson').val("");
+            cargarDataPerson($("#searchPerson").val(), ListPersons);
 
             //EMPLEADO INPUTPICKER
             $("#searchEmployee").on('change', function () {
                 var IdPersonEmployee = $(this).val();
                 cargarDataPersonEmployee(IdPersonEmployee, ListPersonsEmployee)
             });
-
             $('#searchEmployee').inputpicker({
                 data: ListPersonsEmployee,
                 fields: ['Name', 'LastName'],
@@ -624,8 +626,8 @@
                 pagination: false,
                 responsive: true
             });
-            $('#searchEmployee').val("");
-
+            //$('#searchEmployee').val("");
+            cargarDataPersonEmployee($("#searchEmployee").val(), ListPersonsEmployee);
 
 
             // If the checkbox is checked, display the output text
@@ -947,11 +949,29 @@
             });
 
 
+            $("#inpBuy_Address").on('blur', function () {
+                var selecServiceType = $('select[id="lst_ServiceType"] option:selected').text();
+                var strAddress = $(this).val();
+                if (selecServiceType === "Compras") {
+                    $("#PropertyAddress").val(strAddress);
+                }
+            });
+            $("#inpBuild_Address").on('blur', function () {
+                var selecServiceType = $('select[id="lst_ServiceType"] option:selected').text();
+                var strAddress = $(this).val();
+                if (selecServiceType === "Planos" || selecServiceType === "Construcción") {
+                    $("#PropertyAddress").val(strAddress);
+                }
+            });
+            $("#inpRefin_Address").on('blur', function () {
+                var selecServiceType = $('select[id="lst_ServiceType"] option:selected').text();
+                var strAddress = $(this).val();
+                if (selecServiceType === "Refinanciamiento") {
+                    $("#PropertyAddress").val(strAddress);
+                }
+            });
+
         });
-
-        cargarDataPerson($("#searchPerson").val(), ListPersons);
-        cargarDataPersonEmployee($("#searchEmployee").val(), ListPersonsEmployee);
-
 
     </script>
 }

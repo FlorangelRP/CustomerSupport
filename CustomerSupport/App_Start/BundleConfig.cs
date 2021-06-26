@@ -20,6 +20,9 @@ namespace CustomerSupport
             //            "~/Scripts/modernizr-*"));
             //"~/Content/assets/js/jquery.min.js",
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                    "~/Content/assets/popper.js.1.16.1/umd/popper.js",
+                    //"~/Content/assets/popper.js.1.16.1/umd/popper.min.js",
+
                     "~/Content/assets/js/bootstrap.min.js",
                     "~/Content/assets/js/jquery.magnific-popup.min.js",
                     "~/Content/assets/js/isotope.pkgd.min.js",

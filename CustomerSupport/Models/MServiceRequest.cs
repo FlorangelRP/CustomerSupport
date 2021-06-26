@@ -25,6 +25,8 @@ namespace CustomerSupport.Models
         public string ContactType { get; set; } //descripcion de la via de contacto
         public Nullable<int> IdPropertyType { get; set; }
         public string PropertyType { get; set; } //descripcion de tipo de propiedad
+
+  
         public string Address { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]

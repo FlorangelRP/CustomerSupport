@@ -15,8 +15,8 @@
     <div class="col-md-12">
         <div class="form-group">
             <div class="control-label">Direccion de la Propiedad:</div>
-            @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = 3, @cols = 10, @id="inpRefin_Address" })
-            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            @Html.TextArea("inpRefin_Address", Model.Address, 3, 12, new { @class = "form-control", @id="inpRefin_Address" })
+            @*@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })*@
         </div>
     </div>
 </div>
