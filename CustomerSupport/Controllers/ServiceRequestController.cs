@@ -37,7 +37,11 @@ namespace CustomerSupport.Controllers
 
             MServiceRequest objServiceRequest = new MServiceRequest();
             objServiceRequest.listConstructionOption = new List<MServiceConstructionOption>();
+
             objServiceRequest.listTask = new List<MTask>();
+            objServiceRequest.listTask.Add(new MTask());
+            objServiceRequest.listTask[0].DateIni = DateTime.Now;
+
 
             if (TempData["Success"] != null)
             {
@@ -61,6 +65,7 @@ namespace CustomerSupport.Controllers
                 {
                     //valores por defecto
                     objServiceRequest.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                    objServiceRequest.listTask.RemoveAll(r => r.IdPersonEmployee == null); //si empleado esta null, no hay cita
                     //------------------
 
                     string mensaje = "";
@@ -74,6 +79,16 @@ namespace CustomerSupport.Controllers
                     }
                     else
                     {
+
+                        if (objServiceRequest.listTask != null) 
+                        {
+                            if (objServiceRequest.listTask.Count()==0)
+                            {
+                                objServiceRequest.listTask.Add(new MTask());
+                                objServiceRequest.listTask[0].DateIni = DateTime.Now;
+                            }
+                        }
+
                         ViewBag.ErrorSave = mensaje;
                         return View(objServiceRequest);
                     }
@@ -528,5 +543,25 @@ namespace CustomerSupport.Controllers
             objServiceRequest = fnListServiceRequest(id,null,null,null,null).First();
             return View(objServiceRequest);
         }
+
+        #region "Vistas Parciales"
+        public ActionResult PartialAddServiceBuy()
+        {
+            return PartialView("_PartialAddServiceBuy");
+        }
+        public ActionResult PartialAddServiceBuilding()
+        {
+            return PartialView("_PartialAddServiceBuilding");
+        }
+        public ActionResult PartialAddRefinancing()
+        {
+            return PartialView("_PartialAddRefinancing");
+        }
+        public ActionResult PartialAddLivingTrust()
+        {
+            return PartialView("_PartialAddLivingTrust");
+        }
+        #endregion
+
     }
 }

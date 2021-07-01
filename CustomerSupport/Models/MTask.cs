@@ -26,9 +26,10 @@ namespace CustomerSupport.Models
         public List<MTaskPerson> listTaskPerson { get; set; } //Esta lista es para los involucrados en la actividad
 
         //Estos datos opcionales son para el caso de Cita en Solicitud de Servicio, que solo se puede incluir una persona
-        public int IdPersonEmployee { get; set; }
+        public int? IdPersonEmployee { get; set; }
         public string PersonEmployeeName { get; set; } 
         public string PersonEmployeeLastName { get; set; } 
+        //---------------------------------------------------------------------------------------------------------------
 
     }
 

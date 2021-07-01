@@ -710,6 +710,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Country\" />
+    <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

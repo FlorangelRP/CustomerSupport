@@ -1,34 +1,39 @@
 ﻿@model CustomerSupport.Models.MServiceRequest
 
-<div class="row">
+@{
+    Layout = null;
+}
+
+<!--<div class="row">
     <div class="col-md-6">
         <div class="form-group">
             <div class="control-label">Tipo de Propiedad:</div>
             <select id="lstBuild_PropertyType" class="form-control select2" style="width: 100%;">
-            </select>
-            @Html.HiddenFor(model => model.IdPropertyType, new { @id = "inpBuild_IdPropertyType" })
-            @Html.ValidationMessageFor(model => model.IdPropertyType, "", new { @class = "text-danger" })
-        </div>
+            </select>-->
+            @*@Html.HiddenFor(model => model.IdPropertyType, new { @id = "inpBuild_IdPropertyType" })*@
+            @*@Html.ValidationMessageFor(model => model.IdPropertyType, "", new { @class = "text-danger" })*@
+        <!--</div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
-            <div class="control-label">Direccion de la Propiedad:</div>
-            @Html.TextArea("inpBuild_Address", Model.Address, 3, 12, new { @class = "form-control", @id = "inpBuild_Address" })
-            @*@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })*@
-        </div>
+            <div class="control-label">Direccion de la Propiedad:</div>-->
+            @*@Html.TextAreaFor(model => model.Address, 3, 12, new { @class = "form-control", @id = "inpBuild_Address" })*@
+                @*@Html.TextArea("inpBuild_Address", Model.Address, 3, 12, new { @class = "form-control", @id = "inpBuild_Address" })*@
+                @*@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })*@
+        <!--</div>
     </div>
-</div>
+</div>-->
 
 <div class="row">
-    <div class="col-md-4">
+    <!--<div class="col-md-4">
         <div class="form-group">
-            <div class="control-label">Valor Estimado de la Propiedad:</div>
-            @Html.TextBoxFor(model => model.EstimatedValue, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpBuild_EstimatedValue" })
-            @Html.ValidationMessageFor(model => model.EstimatedValue, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div class="control-label">Valor Estimado de la Propiedad:</div>-->
+            @*@Html.TextBoxFor(model => model.EstimatedValue, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpBuild_EstimatedValue" })*@
+            @*@Html.ValidationMessageFor(model => model.EstimatedValue, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>-->
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Tiene Planos?</div>
@@ -46,6 +51,25 @@
                 <span class="checkmark"></span>
             </label>
             @Html.ValidationMessageFor(model => model.Plane, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Necesita Financiamiento?</div>
+
+            <label class="ss_radioButton">
+                Si
+                @*<input type="radio" checked="checked" name="radio">*@
+                @Html.RadioButtonFor(model => model.Financing, true)
+                <span class="checkmark"></span>
+            </label>
+            <label class="ss_radioButton">
+                No
+                @*<input type="radio" name="radio">*@
+                @Html.RadioButtonFor(model => model.Financing, false, new { @checked = "checked" })
+                <span class="checkmark"></span>
+            </label>
+            @Html.ValidationMessageFor(model => model.Financing, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
@@ -137,51 +161,31 @@
 
 </div>
 
-<div class="row">
+<!--<div class="row">
     <div class="col-md-4">
         <div class="form-group">
-            <div class="control-label">Necesita Financiamiento?</div>
+            <div class="control-label">Ingreso Promedio:</div>-->
+            @*@Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpBuild_MonthlyIncome" })*@
+            @*@Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Deudas/Pagos Promedio:</div>-->
+            @*@Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpBuild_DebtPayment" })*@
+            @*@Html.ValidationMessageFor(model => model.DebtPayment, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+</div>-->
 
-            <label class="ss_radioButton">
-                Si
-                @*<input type="radio" checked="checked" name="radio">*@
-                @Html.RadioButtonFor(model => model.Financing, true)
-                <span class="checkmark"></span>
-            </label>
-            <label class="ss_radioButton">
-                No
-                @*<input type="radio" name="radio">*@
-                @Html.RadioButtonFor(model => model.Financing, false, new { @checked = "checked" })
-                <span class="checkmark"></span>
-            </label>
-            @Html.ValidationMessageFor(model => model.Financing, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="form-group">
-            <div class="control-label">Ingreso Promedio:</div>
-            @Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpBuild_MonthlyIncome" })
-            @Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="form-group">
-            <div class="control-label">Deudas/Pagos Promedio:</div>
-            @Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpBuild_DebtPayment" })
-            @Html.ValidationMessageFor(model => model.DebtPayment, "", new { @class = "text-danger" })
-        </div>
-    </div>
-</div>
-
-@section Scripts {
+@*@section Scripts {
 
     <script>
 
         $(document).ready(function () {
 
 
-
         });
 
     </script>
-}
+}*@
