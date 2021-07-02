@@ -74,7 +74,7 @@ namespace CustomerSupport.Controllers
 
                     if (resultDb != 0)
                     {
-                        TempData["Success"] = mensaje + "Nro. de servicio generado : (" + IdService + ").";
+                        TempData["Success"] = mensaje + " N° de Servicio generado: " + IdService + ".";
                         return RedirectToAction("AddServiceRequest");
                     }
                     else
@@ -95,6 +95,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
+                    ViewBag.ErrorSave = "Debe completar los datos requeridos.";
                     return View(objServiceRequest);
                 }
 

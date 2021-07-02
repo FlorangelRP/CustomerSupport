@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAnnotationsExtensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,14 +16,24 @@ namespace CustomerSupport.Models
         }
 
         public int IdServiceRequest { get; set; }
+
+        [Min(1, ErrorMessage = "Indique el tipo de servicio.")]
         public int IdServiceType { get; set; }
         public string ServiceType { get; set; } //descripcion del tipo de servicio
+
+        [Min(1, ErrorMessage = "Indique el Estado del servicio.")]
         public int IdServiceStatus { get; set; }
         public string ServiceStatus { get; set; } //descripcion del estatus del servicio
+
+        [Required(ErrorMessage = "Indique el Cliente.")]
+        [RegularExpression("^[1-9][0-9]*$", ErrorMessage = "Indique el Cliente.")]
         public int IdPerson { get; set; }
         public MPerson PersonClient { get; set; }
+
+        [Min(1, ErrorMessage = "Indique la via de contacto.")]
         public Nullable<int> IdContactType { get; set; }
         public string ContactType { get; set; } //descripcion de la via de contacto
+
         public Nullable<int> IdPropertyType { get; set; }
         public string PropertyType { get; set; } //descripcion de tipo de propiedad
 

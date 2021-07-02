@@ -6,7 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 <div class="card card-primary">
     <div class="card-header">
@@ -576,7 +575,7 @@
                     $("#serviceLivingTrust").hide();
                     //-------------------------------------
                     $("#divInfoIncomeDebt").show();
-                    $("#divInfoPitiRatio").show();                    
+                    $("#divInfoPitiRatio").show();
 
                     @*if (!document.getElementById('serviceRefinanciamiento').hasChildNodes()) {
                         $("#serviceRefinanciamiento").load('@Url.Content("/ServiceRequest/PartialAddRefinancing")');
@@ -594,9 +593,12 @@
                     $("#serviceConstruccionPlanos").hide();
                     $("#serviceRefinanciamiento").hide();
                     $("#serviceLivingTrust").show();
-                    //-------------------------------------                    
+                    //-------------------------------------
                     $("#divInfoIncomeDebt").hide();
-                    $("#divInfoPitiRatio").hide();                    
+                    $("#divInfoPitiRatio").hide();
+
+                    //Living Trust no requiere tipo de propiedad
+                    $("#inpIdPropertyType").val("");
 
                     @*if (!document.getElementById('serviceLivingTrust').hasChildNodes()) {
                        $("#serviceLivingTrust").load('@Url.Content("/ServiceRequest/PartialAddLivingTrust")');
@@ -1059,7 +1061,6 @@
 
             $("#lst_PropertyType").on('change', function () {
                 var selectValue = $(this).val();
-                alert(selectValue);
                 changeCodeInputHiddenList("lst_PropertyType", "inpIdPropertyType", selectValue);
             });
             $.ajax({
@@ -1081,7 +1082,7 @@
                         option.val(this.IdCatalogDetail); //Identity
 
                         $("#lst_PropertyType").append(option);
-                    });                           
+                    });
 
                     document.getElementById('lst_PropertyType').value = "0";
 
@@ -1093,6 +1094,34 @@
 
             });
 
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"CONSTRUCTIONOPTION",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("");
+                    $("#lst_ConstructionOption").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ConstructionOption").append(option);
+                    });
+
+                    document.getElementById('lst_ConstructionOption').value = "";
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Opciones de Construccion");
+                }
+
+            });
 
             //$("#lstBuild_PropertyType").on('change', function () {
             //    var selectValue = $(this).val();

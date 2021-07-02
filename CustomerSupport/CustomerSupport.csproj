@@ -685,8 +685,6 @@
     <Content Include="Views\Employee\ListEmployee.cshtml" />
     <Content Include="Views\ServiceRequest\ListServiceRequest.cshtml" />
     <Content Include="Views\ServiceRequest\AddServiceRequest.cshtml" />
-    <Content Include="Views\Shared\_PartialClient.cshtml" />
-    <Content Include="Views\Shared\_PartialDetailTask.cshtml" />
     <Content Include="Views\ServiceRequest\_PartialAddServiceBuy.cshtml" />
     <Content Include="Views\ServiceRequest\_PartialAddRefinancing.cshtml" />
     <Content Include="Views\ServiceRequest\_PartialAddLivingTrust.cshtml" />
@@ -707,6 +705,7 @@
     <Content Include="Views\Client\DetailClient.cshtml" />
     <Content Include="Views\Client\EditClient.cshtml" />
     <Content Include="Views\ServiceRequest\DetailServiceRequest.cshtml" />
+    <Content Include="Views\ServiceRequest\EditServiceRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
