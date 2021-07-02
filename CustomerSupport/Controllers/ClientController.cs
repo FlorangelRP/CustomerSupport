@@ -52,7 +52,7 @@ namespace CustomerSupport.Controllers
             }
 
             MPerson objPersonClient = new MPerson();
-            objPersonClient.Birthday = DateTime.Now;
+            objPersonClient.Birthday = DateTime.Now.Date;
             objPersonClient.listPersonContact = new List<MPersonContact>();
 
             if (TempData["Success"] != null)
