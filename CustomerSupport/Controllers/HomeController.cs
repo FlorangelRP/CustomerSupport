@@ -47,7 +47,7 @@ namespace CustomerSupport.Controllers
                         if (objFinalizado != null)
                         {
                             var servicesCompleted = Service.FindAll(p => p.IdServiceStatus == objFinalizado.IdCatalogDetail).ToList();
-                            objStatistics.ServicesProcess = servicesCompleted.Count();
+                            objStatistics.servicesCompleted = servicesCompleted.Count();
                             
                         }
                     }
