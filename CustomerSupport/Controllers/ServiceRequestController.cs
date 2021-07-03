@@ -616,9 +616,9 @@ namespace CustomerSupport.Controllers
 
 
         // GET: Employee/DetailServiceRequest/5
-        public ActionResult DetailServiceRequest(int id)
+        public ActionResult DetailServiceRequest(int? id)
         {
-            if (Session["Usuario"] == null)
+            if (Session["Usuario"] == null || id==null)
             {
                 return RedirectToAction("Login", "User");
             }

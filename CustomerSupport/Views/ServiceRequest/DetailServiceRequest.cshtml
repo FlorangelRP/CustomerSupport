@@ -116,7 +116,7 @@
 
                                         </div>
 
-                                        @if (Model.ServiceType == "Compra")
+                                        @if (Model.ServiceType == "Compras")
                                         {
 
                                             <div id="serviceCompras">
@@ -186,14 +186,14 @@
                                             </div>
                                         }
 
-                                        @if (Model.ServiceType == "Planos" || Model.ServiceType == "Construccion")
+                                        @if (Model.ServiceType == "Planos" || Model.ServiceType == "Construcción")
                                         {
                                             <div id="serviceConstruccionPlanos">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
-                                                            @Html.DisplayFor(model => model.IdPropertyType)
+                                                            @Html.DisplayFor(model => model.PropertyType)
                                                         </div>
                                                     </div>
                                                 </div>
@@ -333,7 +333,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
-                                                            @Html.HiddenFor(model => model.PropertyType)
+                                                            @Html.DisplayFor(model => model.PropertyType)
                                                         </div>
                                                     </div>
                                                 </div>
@@ -342,7 +342,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label font-weight-bold">Valor Estimado de la Propiedad:</div>
-                                                            @Html.DisplayFor(model => model.Price, "{0:N2}")
+                                                            @Html.DisplayFor(model => model.EstimatedValue, "{0:N2}")
                                                         </div>
                                                     </div>
 
@@ -397,19 +397,19 @@
                                         @if (Model.ServiceType == "Living Trust")
                                         {
                                             <div id="serviceLivingTrust">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
-                                                            @Html.HiddenFor(model => model.PropertyType)
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                @*<div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
+                            @Html.DisplayFor(model => model.PropertyType)
+                        </div>
+                    </div>
+                </div>*@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <div class="control-label font-weight-bold">Que tipos de bienes desea agregar?</div>
-                                                            @Html.DisplayFor(model => model.Assets, new {@rows = 3, @cols = 10 })
+                                                            @Html.DisplayFor(model => model.Assets, new { @rows = 3, @cols = 10 })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -476,7 +476,58 @@
                                             </div>
                                         </div>
 
+                                        <div id="collapseCardCita" class="collapse" aria-labelledby="headingCita" data-parent="#accordionCita">
 
+                                            <div class="card-body">
+
+                                                <div class="row">
+                                                    <div class="row shadow-sm p-3 mb-5 bg-white rounded">
+                                                        <label>Representante:</label><br>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="control-label">Nombres:</div>
+                                                                @Html.DisplayFor(model => model.listTask[0].PersonEmployeeName)
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="control-label">Apellidos:</div>
+                                                                @Html.DisplayFor(model => model.listTask[0].PersonEmployeeLastName)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Actividad a realizar:</div>
+                                                            @Html.DisplayFor(model => model.listTask[0].Activity)
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="control-label">Fecha:</div>
+                                                                @Html.DisplayFor(model => model.listTask[0].DateIni, "{0:d}")
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="control-label">Hora:</div>
+                                                                @Html.DisplayFor(model => model.listTask[0].HourIni)
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="control-label">Lugar:</div>
+                                                                @Html.DisplayFor(model => model.listTask[0].Place)
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                        </div>
 
                                         @*<div class="row">
             @Html.Partial("_PartialDetailTask")
