@@ -62,7 +62,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <div class="control-label font-weight-bold">Tipo de Identificacion:</div>
-                                                        @Html.DisplayFor(model => model.PersonClient.IdIdentificationType)
+                                                        @Html.DisplayFor(model => model.PersonClient.IdentificationType)
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -119,8 +119,8 @@
                                             <div class="row">
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <div class="control-label">Tipo de Servicio:</div>
-                                                        @Html.DisplayFor(model => model.ServiceType, new { @id = "lblServiceType" })
+                                                        <div class="control-label font-weight-bold">Tipo de Servicio:</div>
+                                                        @Html.DisplayFor(model => model.ServiceType)
                                                         @Html.HiddenFor(model => model.IdServiceType)
                                                     </div>
                                                 </div>
@@ -209,7 +209,7 @@
                                             <div class="row">
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <div class="control-label">Via de Contacto:</div>
+                                                        <div class="control-label font-weight-bold">Via de Contacto:</div>
                                                         @Html.DisplayFor(model => model.ContactType)
                                                         @Html.HiddenFor(model => model.IdContactType)
                                                     </div>
@@ -650,8 +650,7 @@
 
         $(document).ready(function () {
 
-            alert($("lblServiceType").text());
-            showServiceType($("lblServiceType").text());
+            showServiceType('@Html.Raw(Model.ServiceType)');
 
             //EMPLEADO INPUTPICKER
             $("#searchEmployee").on('change', function () {
