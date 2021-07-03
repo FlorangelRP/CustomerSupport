@@ -40,7 +40,7 @@ namespace CustomerSupport.Controllers
 
             objServiceRequest.listTask = new List<MTask>();
             objServiceRequest.listTask.Add(new MTask());
-            objServiceRequest.listTask[0].DateIni = DateTime.Now;
+            objServiceRequest.listTask[0].DateIni = DateTime.Now.Date;
 
 
             if (TempData["Success"] != null)
@@ -85,7 +85,7 @@ namespace CustomerSupport.Controllers
                             if (objServiceRequest.listTask.Count()==0)
                             {
                                 objServiceRequest.listTask.Add(new MTask());
-                                objServiceRequest.listTask[0].DateIni = DateTime.Now;
+                                objServiceRequest.listTask[0].DateIni = DateTime.Now.Date;
                             }
                         }
 
@@ -108,44 +108,127 @@ namespace CustomerSupport.Controllers
 
         }
 
+        // GET: ServiceRequest/EditServiceRequest/5
+        public ActionResult EditServiceRequest(int id)
+        {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            MServiceRequest objServiceRequest = new MServiceRequest();
+            objServiceRequest = fnListServiceRequest(id,null).First();
+
+            //----
+            if (objServiceRequest.listTask!=null && objServiceRequest.listTask.Count()>0) 
+            {
+                if (objServiceRequest.listTask[0].listTaskPerson != null && objServiceRequest.listTask[0].listTaskPerson.Count() > 0)
+                {
+                    objServiceRequest.listTask[0].IdPersonEmployee = objServiceRequest.listTask[0].listTaskPerson[0].IdPersonEmployee;
+                    objServiceRequest.listTask[0].PersonEmployeeName = objServiceRequest.listTask[0].listTaskPerson[0].PersonEmployeeName;
+                    objServiceRequest.listTask[0].PersonEmployeeLastName = objServiceRequest.listTask[0].listTaskPerson[0].PersonEmployeeLastName;
+                }
+            }
+            //----
+
+            if (TempData["Success"] != null)
+            {
+                ViewBag.SuccessSave = TempData["Success"];
+            }
+
+            return View(objServiceRequest);
+        }
+
         public static List<MServiceRequest> fnListServiceRequest(int? IdServiceRequest, int? IdServiceType, int? IdServiceStatus = null, int? IdPerson = null, int? IdUser = null)
         {
             List<MServiceRequest> ListServiceRequest = new List<MServiceRequest>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
              ListServiceRequest = (from d in db.GNListServiceRequest(IdServiceRequest, IdServiceType, IdServiceStatus, IdPerson, IdUser).ToList()
-            join c in db.VWListCatalog.Where(t => t.IdTable == "SERVICESTATUS").ToList() on d.IdServiceStatus equals c.IdCatalogDetail
-                        select new MServiceRequest
-                          {
-                              IdServiceRequest = d.IdServiceRequest,
-                              IdServiceType = d.IdServiceType,
-                              ServiceType = d.ServiceType,
-                              IdServiceStatus = d.IdServiceStatus,
-                              ServiceStatus = c.DetailDesc,
-                              IdPerson = d.IdPerson,
-                              PersonClient = (MPerson)(from result2 in db.GNListPerson(d.IdPerson, null, null).ToList()
-                                            select new MPerson
-                                            {
-                                                IdPerson = result2.IdPerson,
-                                                IdPersonType = result2.IdPersonType,
-                                                PersonType = result2.PersonType,
-                                                IdIdentificationType = result2.IdIdentificationType,
-                                                IdentificationType = result2.IdentificationType,
-                                                NumIdentification = result2.NumIdentification,
-                                                Name = result2.Name,
-                                                LastName = result2.LastName,
-                                                Birthday = result2.Birthday,
-                                                Address = result2.Address,
-                                                Email = result2.Email,
-                                                IdContactType = result2.IdContactType,
-                                                ContactType = result2.ContactType,
-                                                IdPosition = result2.IdPosition,
-                                                Position = result2.Position,
-                                                ClientPermission = result2.ClientPermission,
-                                                Status = result2.Status
-                                            }).ToList().First(),
-                                     RegisterDate = d.RegisterDate
-                                 }).ToList();
+                                    select new MServiceRequest
+                                    {
+                                        IdServiceRequest = d.IdServiceRequest,
+                                        IdServiceType = d.IdServiceType,
+                                        ServiceType = d.ServiceType,
+                                        IdServiceStatus = d.IdServiceStatus,
+                                        ServiceStatus = d.ServiceStatus,
+                                        IdPerson = d.IdPerson,
+                                        PersonClient = (MPerson)(from result2 in db.GNListPerson(d.IdPerson, null, null).ToList()
+                                                        select new MPerson
+                                                        {
+                                                            IdPerson = result2.IdPerson,
+                                                            IdPersonType = result2.IdPersonType,
+                                                            PersonType = result2.PersonType,
+                                                            IdIdentificationType = result2.IdIdentificationType,
+                                                            IdentificationType = result2.IdentificationType,
+                                                            NumIdentification = result2.NumIdentification,
+                                                            Name = result2.Name,
+                                                            LastName = result2.LastName,
+                                                            Birthday = result2.Birthday,
+                                                            Address = result2.Address,
+                                                            Email = result2.Email,
+                                                            IdContactType = result2.IdContactType,
+                                                            ContactType = result2.ContactType,
+                                                            IdPosition = result2.IdPosition,
+                                                            Position = result2.Position,
+                                                            ClientPermission = result2.ClientPermission,
+                                                            Status = result2.Status
+                                                        }).ToList().First(),
+                                        IdContactType=d.IdContactType,
+                                        ContactType=d.ContactType,
+                                        IdPropertyType=d.IdPropertyType,
+                                        PropertyType=d.PropertyType,
+                                        Address=d.Address,
+                                        Price=d.Price,
+                                        DownPayment=d.DownPayment,
+                                        ClosingCost=d.ClosingCost,
+                                        MonthlyIncome=d.MonthlyIncome,
+                                        DebtPayment=d.DebtPayment,
+                                        Piti=d.Piti,
+                                        Ratios=d.Ratios,
+                                        EstimatedValue=d.EstimatedValue,
+                                        LoanAmount=d.LoanAmount,
+                                        CurrentDebt=d.CurrentDebt,
+                                        Assets=d.Assets,
+                                        Beneficiaries=d.Beneficiaries,
+                                        Process=d.Process,
+                                        Wish=d.Wish,
+                                        Plane=d.Plane,
+                                        Financing=d.Financing,
+                                        Note=d.Note,
+                                        IdUser=d.IdUser,
+                                        RegisterUser=d.RegisterUser,
+                                        RegisterDate = d.RegisterDate,
+                                        listConstructionOption = (List<MServiceConstructionOption>)(from co in db.GNListServiceConstructionOption(d.IdServiceRequest, null).ToList()
+                                                                    select new MServiceConstructionOption
+                                                                    {
+                                                                        IdServiceRequest=co.IdServiceRequest,
+                                                                        IdConstructionOption=co.IdConstructionOption,
+                                                                        ConstructionOption=co.ConstructionOption
+                                                                    }).ToList(),
+                                        listTask = (List<MTask>)(from tsk in db.GNListTask("SS",null,d.IdServiceRequest,null,null).ToList()
+                                                    select new MTask
+                                                    {
+                                                        IdTask=tsk.IdTask,
+                                                        IdUser=tsk.IdUser,
+                                                        UserName=tsk.UserName,
+                                                        UserLastName=tsk.UserLastName,
+                                                        Activity=tsk.Activity,
+                                                        DateIni=tsk.DateIni,
+                                                        DateEnd=tsk.DateEnd,
+                                                        HourIni=tsk.HourIni,
+                                                        HourEnd=tsk.HourEnd,
+                                                        Place=tsk.Place,
+                                                        Status=tsk.Status,
+                                                        listTaskPerson=(List<MTaskPerson>)(from tp in db.GNListPersonTask(tsk.IdTask, null).ToList()
+                                                                        select new MTaskPerson
+                                                                        {
+                                                                            IdPersonEmployee=tp.IdPersonEmployee,
+                                                                            PersonEmployeeName=tp.PersonEmployeeName,
+                                                                            PersonEmployeeLastName=tp.PersonEmployeeLastName
+                                                                        }).ToList()
+                                                    }).ToList()
+                                    }).ToList();
 
             return ListServiceRequest;
 

@@ -4,17 +4,17 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="744a88c5173d4f9e955fd2608bec211e" Name="Diagram1">
-        <EntityTypeShape EntityType="MMEnterprisesModel.Catalog" Width="1.5" PointX="0.75" PointY="10.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.CatalogDetail" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.Country" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.OptionMenu" Width="1.5" PointX="7.5" PointY="17.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.Person" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.PersonContact" Width="1.5" PointX="7.5" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.ServiceRequest" Width="1.5" PointX="9.75" PointY="12.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.Task" Width="1.5" PointX="12.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.User" Width="1.5" PointX="7.5" PointY="21.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.UserAcces" Width="1.5" PointX="9.75" PointY="21.5" IsExpanded="true" />
+      <Diagram DiagramId="6666d4b7e3bd487998b35603d58a423b" Name="Diagram1">
+        <EntityTypeShape EntityType="MMEnterprisesModel.Catalog" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.CatalogDetail" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Country" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.OptionMenu" Width="1.5" PointX="7.5" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Person" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.PersonContact" Width="1.5" PointX="7.5" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.ServiceRequest" Width="1.5" PointX="9.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Task" Width="1.5" PointX="12" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.User" Width="1.5" PointX="7.5" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.UserAcces" Width="1.5" PointX="9.75" PointY="19.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.VWListCatalog" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="MMEnterprisesModel.FK_CatalogDetail_Catalog" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.FK_Person_ContactType" ManuallyRouted="false" />

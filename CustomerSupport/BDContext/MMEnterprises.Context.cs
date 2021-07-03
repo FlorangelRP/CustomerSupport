@@ -524,5 +524,18 @@ namespace CustomerSupport.BDContext
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranUserAcces", idUserParameter, idOptionParameter, blnVisibleParameter, blnCreateParameter, blnSearchParameter, blnEditParameter, blnDeleteParameter);
         }
+    
+        public virtual ObjectResult<GNListPersonTask_Result> GNListPersonTask(Nullable<int> idTask, Nullable<int> idPerson)
+        {
+            var idTaskParameter = idTask.HasValue ?
+                new ObjectParameter("IdTask", idTask) :
+                new ObjectParameter("IdTask", typeof(int));
+    
+            var idPersonParameter = idPerson.HasValue ?
+                new ObjectParameter("IdPerson", idPerson) :
+                new ObjectParameter("IdPerson", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPersonTask_Result>("GNListPersonTask", idTaskParameter, idPersonParameter);
+        }
     }
 }
