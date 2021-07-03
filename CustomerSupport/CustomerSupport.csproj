@@ -148,6 +148,9 @@
     <Compile Include="BDContext\GNListPersonContact_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListPersonTask_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListPerson_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -552,13 +555,6 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <EntityDeploy Include="BDContext\MMEnterprises.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="BDContext\MMEnterprises.edmx.diagram">
-      <DependentUpon>MMEnterprises.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\assets\popper.js.1.16.1\esm\popper-utils.js.map" />
     <Content Include="Content\assets\popper.js.1.16.1\esm\popper-utils.min.js.map" />
     <Content Include="Content\assets\popper.js.1.16.1\esm\popper.js.map" />
@@ -574,6 +570,13 @@
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.js.flow" />
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.js.map" />
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.min.js.map" />
+    <EntityDeploy Include="BDContext\MMEnterprises.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="BDContext\MMEnterprises.edmx.diagram">
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

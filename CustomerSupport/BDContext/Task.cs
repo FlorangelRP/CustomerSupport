@@ -18,7 +18,7 @@ namespace CustomerSupport.BDContext
         public Task()
         {
             this.Person = new HashSet<Person>();
-            this.Person1 = new HashSet<Person>();
+            this.ServiceRequest = new HashSet<ServiceRequest>();
         }
     
         public int IdTask { get; set; }
@@ -35,6 +35,6 @@ namespace CustomerSupport.BDContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person> Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Person1 { get; set; }
+        public virtual ICollection<ServiceRequest> ServiceRequest { get; set; }
     }
 }

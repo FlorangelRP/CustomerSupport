@@ -18,6 +18,7 @@ namespace CustomerSupport.BDContext
         public ServiceRequest()
         {
             this.CatalogDetail4 = new HashSet<CatalogDetail>();
+            this.Task = new HashSet<Task>();
         }
     
         public int IdServiceRequest { get; set; }
@@ -56,5 +57,7 @@ namespace CustomerSupport.BDContext
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CatalogDetail> CatalogDetail4 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Task> Task { get; set; }
     }
 }

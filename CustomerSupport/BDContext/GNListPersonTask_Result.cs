@@ -11,18 +11,11 @@ namespace CustomerSupport.BDContext
 {
     using System;
     
-    public partial class GNListTask_Result
+    public partial class GNListPersonTask_Result
     {
         public int IdTask { get; set; }
-        public int IdUser { get; set; }
-        public string Activity { get; set; }
-        public System.DateTime DateIni { get; set; }
-        public System.DateTime DateEnd { get; set; }
-        public System.TimeSpan HourIni { get; set; }
-        public System.TimeSpan HourEnd { get; set; }
-        public string Place { get; set; }
-        public bool Status { get; set; }
-        public string UserName { get; set; }
-        public string UserLastName { get; set; }
+        public int IdPersonEmployee { get; set; }
+        public string PersonEmployeeName { get; set; }
+        public string PersonEmployeeLastName { get; set; }
     }
 }
