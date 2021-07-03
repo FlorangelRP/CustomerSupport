@@ -17,9 +17,20 @@ namespace CustomerSupport.Controllers
             if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
+
             }
             else
-            { 
+            {
+                var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+                var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListUser").First();
+                if (ObjAcces != null)
+                {
+                    if (ObjAcces.Visible == false)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
                 return View();
             }
         }
