@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -17,8 +18,15 @@ namespace CustomerSupport.Models
         public string UserName { get; set; } //opcional, se susa solo cuando se vaya a mostrar los datos en la vista
         public string UserLastName { get; set; } //opcional, se susa solo cuando se vaya a mostrar los datos en la vista
         public string Activity { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DataType(DataType.Date)]
         public System.DateTime DateIni { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DataType(DataType.Date)]
         public System.DateTime DateEnd { get; set; }
+
         public System.TimeSpan HourIni { get; set; }
         public System.TimeSpan HourEnd { get; set; }
         public string Place { get; set; }
