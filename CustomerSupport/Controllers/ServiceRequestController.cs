@@ -129,6 +129,12 @@ namespace CustomerSupport.Controllers
                     objServiceRequest.listTask[0].PersonEmployeeLastName = objServiceRequest.listTask[0].listTaskPerson[0].PersonEmployeeLastName;
                 }
             }
+            else
+            {
+                objServiceRequest.listTask = new List<MTask>();
+                objServiceRequest.listTask.Add(new MTask());
+                objServiceRequest.listTask[0].DateIni = DateTime.Now.Date;
+            }
             //----
 
             if (TempData["Success"] != null)
@@ -625,6 +631,24 @@ namespace CustomerSupport.Controllers
 
             MServiceRequest objServiceRequest = new MServiceRequest();
             objServiceRequest = fnListServiceRequest(id,null,null,null,null).First();
+            //----
+            if (objServiceRequest.listTask != null && objServiceRequest.listTask.Count() > 0)
+            {
+                if (objServiceRequest.listTask[0].listTaskPerson != null && objServiceRequest.listTask[0].listTaskPerson.Count() > 0)
+                {
+                    objServiceRequest.listTask[0].IdPersonEmployee = objServiceRequest.listTask[0].listTaskPerson[0].IdPersonEmployee;
+                    objServiceRequest.listTask[0].PersonEmployeeName = objServiceRequest.listTask[0].listTaskPerson[0].PersonEmployeeName;
+                    objServiceRequest.listTask[0].PersonEmployeeLastName = objServiceRequest.listTask[0].listTaskPerson[0].PersonEmployeeLastName;
+                }
+            }
+            else
+            {
+                objServiceRequest.listTask = new List<MTask>();
+                objServiceRequest.listTask.Add(new MTask());
+                objServiceRequest.listTask[0].DateIni = DateTime.Now.Date;
+            }
+            //----
+
             return View(objServiceRequest);
         }
 
