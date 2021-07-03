@@ -73,7 +73,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Fecha de Nacimiento:</div>
-                                @Html.TextBoxFor(model => model.Birthday, "{0:d}", new { @class = "form-control", @type = "date" })
+                                @Html.TextBoxFor(model => model.Birthday, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttBirthday" })
                                 @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -293,6 +293,20 @@
     <script>
 
         $(document).ready(function () {
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById("dttBirthday").setAttribute("max", today);
 
             // If the checkbox is checked, display the output text
             if ($("#chkStatus").checked == true) {
