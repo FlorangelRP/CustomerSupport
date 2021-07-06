@@ -442,6 +442,7 @@ new WOW().init();
 		$(".input-decimal").on('input', function (evt) {
 			// solo permite escribir numeros, separador decimal (.) y backspace
 			var regExAlphatet = /[^0-9-.]/g;
+			// var regExAlphatet = /^[0-9]{1,3}[,][0-9]{3}[.][0-9]{2}|[0-9]{1,3}[.][0-9]{2}/;
 			$(this).val($(this).val().replace(regExAlphatet, ''));
 
 			//debe comenzar con numero, punto decimal obligatorio, y dos decimales

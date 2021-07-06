@@ -14,6 +14,19 @@ namespace CustomerSupport.Controllers
         // GET: ServiceRequest
         public ActionResult ListServiceRequest()
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListServiceRequest").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Visible == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             return View();
         }
 
@@ -22,7 +35,9 @@ namespace CustomerSupport.Controllers
 
             List<MServiceRequest> ListServiceRequest = new List<MServiceRequest>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
+
             ListServiceRequest = fnListServiceRequest(null, null,null,null,null);
+
             return Json(ListServiceRequest, JsonRequestBehavior.AllowGet);
 
         }
@@ -33,6 +48,15 @@ namespace CustomerSupport.Controllers
             if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
+            }
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListServiceRequest").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Create == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             MServiceRequest objServiceRequest = new MServiceRequest();
@@ -109,11 +133,20 @@ namespace CustomerSupport.Controllers
         }
 
         // GET: ServiceRequest/EditServiceRequest/5
-        public ActionResult EditServiceRequest(int id)
+        public ActionResult EditServiceRequest(int? id)
         {
-            if (Session["Usuario"] == null)
+            if (Session["Usuario"] == null || id == null)
             {
                 return RedirectToAction("Login", "User");
+            }
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListServiceRequest").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Edit == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             MServiceRequest objServiceRequest = new MServiceRequest();
@@ -143,6 +176,63 @@ namespace CustomerSupport.Controllers
             }
 
             return View(objServiceRequest);
+        }
+
+        // POST: ServiceRequest/EditServiceRequest
+        [HttpPost]
+        public ActionResult EditServiceRequest(MServiceRequest objServiceRequest)
+        {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //valores por defecto
+                    objServiceRequest.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                    objServiceRequest.listTask.RemoveAll(r => r.IdPersonEmployee == null); //si empleado esta null, no hay cita
+                    //------------------
+
+                    string mensaje = "";
+                    int IdService = 0;
+                    int resultDb = fnGNTranServiceRequest(objServiceRequest, "U", ref IdService, ref mensaje);
+
+                    if (resultDb != 0)
+                    {
+                        TempData["Success"] = mensaje;
+                        return RedirectToAction("EditServiceRequest", new { id = objServiceRequest.IdServiceRequest });
+                    }
+                    else
+                    {
+
+                        if (objServiceRequest.listTask != null)
+                        {
+                            if (objServiceRequest.listTask.Count() == 0)
+                            {
+                                objServiceRequest.listTask.Add(new MTask());
+                                objServiceRequest.listTask[0].DateIni = DateTime.Now.Date;
+                            }
+                        }
+
+                        ViewBag.ErrorSave = mensaje;
+                        return View(objServiceRequest);
+                    }
+                }
+                else
+                {
+                    ViewBag.ErrorSave = "Debe completar los datos requeridos.";
+                    return View(objServiceRequest);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorSave = "Error al grabar datos de la solicitud de servicio: " + ex.Message;
+                return View(objServiceRequest);
+            }
+
         }
 
         public static List<MServiceRequest> fnListServiceRequest(int? IdServiceRequest, int? IdServiceType, int? IdServiceStatus = null, int? IdPerson = null, int? IdUser = null)
@@ -517,7 +607,7 @@ namespace CustomerSupport.Controllers
                             {
                                 SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceConstructionOption @TransactionType, @IdServiceRequest, @IdConstructionOption ",
                                     new SqlParameter[]{
-                                        new SqlParameter("@TransactionType", TransactionType),
+                                        new SqlParameter("@TransactionType", "I"),
                                         new SqlParameter("@IdServiceRequest", IdServiceRequest),
                                         new SqlParameter("@IdConstructionOption", item.IdConstructionOption)
                                     }
@@ -544,6 +634,7 @@ namespace CustomerSupport.Controllers
                                         new SqlParameter("@IdPerson", DBNull.Value)
                                     }
                                 );
+
                             }
 
                             //(Inserta/Actualiza) las actividades del Servicio
@@ -555,10 +646,22 @@ namespace CustomerSupport.Controllers
                                 paramOutIdTask.Direction = System.Data.ParameterDirection.InputOutput;
                                 paramOutIdTask.Value = item.IdTask;
 
+                                SqlParameter paramTransactionType = new SqlParameter();
+                                paramTransactionType.ParameterName = "@TransactionType";
+                                if (item.IdTask == 0 && TransactionType=="U")
+                                {
+                                    //la task no existe, debe ser creada.
+                                    paramTransactionType.Value = "I";
+                                }
+                                else
+                                {
+                                    paramTransactionType.Value = TransactionType;
+                                }
+
                                 SqlResult = db.Database.ExecuteSqlCommand("GNTranTask @TransactionType, @IdTask OUT, @IdUser, @Activity " +
                                                                         " ,@DateIni, @DateEnd, @HourIni, @HourEnd, @Place, @Status ",
                                     new SqlParameter[]{
-                                        new SqlParameter("@TransactionType", TransactionType),
+                                        paramTransactionType,
                                         paramOutIdTask,
                                         new SqlParameter("@IdUser", objServiceRequest.IdUser), //Debe ser item.IdUser si se graba desde otra vista
                                         new SqlParameter("@Activity", item.Activity),
@@ -592,7 +695,7 @@ namespace CustomerSupport.Controllers
                                     //Inserta los involucarados
                                     SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson ",
                                         new SqlParameter[]{
-                                            new SqlParameter("@TransactionType", TransactionType),
+                                            new SqlParameter("@TransactionType", "I"),
                                             new SqlParameter("@IdTask", IdTask),
                                             new SqlParameter("@IdPerson", item.IdPersonEmployee)
                                         }
@@ -621,12 +724,21 @@ namespace CustomerSupport.Controllers
         }
 
 
-        // GET: Employee/DetailServiceRequest/5
+        // GET: ServiceRequest/DetailServiceRequest/5
         public ActionResult DetailServiceRequest(int? id)
         {
             if (Session["Usuario"] == null || id==null)
             {
                 return RedirectToAction("Login", "User");
+            }
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListServiceRequest").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Search == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             MServiceRequest objServiceRequest = new MServiceRequest();

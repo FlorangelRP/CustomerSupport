@@ -57,6 +57,17 @@
                                                         <div class="control-label font-weight-bold">Código:</div>
                                                         @Html.DisplayFor(model => model.IdPerson)
                                                         @Html.HiddenFor(model => model.IdPerson)
+
+                                                        @Html.HiddenFor(model => model.PersonClient.IdIdentificationType, new { @id = "IdIdentificationType" })
+                                                        @Html.HiddenFor(model => model.PersonClient.IdentificationType, new { @id = "IdentificationType" })
+                                                        @Html.HiddenFor(model => model.PersonClient.NumIdentification, new { @id = "NumIdentification" })
+                                                        @Html.HiddenFor(model => model.PersonClient.Name, new { @id = "Name" })
+                                                        @Html.HiddenFor(model => model.PersonClient.LastName, new { @id = "LastName" })
+                                                        @Html.HiddenFor(model => model.PersonClient.Birthday, new { @value = DateTime.Now, @id = "Birthday" })
+                                                        @Html.HiddenFor(model => model.PersonClient.Address, new { @id = "Address" })
+                                                        @Html.HiddenFor(model => model.PersonClient.Email, new { @id = "Email" })
+                                                        @Html.HiddenFor(model => model.PersonClient.IdContactType, new { @id = "IdContactType" })
+                                                        @Html.HiddenFor(model => model.PersonClient.IdPosition, new { @id = "IdPosition" })
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -121,6 +132,7 @@
                                                     <div class="form-group">
                                                         <div class="control-label font-weight-bold">Tipo de Servicio:</div>
                                                         @Html.DisplayFor(model => model.ServiceType)
+                                                        @Html.HiddenFor(model => model.ServiceType)
                                                         @Html.HiddenFor(model => model.IdServiceType)
                                                     </div>
                                                 </div>
@@ -135,7 +147,7 @@
                                                 </div>
                                             </div>
 
-
+                                            @*Begin - vistas por tipo de servicio*@
                                             <div id="divInfoProperty">
                                                 <div class="row">
                                                     <div class="col-md-3">
@@ -164,10 +176,240 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="serviceCompras">@Html.Partial("_PartialAddServiceBuy", Model)</div>
-                                            <div id="serviceConstruccionPlanos">@Html.Partial("_PartialAddServiceBuilding", Model)</div>
-                                            <div id="serviceRefinanciamiento">@Html.Partial("_PartialAddRefinancing", Model)</div>
-                                            <div id="serviceLivingTrust">@Html.Partial("_PartialAddLivingTrust", Model)</div>
+                                            <div id="serviceCompras">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Precio de Compra:</div>
+                                                            @Html.TextBoxFor(model => model.Price, new { @class = "form-control text-right", @placeholder = "0.00" })
+                                                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Down payment:</div>
+                                                            @Html.TextBoxFor(model => model.DownPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.ValidationMessageFor(model => model.DownPayment, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Closing Cost:</div>
+                                                            @Html.TextBoxFor(model => model.ClosingCost, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.ValidationMessageFor(model => model.ClosingCost, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="serviceConstruccionPlanos">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Tiene Planos?</div>
+
+                                                            <label class="ss_radioButton">
+                                                                Si
+                                                                @Html.RadioButtonFor(model => model.Plane, true)
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                            <label class="ss_radioButton">
+                                                                No
+                                                                @Html.RadioButtonFor(model => model.Plane, false)
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                            @Html.ValidationMessageFor(model => model.Plane, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Necesita Financiamiento?</div>
+
+                                                            <label class="ss_radioButton">
+                                                                Si
+                                                                @Html.RadioButtonFor(model => model.Financing, true)
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                            <label class="ss_radioButton">
+                                                                No
+                                                                @Html.RadioButtonFor(model => model.Financing, false)
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                            @Html.ValidationMessageFor(model => model.Financing, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row pt-2 pb-3">
+                                                    <div class="col-md-12">
+                                                        <div class="accordion border" id="accordionOperacion">
+                                                            <div class="card collapsed-card">
+                                                                <div class="card-header" id="headingOperacion">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardOperacion" aria-expanded="false" aria-controls="collapseOperacion">
+                                                                            Operaciones de Contrucción
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+
+                                                                <div id="collapseCardOperacion" class="collapse" aria-labelledby="headingOperacion" data-parent="#accordionOperacion">
+
+                                                                    <div class="card-body">
+
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group">
+                                                                                    <div class="control-label">Operación:</div>
+                                                                                    <select id="lst_ConstructionOption" class="form-control select2" style="width: 100%;">
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group">
+                                                                                    <div class="btn_option"><a onclick="addRowConstructionOption();"><i class="fas fa-plus"></i></a></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row pt-3">
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+                                                                                    <div class="table-responsive">
+                                                                                        <div class="container">
+
+                                                                                            <table id="TConstructionOption" class="table table-bordered table-striped">
+                                                                                                <thead class="font-weight-bold">
+                                                                                                    <tr>
+                                                                                                        <td style="display:none;">colHid_indexCell</td>
+                                                                                                        <td style="display:none;">colHid_IdConstructionOption</td>
+                                                                                                        <td style="display:none;">colHid_ConstructionOption</td>
+                                                                                                        <td>Código</td>
+                                                                                                        <td>Descripción</td>
+                                                                                                        <td>Opciones</td>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody id="BodyConstructionOption">
+                                                                                                    @if (Model != null)
+                                                                                                    {
+                                                                                                        if (Model.listConstructionOption != null)
+                                                                                                        {
+                                                                                                            for (var i = 0; i < Model.listConstructionOption.Count; i++)
+                                                                                                            {
+                                                                                                                <tr>
+                                                                                                                    <td style="display:none;"><input name="listConstructionOption.Index" type="hidden" value="'@i'" /></td>
+                                                                                                                    <td style="display:none;"><input id="listConstructionOption_'@i'" name="listConstructionOption['@i'].IdConstructionOption" type="hidden" value='@Model.listConstructionOption[i].IdConstructionOption' /></td>
+                                                                                                                    <td style="display:none;"><input id="listConstructionOption_'@i'" name="listConstructionOption['@i'].ConstructionOption" type="hidden" value='@Model.listConstructionOption[i].ConstructionOption' /></td>
+                                                                                                                    <td>@Model.listConstructionOption[i].IdConstructionOption</td>
+                                                                                                                    <td>@Model.listConstructionOption[i].ConstructionOption</td>
+                                                                                                                    <td><div class="btn_option pt-0"><a onclick="deleteRowConstructionOption('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                                                                </tr>
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                </tbody>
+                                                                                            </table>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div id="serviceRefinanciamiento">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Loan Amount:</div>
+                                                            @Html.TextBoxFor(model => model.LoanAmount, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.ValidationMessageFor(model => model.LoanAmount, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Deuda Actual de la Hipoteca:</div>
+                                                            @Html.TextBoxFor(model => model.CurrentDebt, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.ValidationMessageFor(model => model.CurrentDebt, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="serviceLivingTrust">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Que tipos de bienes desea agregar?</div>
+                                                            @Html.TextAreaFor(model => model.Assets, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                            @Html.ValidationMessageFor(model => model.Assets, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Tiene Beneficiarios?</div>
+
+                                                            <label class="ss_radioButton">
+                                                                Si
+                                                                @if (Model.Beneficiaries!=null && Model.Beneficiaries.Trim() == "")
+                                                                {
+                                                                    <input id="btnRadioSI" type="radio" name="radio">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input id="btnRadioSI" type="radio" checked="checked" name="radio">
+                                                                }
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                            <label class="ss_radioButton">
+                                                                No
+                                                                @if (Model.Beneficiaries != null && Model.Beneficiaries.Trim() == "")
+                                                                {
+                                                                    <input id="btnRadioNO" type="radio" checked="checked" name="radio">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input id="btnRadioNO" type="radio" name="radio">
+                                                                }
+                                                                <span class="checkmark"></span>
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+                                                    <div id="divBeneficiarios" class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Beneficiarios:</div>
+                                                            @Html.TextAreaFor(model => model.Beneficiaries, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                            @Html.ValidationMessageFor(model => model.Beneficiaries, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Explicacion breve del proceso:</div>
+                                                            @Html.TextAreaFor(model => model.Process, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                            @Html.ValidationMessageFor(model => model.Process, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Desea que:</div>
+                                                            @Html.TextAreaFor(model => model.Wish, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                            @Html.ValidationMessageFor(model => model.Wish, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div id="divInfoIncomeDebt">
                                                 <div class="row">
                                                     <div class="col-md-4">
@@ -204,7 +446,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            @*End - vistas por tipo de servicio*@
 
                                             <div class="row">
                                                 <div class="col-md-5">
@@ -249,6 +491,7 @@
                                                                                 <label>Representante:</label><br>
                                                                                 @Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })
                                                                                 @*@Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })*@
+                                                                                @Html.HiddenFor(model => model.listTask[0].IdTask)
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-3">
@@ -436,14 +679,8 @@
                     //-------------------------------------
                     $("#divInfoIncomeDebt").show();
                     $("#divInfoPitiRatio").show();
-
-                    @*if (!document.getElementById('serviceCompras').hasChildNodes()) {
-                        $("#serviceCompras").load('@Url.Content("/ServiceRequest/PartialAddServiceBuy")');
-                    }*@
-                    //document.getElementById('serviceConstruccionPlanos').innerHTML = '';
-                    //document.getElementById('serviceRefinanciamiento').innerHTML = '';
-                    //document.getElementById('serviceLivingTrust').innerHTML = '';
                     break;
+
                 case "Planos":
                 case "Construcción":
 
@@ -457,14 +694,8 @@
                     //-------------------------------------
                     $("#divInfoIncomeDebt").show();
                     $("#divInfoPitiRatio").hide();
-
-                    @*if (!document.getElementById('serviceConstruccionPlanos').hasChildNodes()) {
-                        $("#serviceConstruccionPlanos").load('@Url.Content("/ServiceRequest/PartialAddServiceBuilding")');
-                    }*@
-                    //document.getElementById('serviceCompras').innerHTML = '';
-                    //document.getElementById('serviceRefinanciamiento').innerHTML = '';
-                    //document.getElementById('serviceLivingTrust').innerHTML = '';
                     break;
+
                 case "Refinanciamiento":
 
                     $("#divInfoProperty").show();
@@ -477,14 +708,8 @@
                     //-------------------------------------
                     $("#divInfoIncomeDebt").show();
                     $("#divInfoPitiRatio").show();
-
-                    @*if (!document.getElementById('serviceRefinanciamiento').hasChildNodes()) {
-                        $("#serviceRefinanciamiento").load('@Url.Content("/ServiceRequest/PartialAddRefinancing")');
-                    }*@
-                    //document.getElementById('serviceCompras').innerHTML = '';
-                    //document.getElementById('serviceConstruccionPlanos').innerHTML = '';
-                    //document.getElementById('serviceLivingTrust').innerHTML = '';
                     break;
+
                 case "Living Trust":
 
                     $("#divInfoProperty").hide();
@@ -500,14 +725,8 @@
 
                     //Living Trust no requiere tipo de propiedad
                     $("#inpIdPropertyType").val("");
-
-                    @*if (!document.getElementById('serviceLivingTrust').hasChildNodes()) {
-                       $("#serviceLivingTrust").load('@Url.Content("/ServiceRequest/PartialAddLivingTrust")');
-                    }*@
-                    //document.getElementById('serviceCompras').innerHTML = '';
-                    //document.getElementById('serviceConstruccionPlanos').innerHTML = '';
-                    //document.getElementById('serviceRefinanciamiento').innerHTML = '';
                     break;
+
                 default:
 
                     $("#divInfoProperty").hide();
@@ -520,21 +739,6 @@
                     //-----------------------------------
                     $("#divInfoIncomeDebt").hide();
                     $("#divInfoPitiRatio").hide();
-
-
-                    @*if (!document.getElementById('serviceCompras').hasChildNodes()) {
-                        $("#serviceCompras").load('@Url.Content("/ServiceRequest/PartialAddServiceBuy")');
-                    }
-                    if (!document.getElementById('serviceConstruccionPlanos').hasChildNodes()) {
-                        $("#serviceConstruccionPlanos").load('@Url.Content("/ServiceRequest/PartialAddServiceBuilding")');
-                    }
-                    if (!document.getElementById('serviceRefinanciamiento').hasChildNodes()) {
-                        $("#serviceRefinanciamiento").load('@Url.Content("/ServiceRequest/PartialAddRefinancing")');
-                    }
-                    if (!document.getElementById('serviceLivingTrust').hasChildNodes()) {
-                        $("#serviceLivingTrust").load('@Url.Content("/ServiceRequest/PartialAddLivingTrust")');
-                    }*@
-
                     break;
             };
         }
@@ -648,9 +852,16 @@
 
 
 
+
         $(document).ready(function () {
 
             showServiceType('@Html.Raw(Model.ServiceType)');
+
+            //$("#Price").mask("#.##9,99");
+            $('#Price').inputmask("#,##9.99");
+            //$("#telephone").kendoMaskedTextBox({
+            //    mask: "#.##9,99"
+            //});
 
             //EMPLEADO INPUTPICKER
             $("#searchEmployee").on('change', function () {

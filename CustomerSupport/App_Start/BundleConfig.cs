@@ -14,6 +14,9 @@ namespace CustomerSupport
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
+                        "~/Scripts/inputmask/jquery.inputmask.js"));
+
             //// Utilice la versión de desarrollo de Modernizr para desarrollar y obtener información. De este modo, estará
             //// para la producción, use la herramienta de compilación disponible en https://modernizr.com para seleccionar solo las pruebas que necesite.
             //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -23,7 +26,8 @@ namespace CustomerSupport
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                     "~/Content/assets/popper.js.1.16.1/umd/popper.js",
                     //"~/Content/assets/popper.js.1.16.1/umd/popper.min.js",
-                    "~/Content/assets/js/bootstrap.min.js",
+                    //"~/Content/assets/js/bootstrap.min.js",
+                    "~/Scripts/bootstrap.min.js",
                     "~/Content/assets/js/jquery.magnific-popup.min.js",
                     "~/Content/assets/js/isotope.pkgd.min.js",
                     "~/Content/assets/js/swiper.min.js",
