@@ -206,7 +206,7 @@
 
         }
     function cargarDataPerson(IdPerson, lstPersons) {
-            if (IdPerson === "") { return false; }
+        if (IdPerson == "" || IdPerson=="0" ) { return false; }
             debugger;
             var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
             var fecha = new Date();

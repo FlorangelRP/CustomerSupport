@@ -48,6 +48,16 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListClient").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Search == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
             MPerson objPersonClient = new MPerson();
             objPersonClient = PersonController.fnListPerson(id, 1).First(); //1-cliente
             return View(objPersonClient);
@@ -61,8 +71,19 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListClient").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Create == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+
             MPerson objPersonClient = new MPerson();
-         objPersonClient.Birthday = DateTime.Now.Date;
+            objPersonClient.Birthday = DateTime.Now.Date;
             objPersonClient.listPersonContact = new List<MPersonContact>();
 
             if (TempData["Success"] != null)
@@ -120,6 +141,17 @@ namespace CustomerSupport.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
+
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListClient").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Edit == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
 
             MPerson objPersonClient = new MPerson();
             objPersonClient = PersonController.fnListPerson(id, 1).First(); //1-cliente

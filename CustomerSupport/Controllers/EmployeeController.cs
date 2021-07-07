@@ -52,6 +52,16 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListEmployee").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Search == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
             MPerson objPersonEmployee = new MPerson();
             objPersonEmployee = PersonController.fnListPerson(id, 2).First(); //2-empleado
             return View(objPersonEmployee);
@@ -64,7 +74,15 @@ namespace CustomerSupport.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
-
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListEmployee").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Create == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             MPerson objPersonEmployee = new MPerson();
             objPersonEmployee.Birthday = DateTime.Now.Date;
             objPersonEmployee.listPersonContact = new List<MPersonContact>();
@@ -123,7 +141,15 @@ namespace CustomerSupport.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
-
+            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListEmployee").First();
+            if (ObjAcces != null)
+            {
+                if (ObjAcces.Edit == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             MPerson objPersonEmployee = new MPerson();
             objPersonEmployee = PersonController.fnListPerson(id, 2).First(); //2-empleado
 

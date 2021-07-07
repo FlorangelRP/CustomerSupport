@@ -218,6 +218,7 @@ namespace CustomerSupport.Controllers
             }
             else
             {
+             
                 return View();
             }
         }
@@ -230,6 +231,16 @@ namespace CustomerSupport.Controllers
             }
             else
             {
+                var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+                var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListUser").First();
+                if (ObjAcces != null)
+                {
+                    if (ObjAcces.Search == false)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
                 MUser ObjUser = new MUser();
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
@@ -302,6 +313,16 @@ namespace CustomerSupport.Controllers
             }
             else
             {
+                var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+                var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListUser").First();
+                if (ObjAcces != null)
+                {
+                    if (ObjAcces.Create == false)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
                 MUser ObjUser = new MUser();
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
@@ -402,6 +423,16 @@ namespace CustomerSupport.Controllers
             }
             else
             {
+                var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+                var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListUser").First();
+                if (ObjAcces != null)
+                {
+                    if (ObjAcces.Edit == false)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
                 MUser ObjUser = new MUser();
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
