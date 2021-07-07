@@ -45,9 +45,9 @@ namespace CustomerSupport.Controllers
         }
 
         // GET: Employee/DetailEmployee/5
-        public ActionResult DetailEmployee(int id)
+        public ActionResult DetailEmployee(int? id)
         {
-            if (Session["Usuario"] == null)
+            if (Session["Usuario"] == null || id == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -117,9 +117,9 @@ namespace CustomerSupport.Controllers
         }
 
         // GET: Employee/EditEmployee/5
-        public ActionResult EditEmployee(int id)
+        public ActionResult EditEmployee(int? id)
         {
-            if (Session["Usuario"] == null)
+            if (Session["Usuario"] == null || id == null)
             {
                 return RedirectToAction("Login", "User");
             }
