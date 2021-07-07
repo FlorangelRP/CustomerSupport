@@ -15,6 +15,16 @@
             <div class="form-horizontal col-md-12">
 
                 <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label">Número de Solicitud:</div>
+                            @Html.DisplayFor(model => model.IdServiceRequest)
+                            @Html.HiddenFor(model => model.IdServiceRequest)
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
 
                     <div class="col-md-12">
                         <div class="accordion border" id="accordionClient">
@@ -100,12 +110,12 @@
                                                 </div>
                                             </div>
 
-                                            <div id="divIdServiceRequest" class="col-md-4">
+                                            @*<div id="divIdServiceRequest" class="col-md-4">
                                                 <div class="form-group">
                                                     <div class="control-label font-weight-bold">Número Solicitud:</div>
                                                     @Html.DisplayFor(model => model.IdServiceRequest)
                                                 </div>
-                                            </div>
+                                            </div>*@
 
                                             <div id="divServiceStatus" class="col-md-4">
                                                 <div class="form-group">
@@ -144,6 +154,13 @@
                                                         <div class="form-group">
                                                             <div class="control-label font-weight-bold">Precio de Compra:</div>
                                                             @Html.DisplayFor(model => model.Price, "{0:N2}")
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Down payment:</div>
+                                                            @Html.DisplayFor(model => model.DownPayment, "{0:N2}")
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -217,19 +234,11 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label font-weight-bold">Tiene Planos?</div>
+                                                            @{ string isPlane = "";
+                                                                isPlane = Model.Plane == true ? "Si" : "No";
+                                                            }
+                                                            @isPlane
 
-                                                            <label class="ss_radioButton">
-                                                                Si
-                                                                @*<input type="radio" checked="checked" name="radio">*@
-                                                                @Html.RadioButtonFor(model => model.Plane, true, new { disabled = "disabled" })
-                                                                <span class="checkmark"></span>
-                                                            </label>
-                                                            <label class="ss_radioButton">
-                                                                No
-                                                                @*<input type="radio" name="radio">*@
-                                                                @Html.RadioButtonFor(model => model.Plane, false, new { @checked = "checked", disabled = "disabled" })
-                                                                <span class="checkmark"></span>
-                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -295,17 +304,11 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label font-weight-bold">Necesita Financiamiento?</div>
+                                                            @{ string isFinancing = "";
+                                                                isFinancing = Model.Financing == true ? "Si" : "No";
+                                                            }
+                                                            @isFinancing
 
-                                                            <label class="ss_radioButton">
-                                                                Si
-                                                                @Html.RadioButtonFor(model => model.Financing, true, new { disabled = "disabled" })
-                                                                <span class="checkmark"></span>
-                                                            </label>
-                                                            <label class="ss_radioButton">
-                                                                No
-                                                                @Html.RadioButtonFor(model => model.Financing, false, new { @checked = "checked", disabled = "disabled" })
-                                                                <span class="checkmark"></span>
-                                                            </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -334,6 +337,15 @@
                                                         <div class="form-group">
                                                             <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
                                                             @Html.DisplayFor(model => model.PropertyType)
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Direccion de la Propiedad:</div>
+                                                            @Html.DisplayFor(model => model.Address, new { @rows = 3, @cols = 10 })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -396,65 +408,52 @@
 
                                         @if (Model.ServiceType == "Living Trust")
                                         {
-                                            <div id="serviceLivingTrust">
-                                                @*<div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
-                            @Html.DisplayFor(model => model.PropertyType)
-                        </div>
-                    </div>
-                </div>*@
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="control-label font-weight-bold">Que tipos de bienes desea agregar?</div>
-                                                            @Html.DisplayFor(model => model.Assets, new { @rows = 3, @cols = 10 })
-                                                        </div>
-                                                    </div>
+                                    <div id="serviceLivingTrust">
+                                        @*<div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
+                    @Html.DisplayFor(model => model.PropertyType)
+                </div>
+            </div>
+        </div>*@
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Que tipos de bienes desea agregar?</div>
+                                                    @Html.DisplayFor(model => model.Assets, new { @rows = 3, @cols = 10 })
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <div class="control-label font-weight-bold">Tiene Beneficiarios?</div>
-
-                                                            <label class="ss_radioButton">
-                                                                Si
-                                                                <input id="btnRadioSI" type="radio" checked="checked" name="radio" disabled="disabled">
-                                                                <span class="checkmark"></span>
-                                                            </label>
-                                                            <label class="ss_radioButton">
-                                                                No
-                                                                <input id="btnRadioNO" type="radio" name="radio" disabled="disabled">
-                                                                <span class="checkmark"></span>
-                                                            </label>
-
-                                                        </div>
-                                                    </div>
-                                                    <div id="divBeneficiarios" class="col-md-6">
-                                                        <div class="form-group">
-                                                            <div class="control-label font-weight-bold">Beneficiarios:</div>
-                                                            @Html.DisplayFor(model => model.Beneficiaries, new { @rows = 3, @cols = 10 })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="control-label font-weight-bold">Explicacion breve del proceso:</div>
-                                                            @Html.DisplayFor(model => model.Process, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="control-label font-weight-bold">Desea que:</div>
-                                                            @Html.DisplayFor(model => model.Wish, new { @rows = 3, @cols = 10 })
-                                                        </div>
+                                            </div>
+                                        </div>
+                                        @if (Model.Beneficiaries != null && Model.Beneficiaries.Trim() != "")
+                                        {
+                                            <div class="row">
+                                                <div id="divBeneficiarios" class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Beneficiarios:</div>
+                                                        @Html.DisplayFor(model => model.Beneficiaries)
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
+                                        }
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Explicacion breve del proceso:</div>
+                                                    @Html.DisplayFor(model => model.Process, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="control-label font-weight-bold">Desea que:</div>
+                                                    @Html.DisplayFor(model => model.Wish, new { @rows = 3, @cols = 10 })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                         }
 
@@ -495,7 +494,7 @@
                                                             <div class="card-body">
                                                                 <div class="col-md-12">
                                                                     <label class="font-weight-bold">Representante:</label><br>
-            
+
                                                                     <div class="row shadow-sm p-3 mb-5 bg-white rounded">
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
@@ -520,28 +519,28 @@
                                                                     </div>
                                                                 </div>
 
-                                                                 <div class="row">
-                                                                        <div class="col-md-3">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label font-weight-bold">Fecha:</div>
-                                                                                @Html.DisplayFor(model => model.listTask[0].DateIni)
+                                                                <div class="row">
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <div class="control-label font-weight-bold">Fecha:</div>
+                                                                            @Html.DisplayFor(model => model.listTask[0].DateIni)
 
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label font-weight-bold">Hora:</div>
-                                                                                @Html.DisplayFor(model => model.listTask[0].HourIni)
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label font-weight-bold">Lugar:</div>
-                                                                                @Html.DisplayFor(model => model.listTask[0].Place)
-
-                                                                            </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <div class="control-label font-weight-bold">Hora:</div>
+                                                                            @Html.DisplayFor(model => model.listTask[0].HourIni)
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <div class="control-label font-weight-bold">Lugar:</div>
+                                                                            @Html.DisplayFor(model => model.listTask[0].Place)
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
                                                             </div>
 
