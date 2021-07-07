@@ -152,9 +152,38 @@
                                                                         {
                                                                             if (Model.listPersonContact != null)
                                                                             {
+                                                                                string idRow;
+                                                                                string idCol;
+                                                                                string nameCol_IdPhoneNumberType;
+                                                                                string nameCol_IdIsoCountry;
+                                                                                string nameCol_PhoneNumber;
+                                                                                string nameCol_PhoneNumberType;
+                                                                                string nameCol_CountryAreaCode;
+
                                                                                 for (var i = 0; i < Model.listPersonContact.Count; i++)
                                                                                 {
-                                                                                    <tr>
+                                                                                    idRow = "trContact" + i.ToString();
+                                                                                    idCol = "listPersonContact_" + i.ToString();
+                                                                                    nameCol_IdPhoneNumberType = "listPersonContact[" + i.ToString() + "].IdPhoneNumberType";
+                                                                                    nameCol_IdIsoCountry = "listPersonContact[" + i.ToString() + "].IdIsoCountry";
+                                                                                    nameCol_PhoneNumber = "listPersonContact[" + i.ToString() + "].PhoneNumber";
+                                                                                    nameCol_PhoneNumberType = "listPersonContact[" + i.ToString() + "].PhoneNumberType";
+                                                                                    nameCol_CountryAreaCode = "listPersonContact[" + i.ToString() + "].CountryAreaCode";
+
+                                                                                    <tr id='@idRow'>
+                                                                                        <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value='@i' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_IdPhoneNumberType' type="hidden" value='@Model.listPersonContact[i].IdPhoneNumberType' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_IdIsoCountry' type="hidden" value='@Model.listPersonContact[i].IdIsoCountry' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_PhoneNumber' type="hidden" value='@Model.listPersonContact[i].PhoneNumber' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_PhoneNumberType' type="hidden" value='@Model.listPersonContact[i].PhoneNumberType' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_CountryAreaCode' type="hidden" value='@Model.listPersonContact[i].CountryAreaCode' /></td>
+                                                                                        <td>@Model.listPersonContact[i].PhoneNumberType</td>
+                                                                                        <td>@Model.listPersonContact[i].CountryAreaCode</td>
+                                                                                        <td name="PhoneNumber">@Model.listPersonContact[i].PhoneNumber</td>
+                                                                                        <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                                    </tr>
+
+                                                                                    @*<tr>
                                                                                         <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value="'@i'" /></td>
                                                                                         <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].IdPhoneNumberType" type="hidden" value='@Model.listPersonContact[i].IdPhoneNumberType' /></td>
                                                                                         <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].IdIsoCountry" type="hidden" value='@Model.listPersonContact[i].IdIsoCountry' /></td>
@@ -165,7 +194,7 @@
                                                                                         <td>@Model.listPersonContact[i].CountryAreaCode</td>
                                                                                         <td name="PhoneNumber_'@i'">@Model.listPersonContact[i].PhoneNumber</td>
                                                                                         <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
-                                                                                    </tr>
+                                                                                    </tr>*@
                                                                                 }
                                                                             }
                                                                         }
@@ -556,7 +585,7 @@
             for (let i = 1; i < tableReg.rows.length; i++) {
 
                 const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
-                let searchCol = colName + i.toString();
+                let searchCol = colName; //+ i.toString();
                 const compareWith = cellsOfRow[searchCol].innerHTML.toLowerCase();
 
                 // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
