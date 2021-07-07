@@ -41,9 +41,9 @@ namespace CustomerSupport.Controllers
         }
 
         // GET: Client/DetailClient/5
-        public ActionResult DetailClient(int id)
+        public ActionResult DetailClient(int? id)
         {
-            if (Session["Usuario"] == null)
+            if (Session["Usuario"] == null || id == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -114,9 +114,9 @@ namespace CustomerSupport.Controllers
 
 
         // GET: Client/EditClient/5
-        public ActionResult EditClient(int id)
+        public ActionResult EditClient(int? id)
         {
-            if (Session["Usuario"] == null)
+            if (Session["Usuario"] == null || id == null)
             {
                 return RedirectToAction("Login", "User");
             }
