@@ -714,7 +714,6 @@
     <Content Include="Views\Client\EditClient.cshtml" />
     <Content Include="Views\ServiceRequest\DetailServiceRequest.cshtml" />
     <Content Include="Views\ServiceRequest\EditServiceRequest.cshtml" />
-    <Content Include="Views\ServiceRequest\ViewModelo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -170,7 +170,7 @@
                                                     <div class="col-md-3" id="divEstimatedValue">
                                                         <div class="form-group">
                                                             <div class="control-label">Valor Estimado:</div>
-                                                            @Html.TextBoxFor(model => model.EstimatedValue, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.EstimatedValue, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.EstimatedValue, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -188,14 +188,14 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">Down payment:</div>
-                                                            @Html.TextBoxFor(model => model.DownPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.DownPayment, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.DownPayment, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">Closing Cost:</div>
-                                                            @Html.TextBoxFor(model => model.ClosingCost, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.ClosingCost, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.ClosingCost, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -292,14 +292,24 @@
                                                                                                     {
                                                                                                         if (Model.listConstructionOption != null)
                                                                                                         {
+                                                                                                            string idRow;
+                                                                                                            string idCol;
+                                                                                                            string nameCol_IdConstructionOption;
+                                                                                                            string nameCol_ConstructionOption;
+
                                                                                                             for (var i = 0; i < Model.listConstructionOption.Count; i++)
                                                                                                             {
-                                                                                                                <tr>
-                                                                                                                    <td style="display:none;"><input name="listConstructionOption.Index" type="hidden" value="'@i'" /></td>
-                                                                                                                    <td style="display:none;"><input id="listConstructionOption_'@i'" name="listConstructionOption['@i'].IdConstructionOption" type="hidden" value='@Model.listConstructionOption[i].IdConstructionOption' /></td>
-                                                                                                                    <td style="display:none;"><input id="listConstructionOption_'@i'" name="listConstructionOption['@i'].ConstructionOption" type="hidden" value='@Model.listConstructionOption[i].ConstructionOption' /></td>
+                                                                                                                idRow = "trConstructionOption" + i.ToString();
+                                                                                                                idCol= "listConstructionOption_" + i.ToString();
+                                                                                                                nameCol_IdConstructionOption = "listConstructionOption[" + i.ToString() + "].IdConstructionOption";
+                                                                                                                nameCol_ConstructionOption = "listConstructionOption[" + i.ToString() + "].ConstructionOption";
+
+                                                                                                                <tr id='@idRow'>
+                                                                                                                    <td style="display:none;"><input name="listConstructionOption.Index" type="hidden" value='@i' /></td>
+                                                                                                                    <td style="display:none;"><input id='@idCol' name='@nameCol_IdConstructionOption' type="hidden" value='@Model.listConstructionOption[i].IdConstructionOption' /></td>
+                                                                                                                    <td style="display:none;"><input id='@idCol' name='@nameCol_ConstructionOption' type="hidden" value='@Model.listConstructionOption[i].ConstructionOption' /></td>
                                                                                                                     <td>@Model.listConstructionOption[i].IdConstructionOption</td>
-                                                                                                                    <td>@Model.listConstructionOption[i].ConstructionOption</td>
+                                                                                                                    <td name='ConstOption'>@Model.listConstructionOption[i].ConstructionOption</td>
                                                                                                                     <td><div class="btn_option pt-0"><a onclick="deleteRowConstructionOption('@i');"><i class="far fa-trash-alt"></i></a></div></td>
                                                                                                                 </tr>
                                                                                                             }
@@ -328,14 +338,14 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">Loan Amount:</div>
-                                                            @Html.TextBoxFor(model => model.LoanAmount, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.LoanAmount, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.LoanAmount, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">Deuda Actual de la Hipoteca:</div>
-                                                            @Html.TextBoxFor(model => model.CurrentDebt, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.CurrentDebt, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.CurrentDebt, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -358,7 +368,7 @@
 
                                                             <label class="ss_radioButton">
                                                                 Si
-                                                                @if (Model.Beneficiaries!=null && Model.Beneficiaries.Trim() == "")
+                                                                @if (Model.Beneficiaries==null || Model.Beneficiaries.Trim() == "")
                                                                 {
                                                                     <input id="btnRadioSI" type="radio" name="radio">
                                                                 }
@@ -370,7 +380,7 @@
                                                             </label>
                                                             <label class="ss_radioButton">
                                                                 No
-                                                                @if (Model.Beneficiaries != null && Model.Beneficiaries.Trim() == "")
+                                                                @if (Model.Beneficiaries == null || Model.Beneficiaries.Trim() == "")
                                                                 {
                                                                     <input id="btnRadioNO" type="radio" checked="checked" name="radio">
                                                                 }
@@ -415,14 +425,14 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">Ingreso Promedio:</div>
-                                                            @Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.MonthlyIncome, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">Deudas/Pagos Promedio:</div>
-                                                            @Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.DebtPayment, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.DebtPayment, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -433,14 +443,14 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">PITI:</div>
-                                                            @Html.TextBoxFor(model => model.Piti, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.Piti, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.Piti, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">RATIOS:</div>
-                                                            @Html.TextBoxFor(model => model.Ratios, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.Ratios, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.Ratios, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -796,7 +806,7 @@
                 var colIdConstructionOption = "<td>" + strIdConstructionOption + "</td> ";
                 var colConstructionOption = "<td name='ConstOption'>" + strConstructionOption + "</td> ";
                 var colDelete = "<td><div class='btn_option pt-0'><a onclick='deleteRowConstructionOption(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
-
+                
                 //Busca si la operacion de construccion ya existe para no duplicar
                 var isFound = doSearchConstructionOption(strConstructionOption, "ConstOption", 'TConstructionOption');
 
@@ -857,11 +867,16 @@
 
             showServiceType('@Html.Raw(Model.ServiceType)');
 
-            //$("#Price").mask("#.##9,99");
-            $('#Price').inputmask("#,##9.99");
-            //$("#telephone").kendoMaskedTextBox({
-            //    mask: "#.##9,99"
-            //});
+            $('#EstimatedValue').inputmask("decimal");
+            $('#Price').inputmask("decimal");
+            $('#DownPayment').inputmask("decimal");
+            $('#ClosingCost').inputmask("decimal");
+            $('#LoanAmount').inputmask("decimal");
+            $('#CurrentDebt').inputmask("decimal");
+            $('#MonthlyIncome').inputmask("decimal");
+            $('#DebtPayment').inputmask("decimal");
+            $('#Piti').inputmask("decimal");
+            $('#Ratios').inputmask("decimal");
 
             //EMPLEADO INPUTPICKER
             $("#searchEmployee").on('change', function () {
@@ -931,6 +946,7 @@
                 var IsSelected = $('#btnRadioNO').is(":checked");
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
+                    $("#Beneficiaries").val("");
                     $("#divBeneficiarios").hide();
                 }
 

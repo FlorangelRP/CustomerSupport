@@ -129,16 +129,36 @@
                                                     {
                                                         if (Model.listConstructionOption != null)
                                                         {
+                                                            string idRow;
+                                                            string idCol;
+                                                            string nameCol_IdConstructionOption;
+                                                            string nameCol_ConstructionOption;
+
                                                             for (var i = 0; i < Model.listConstructionOption.Count; i++)
                                                             {
-                                                                <tr>
+
+                                                                idRow = "trConstructionOption" + i.ToString();
+                                                                idCol = "listConstructionOption_" + i.ToString();
+                                                                nameCol_IdConstructionOption = "listConstructionOption[" + i.ToString() + "].IdConstructionOption";
+                                                                nameCol_ConstructionOption = "listConstructionOption[" + i.ToString() + "].ConstructionOption";
+
+                                                                <tr id='@idRow'>
+                                                                    <td style="display:none;"><input name="listConstructionOption.Index" type="hidden" value='@i' /></td>
+                                                                    <td style="display:none;"><input id='@idCol' name='@nameCol_IdConstructionOption' type="hidden" value='@Model.listConstructionOption[i].IdConstructionOption' /></td>
+                                                                    <td style="display:none;"><input id='@idCol' name='@nameCol_ConstructionOption' type="hidden" value='@Model.listConstructionOption[i].ConstructionOption' /></td>
+                                                                    <td>@Model.listConstructionOption[i].IdConstructionOption</td>
+                                                                    <td name='ConstOption'>@Model.listConstructionOption[i].ConstructionOption</td>
+                                                                    <td><div class="btn_option pt-0"><a onclick="deleteRowConstructionOption('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                </tr>
+
+                                                                @*<tr>
                                                                     <td style="display:none;"><input name="listConstructionOption.Index" type="hidden" value="'@i'" /></td>
                                                                     <td style="display:none;"><input id="listConstructionOption_'@i'" name="listConstructionOption['@i'].IdConstructionOption" type="hidden" value='@Model.listConstructionOption[i].IdConstructionOption' /></td>
                                                                     <td style="display:none;"><input id="listConstructionOption_'@i'" name="listConstructionOption['@i'].ConstructionOption" type="hidden" value='@Model.listConstructionOption[i].ConstructionOption' /></td>
                                                                     <td>@Model.listConstructionOption[i].IdConstructionOption</td>
                                                                     <td>@Model.listConstructionOption[i].ConstructionOption</td>
                                                                     <td><div class="btn_option pt-0"><a onclick="deleteRowConstructionOption('@i');"><i class="far fa-trash-alt"></i></a></div></td>
-                                                                </tr>
+                                                                </tr>*@
                                                             }
                                                         }
                                                     }
