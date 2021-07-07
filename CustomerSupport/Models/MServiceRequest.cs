@@ -40,34 +40,34 @@ namespace CustomerSupport.Models
   
         public string Address { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> Price { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> DownPayment { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> ClosingCost { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> MonthlyIncome { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> DebtPayment { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> Piti { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> Ratios { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> EstimatedValue { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> LoanAmount { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> CurrentDebt { get; set; }
 
         public string Assets { get; set; }

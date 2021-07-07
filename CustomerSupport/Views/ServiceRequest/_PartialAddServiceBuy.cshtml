@@ -30,21 +30,21 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Precio de Compra:</div>
-            @Html.TextBoxFor(model => model.Price, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+            @Html.TextBoxFor(model => model.Price, new { @class = "form-control text-right", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Down payment:</div>
-            @Html.TextBoxFor(model => model.DownPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+            @Html.TextBoxFor(model => model.DownPayment, new { @class = "form-control text-right", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.DownPayment, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Closing Cost:</div>
-            @Html.TextBoxFor(model => model.ClosingCost, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+            @Html.TextBoxFor(model => model.ClosingCost, new { @class = "form-control text-right", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.ClosingCost, "", new { @class = "text-danger" })
         </div>
     </div>

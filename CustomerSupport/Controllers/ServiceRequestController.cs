@@ -90,6 +90,11 @@ namespace CustomerSupport.Controllers
                     //valores por defecto
                     objServiceRequest.IdUser = ((MUser)Session["Usuario"]).IdUser;
                     objServiceRequest.listTask.RemoveAll(r => r.IdPersonEmployee == null); //si empleado esta null, no hay cita
+                    //Hay servicios que no requieren propiedad
+                    if (objServiceRequest.IdPropertyType != null && objServiceRequest.IdPropertyType == 0)
+                    {
+                        objServiceRequest.IdPropertyType = null;
+                    }
                     //------------------
 
                     string mensaje = "";
@@ -152,6 +157,11 @@ namespace CustomerSupport.Controllers
             MServiceRequest objServiceRequest = new MServiceRequest();
             objServiceRequest = fnListServiceRequest(id,null).First();
 
+            if (objServiceRequest.listConstructionOption == null) 
+            {
+                objServiceRequest.listConstructionOption = new List<MServiceConstructionOption>();
+            }            
+
             //----
             if (objServiceRequest.listTask!=null && objServiceRequest.listTask.Count()>0) 
             {
@@ -193,6 +203,11 @@ namespace CustomerSupport.Controllers
                     //valores por defecto
                     objServiceRequest.IdUser = ((MUser)Session["Usuario"]).IdUser;
                     objServiceRequest.listTask.RemoveAll(r => r.IdPersonEmployee == null); //si empleado esta null, no hay cita
+                    //Hay servicios que no requieren propiedad
+                    if (objServiceRequest.IdPropertyType!=null && objServiceRequest.IdPropertyType == 0) 
+                    {
+                        objServiceRequest.IdPropertyType = null;
+                    }
                     //------------------
 
                     string mensaje = "";
@@ -743,6 +758,12 @@ namespace CustomerSupport.Controllers
 
             MServiceRequest objServiceRequest = new MServiceRequest();
             objServiceRequest = fnListServiceRequest(id,null,null,null,null).First();
+
+            if (objServiceRequest.listConstructionOption == null)
+            {
+                objServiceRequest.listConstructionOption = new List<MServiceConstructionOption>();
+            }
+
             //----
             if (objServiceRequest.listTask != null && objServiceRequest.listTask.Count() > 0)
             {

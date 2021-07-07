@@ -37,14 +37,14 @@
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Loan Amount:</div>
-            @Html.TextBoxFor(model => model.LoanAmount, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+            @Html.TextBoxFor(model => model.LoanAmount, new { @class = "form-control text-right", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.LoanAmount, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <div class="control-label">Deuda Actual de la Hipoteca:</div>
-            @Html.TextBoxFor(model => model.CurrentDebt, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+            @Html.TextBoxFor(model => model.CurrentDebt, new { @class = "form-control text-right", @placeholder = "0.00" })
             @Html.ValidationMessageFor(model => model.CurrentDebt, "", new { @class = "text-danger" })
         </div>
     </div>

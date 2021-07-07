@@ -178,7 +178,7 @@
                                                     <div class="col-md-3" id="divEstimatedValue">
                                                         <div class="form-group">
                                                             <div class="control-label">Valor Estimado:</div>
-                                                            @Html.TextBoxFor(model => model.EstimatedValue, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.EstimatedValue, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.EstimatedValue, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -193,14 +193,14 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">Ingreso Promedio:</div>
-                                                            @Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.MonthlyIncome, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">Deudas/Pagos Promedio:</div>
-                                                            @Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.DebtPayment, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.DebtPayment, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -211,14 +211,14 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">PITI:</div>
-                                                            @Html.TextBoxFor(model => model.Piti, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.Piti, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.Piti, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">RATIOS:</div>
-                                                            @Html.TextBoxFor(model => model.Ratios, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00" })
+                                                            @Html.TextBoxFor(model => model.Ratios, new { @class = "form-control text-right", @placeholder = "0.00" })
                                                             @Html.ValidationMessageFor(model => model.Ratios, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -749,6 +749,30 @@
 
         $(document).ready(function () {
 
+            //Inputmask("(999){+|1}.00", {
+            //    positionCaretOnClick: "radixFocus",
+            //    radixPoint: ".",
+            //    _radixDance: true,
+            //    numericInput: true,
+            //    placeholder: "0",
+            //    definitions: {
+            //        "0": {
+            //            validator: "[0-9\uFF11-\uFF19]"
+            //        }
+            //    }
+            //}).mask('#Price');
+
+            $('#EstimatedValue').inputmask("decimal");
+            $('#Price').inputmask("decimal");
+            $('#DownPayment').inputmask("decimal");
+            $('#ClosingCost').inputmask("decimal");
+            $('#LoanAmount').inputmask("decimal");
+            $('#CurrentDebt').inputmask("decimal");
+            $('#MonthlyIncome').inputmask("decimal");
+            $('#DebtPayment').inputmask("decimal");
+            $('#Piti').inputmask("decimal");
+            $('#Ratios').inputmask("decimal");
+
             //CLIENTE INPUTPICKER
             $("#searchPerson").on('change', function () {
                 var IdPerson = $(this).val();
@@ -1054,6 +1078,7 @@
                 var IsSelected = $('#btnRadioNO').is(":checked");
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
+                    $("#Beneficiaries").val("");
                     $("#divBeneficiarios").hide();
                 }
 
