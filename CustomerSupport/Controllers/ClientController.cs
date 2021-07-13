@@ -12,6 +12,7 @@ namespace CustomerSupport.Controllers
     public class ClientController : Controller
     {
         // GET: Client
+        [HttpGet]
         public ActionResult ListClient()
         {
             if (Session["Usuario"] == null)
@@ -29,7 +30,30 @@ namespace CustomerSupport.Controllers
                 }
             }
 
-            return View();
+            MPerson objMPerson = new MPerson();
+            return View(objMPerson);
+        }
+
+        [HttpPost]
+        public ActionResult ListClient(string submit, MPerson objMPerson)
+        {
+            if (objMPerson == null || objMPerson.IdPerson == 0)
+            {
+                return View();
+            }
+
+            TempData["DataPersonClient"] = objMPerson;
+
+            switch (submit)
+            {
+                case "searchRow":
+                    return RedirectToAction("DetailClient", "Client");
+                case "editRow":
+                    return RedirectToAction("EditClient", "Client");
+                default:
+                    return View();
+            }
+
         }
 
         public ActionResult GetListClient()
@@ -43,7 +67,7 @@ namespace CustomerSupport.Controllers
         // GET: Client/DetailClient/5
         public ActionResult DetailClient(int? id)
         {
-            if (Session["Usuario"] == null || id == null)
+            if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -57,6 +81,24 @@ namespace CustomerSupport.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+
+            //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+            if (TempData["DataPersonClient"] != null)
+            {
+                if (((MPerson)TempData["DataPersonClient"]) != null && ((MPerson)TempData["DataPersonClient"]).IdPerson > 0)
+                {
+                    id = ((MPerson)TempData["DataPersonClient"]).IdPerson;
+                }
+                else
+                {
+                    return RedirectToAction("ListClient", "Client");
+                }
+            }
+            if (id == null) 
+            {
+                return RedirectToAction("ListClient", "Client");
+            }
+            //-----------------------------------------------------
 
             MPerson objPersonClient = new MPerson();
             objPersonClient = PersonController.fnListPerson(id, 1).First(); //1-cliente
@@ -137,7 +179,7 @@ namespace CustomerSupport.Controllers
         // GET: Client/EditClient/5
         public ActionResult EditClient(int? id)
         {
-            if (Session["Usuario"] == null || id == null)
+            if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -152,6 +194,23 @@ namespace CustomerSupport.Controllers
                 }
             }
 
+            //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+            if (TempData["DataPersonClient"] != null)
+            {
+                if (((MPerson)TempData["DataPersonClient"]) != null && ((MPerson)TempData["DataPersonClient"]).IdPerson > 0)
+                {
+                    id = ((MPerson)TempData["DataPersonClient"]).IdPerson;
+                }
+                else
+                {
+                    return RedirectToAction("ListClient", "Client");
+                }
+            }
+            if (id == null)
+            {
+                return RedirectToAction("ListClient", "Client");
+            }
+            //-----------------------------------------------------
 
             MPerson objPersonClient = new MPerson();
             objPersonClient = PersonController.fnListPerson(id, 1).First(); //1-cliente

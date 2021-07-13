@@ -207,7 +207,7 @@
         }
     function cargarDataPerson(IdPerson, lstPersons) {
         if (IdPerson == "" || IdPerson=="0" ) { return false; }
-            debugger;
+            //debugger;
             var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
             var fecha = new Date();
 
@@ -245,7 +245,7 @@
                          }
             }).responseJSON;
 
-        debugger;
+        //debugger;
         if ($("#searchPerson").val() != "") {
             cargarDataPerson($("#searchPerson").val(), ListPersons)
         }

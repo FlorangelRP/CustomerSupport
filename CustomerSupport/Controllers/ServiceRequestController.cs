@@ -12,6 +12,7 @@ namespace CustomerSupport.Controllers
     public class ServiceRequestController : Controller
     {
         // GET: ServiceRequest
+        [HttpGet]
         public ActionResult ListServiceRequest()
         {
             if (Session["Usuario"] == null)
@@ -27,9 +28,32 @@ namespace CustomerSupport.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            return View();
+
+            MServiceRequest objMServiceRequest = new MServiceRequest();
+            return View(objMServiceRequest);
         }
 
+        [HttpPost]
+        public ActionResult ListServiceRequest(string submit, MServiceRequest objMServiceRequest)
+        {
+            if (objMServiceRequest == null || objMServiceRequest.IdServiceRequest == 0)
+            {
+                return View();
+            }
+
+            TempData["DataServiceRequest"] = objMServiceRequest;
+
+            switch (submit)
+            {
+                case "searchRow":
+                    return RedirectToAction("DetailServiceRequest", "ServiceRequest");
+                case "editRow":
+                    return RedirectToAction("EditServiceRequest", "ServiceRequest");
+                default:
+                    return View();
+            }
+
+        }
         public ActionResult GetListServiceRequest()
         {
 
@@ -140,7 +164,7 @@ namespace CustomerSupport.Controllers
         // GET: ServiceRequest/EditServiceRequest/5
         public ActionResult EditServiceRequest(int? id)
         {
-            if (Session["Usuario"] == null || id == null)
+            if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -153,6 +177,24 @@ namespace CustomerSupport.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+
+            //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+            if (TempData["DataServiceRequest"] != null)
+            {
+                if (((MServiceRequest)TempData["DataServiceRequest"]) != null && ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest > 0)
+                {
+                    id = ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest;
+                }
+                else
+                {
+                    return RedirectToAction("ListServiceRequest", "ServiceRequest");
+                }
+            }
+            if (id == null)
+            {
+                return RedirectToAction("ListServiceRequest", "ServiceRequest");
+            }
+            //-----------------------------------------------------
 
             MServiceRequest objServiceRequest = new MServiceRequest();
             objServiceRequest = fnListServiceRequest(id,null).First();
@@ -695,11 +737,11 @@ namespace CustomerSupport.Controllers
                                 if (IdTask != 0)
                                 {
                                     //Se asocia la actividad con el servicio si esta insertando
-                                    if (TransactionType == "I")
+                                    if (paramTransactionType.Value.ToString() == "I") //TransactionType == "I"
                                     {
                                         SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceRequestTask @TransactionType, @IdTask, @IdServiceRequest ",
                                             new SqlParameter[]{
-                                                new SqlParameter("@TransactionType", TransactionType),
+                                                new SqlParameter("@TransactionType", paramTransactionType.Value.ToString()), //TransactionType
                                                 new SqlParameter("@IdTask", IdTask),
                                                 new SqlParameter("@IdServiceRequest", IdServiceRequest)
                                             }
@@ -742,7 +784,7 @@ namespace CustomerSupport.Controllers
         // GET: ServiceRequest/DetailServiceRequest/5
         public ActionResult DetailServiceRequest(int? id)
         {
-            if (Session["Usuario"] == null || id==null)
+            if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -755,6 +797,24 @@ namespace CustomerSupport.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+
+            //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+            if (TempData["DataServiceRequest"] != null)
+            {
+                if (((MServiceRequest)TempData["DataServiceRequest"]) != null && ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest > 0)
+                {
+                    id = ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest;
+                }
+                else
+                {
+                    return RedirectToAction("ListServiceRequest", "ServiceRequest");
+                }
+            }
+            if (id == null)
+            {
+                return RedirectToAction("ListServiceRequest", "ServiceRequest");
+            }
+            //-----------------------------------------------------
 
             MServiceRequest objServiceRequest = new MServiceRequest();
             objServiceRequest = fnListServiceRequest(id,null,null,null,null).First();

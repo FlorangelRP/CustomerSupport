@@ -1,4 +1,5 @@
 ﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MPerson
 
 @{
     ViewBag.Title = "Listado de Clientes";
@@ -12,31 +13,33 @@
     </div>
     <div class="card-body">
 
-        <form>
+        @*<form>*@
 
-            @{
-                MUserAcces perm = null;
-                if (Session["Usuario"] != null)
-                {
-                    perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
-                }
-            }
-            @if (perm != null)
+        @{
+            MUserAcces perm = null;
+            if (Session["Usuario"] != null)
             {
-                if (perm.Create == true)
-                {
-                    <div class="row text-right">
-                        <div class="col-md-12">
-                            <div class="text-right">
-                                @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
-                                @*<a href="location.href='@Url.Action("Create", "Person")';return false;" class="white_btn">Agregar</a>*@
-                                <button class="white_btn" onclick="location.href='@Url.Action("AddClient", "Client")';return false;">Agregar</button>
-                            </div>
+                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+            }
+        }
+        @if (perm != null)
+        {
+            if (perm.Create == true)
+            {
+                <div class="row text-right">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
+                            @*<a href="location.href='@Url.Action("Create", "Person")';return false;" class="white_btn">Agregar</a>*@
+                            <button class="white_btn" onclick="location.href='@Url.Action("AddClient", "Client")';return false;">Agregar</button>
                         </div>
                     </div>
-                }
+                </div>
             }
+        }
 
+        @using (Html.BeginForm("ListClient", "Client", FormMethod.Post))
+        {
             <div class="table-responsive">
                 <div class="container">
                     <table id="TPerson" class="table table-bordered table-striped">
@@ -62,7 +65,12 @@
                 </div>
             </div>
 
-        </form>
+            @Html.HiddenFor(model => model.IdPerson, new { @id = "hidd_IdPerson" })
+            @Html.Hidden("submit")
+
+        }
+
+        @*</form>*@
 
     </div>
 </div>
@@ -110,7 +118,10 @@
                                 if (row.IdPerson == null) {
                                     return '';
                                 } else {
-                                    return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
+                                    //return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
+                                    var link = '<div class="btn_option pt-0"><button class="editRow border-0" name="linkEdit_&"><i class="fas fa-edit"></i></button></div>';
+                                    link = link.replace("&", row.IdPerson);
+                                    return link;
                                 }
                             }
                         }, 'autowidth': true
@@ -122,7 +133,10 @@
                                 if (row.IdPerson == null) {
                                     return '';
                                 } else {
-                                    return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
+                                    //return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
+                                    var link = '<div class="btn_option pt-0"><button class="searchRow border-0" name="linkSearch_&"><i class="fas fa-search"></i></button></div>';
+                                    link = link.replace("&", row.IdPerson);
+                                    return link;
                                 }
                             }
                         }, 'autowidth': true
@@ -175,13 +189,19 @@
 
         });
 
-        $('#TPerson').on("click", "a.editRow", function () {
+        $('#TPerson').on("click", "button.editRow", function () {
             var data = table.row($(this).parents("tr")).data();
-            $(".editRow").attr("href", '@Url.Action("EditClient", "Client")?id=' + data.IdPerson);
+            $("#hidd_IdPerson").val(data.IdPerson);
+            $("#submit").val("editRow");
+            location.href = '@Url.Action("ListClient", "Client")';
+            //$(".editRow").attr("href", 'Url.Action("EditClient", "Client")?id=' + data.IdPerson);
         });
-        $('#TPerson').on("click", "a.searchRow", function () {
+        $('#TPerson').on("click", "button.searchRow", function () {
             var data = table.row($(this).parents("tr")).data();
-            $(".searchRow").attr("href", '@Url.Action("DetailClient", "Client")?id=' + data.IdPerson);
+            $("#hidd_IdPerson").val(data.IdPerson);
+            $("#submit").val("searchRow");
+            location.href = '@Url.Action("ListClient", "Client")';
+            //$(".searchRow").attr("href", 'Url.Action("DetailClient", "Client")?id=' + data.IdPerson);
         });
 
     </script>
