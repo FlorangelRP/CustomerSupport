@@ -39,7 +39,7 @@ namespace CustomerSupport.Models
         public System.DateTime? Birthday { get; set; } //Nullable<System.DateTime>
 
         [Required(ErrorMessage = "*Requerido")]
-        [StringLength(100, ErrorMessage = "Dirección no puede tener mas de 300 caracteres.")]
+        [StringLength(300, ErrorMessage = "Dirección no puede tener mas de 300 caracteres.")]
         public string Address { get; set; }
 
         [Required(ErrorMessage = "*Requerido")]
