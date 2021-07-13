@@ -36,6 +36,8 @@ namespace CustomerSupport.Controllers
             List<MPerson> ListPerson = new List<MPerson>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
+            MUser objUser = new MUser();
+
             ListPerson = (from result in db.GNListPerson(idPerson, PersonType, PersonStatus).ToList()
                           select new MPerson
                           {
@@ -44,11 +46,11 @@ namespace CustomerSupport.Controllers
                               PersonType = result.PersonType,
                               IdIdentificationType = result.IdIdentificationType,
                               IdentificationType = result.IdentificationType,
-                              NumIdentification = result.NumIdentification,
+                              NumIdentification = objUser.Desencriptar(result.NumIdentification) ,
                               Name = result.Name,
                               LastName = result.LastName,
                               Birthday = result.Birthday,
-                              Address = result.Address,
+                              Address = objUser.Desencriptar( result.Address),
                               Email = result.Email,
                               IdContactType = result.IdContactType,
                               ContactType = result.ContactType,
@@ -66,11 +68,13 @@ namespace CustomerSupport.Controllers
                                                                              PhoneNumberType = result2.PhoneNumberType,
                                                                              IdIsoCountry = result2.IdIsoCountry,
                                                                              CountryAreaCode = result2.CountryAreaCode,
-                                                                             PhoneNumber = result2.PhoneNumber,
+                                                                             PhoneNumber = objUser.Desencriptar(result2.PhoneNumber),
                                                                              Status = result2.Status
                                                                          }).ToList()
 
                           }).ToList();
+
+
 
             return ListPerson;
 
@@ -121,6 +125,8 @@ namespace CustomerSupport.Controllers
                     paramIdPosition.Value = DBNull.Value;
                 }
 
+                MUser objUser = new MUser();
+
                 SqlResultPerson = db.Database.ExecuteSqlCommand("GNTranPerson @TransactionType, @IdPerson OUT, @IdPersonType " +
                                                         ", @IdIdentificationType, @strNumIdentification, @strName, @strLastName, @dttBirthday " +
                                                         ", @strAddress, @strEmail, @IdContactType, @IdPosition, @btClientPermission, @btStatus ",
@@ -129,11 +135,11 @@ namespace CustomerSupport.Controllers
                             paramOutIdPerson,
                             new SqlParameter("@IdPersonType", objPerson.IdPersonType),
                             new SqlParameter("@IdIdentificationType", objPerson.IdIdentificationType),
-                            new SqlParameter("@strNumIdentification", objPerson.NumIdentification),
+                            new SqlParameter("@strNumIdentification",objUser.Encriptar(objPerson.NumIdentification)),
                             new SqlParameter("@strName", objPerson.Name),
                             new SqlParameter("@strLastName", objPerson.LastName),
                             new SqlParameter("@dttBirthday", objPerson.Birthday),
-                            new SqlParameter("@strAddress", objPerson.Address),
+                            new SqlParameter("@strAddress", objUser.Encriptar(objPerson.Address)),
                             new SqlParameter("@strEmail", objPerson.Email),
                             paramIdContactType,
                             paramIdPosition,
@@ -186,7 +192,7 @@ namespace CustomerSupport.Controllers
                                         new SqlParameter("@IdPerson", IdPerson),
                                         new SqlParameter("@IdPhoneNumberType", item.IdPhoneNumberType),
                                         new SqlParameter("@strIdIsoCountry", item.IdIsoCountry),
-                                        new SqlParameter("@strPhoneNumber", item.PhoneNumber),
+                                        new SqlParameter("@strPhoneNumber", objUser.Encriptar(item.PhoneNumber)),
                                         new SqlParameter("@btStatus", true)
                                     }
                                 );

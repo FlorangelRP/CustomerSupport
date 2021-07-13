@@ -717,6 +717,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\Country\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
