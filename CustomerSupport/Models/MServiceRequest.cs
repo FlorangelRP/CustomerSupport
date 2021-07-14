@@ -37,7 +37,7 @@ namespace CustomerSupport.Models
         public Nullable<int> IdPropertyType { get; set; }
         public string PropertyType { get; set; } //descripcion de tipo de propiedad
 
-  
+        [StringLength(300, ErrorMessage = "Dirección no puede tener mas de 300 caracteres.")]
         public string Address { get; set; }
 
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
@@ -70,13 +70,24 @@ namespace CustomerSupport.Models
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public Nullable<decimal> CurrentDebt { get; set; }
 
+        [StringLength(500, ErrorMessage = "La especificación de bienes no puede tener mas de 500 caracteres.")]
         public string Assets { get; set; }
+
+        [StringLength(500, ErrorMessage = "La especificación de beneficiarios no puede tener mas de 500 caracteres.")]
         public string Beneficiaries { get; set; }
+
+        [StringLength(500, ErrorMessage = "La especificación del proceso no puede tener mas de 500 caracteres.")]
         public string Process { get; set; }
+
+        [StringLength(500, ErrorMessage = "La especificación de deseos no puede tener mas de 500 caracteres.")]
         public string Wish { get; set; }
+
         public Nullable<bool> Plane { get; set; }
         public Nullable<bool> Financing { get; set; }
+
+        [StringLength(500, ErrorMessage = "Las notas no puede tener mas de 500 caracteres.")]
         public string Note { get; set; }
+
         public int IdUser { get; set; }
         public string RegisterUser { get; set; }
 

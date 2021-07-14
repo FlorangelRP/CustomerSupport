@@ -585,8 +585,8 @@
 
                     <div class="row">
                         <div class="col-md-10 text-center">
-                            <span class="text-success">@ViewBag.SuccessSave</span>
-                            <span class="text-danger">@ViewBag.ErrorSave</span>
+                            @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                            @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
                         </div>
                     </div>
 
@@ -806,7 +806,7 @@
                 var colIdConstructionOption = "<td>" + strIdConstructionOption + "</td> ";
                 var colConstructionOption = "<td name='ConstOption'>" + strConstructionOption + "</td> ";
                 var colDelete = "<td><div class='btn_option pt-0'><a onclick='deleteRowConstructionOption(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
-                
+
                 //Busca si la operacion de construccion ya existe para no duplicar
                 var isFound = doSearchConstructionOption(strConstructionOption, "ConstOption", 'TConstructionOption');
 
@@ -865,6 +865,7 @@
 
         $(document).ready(function () {
 
+            //Validacion de fecha--------------------------------------------
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth() + 1; //January is 0!
@@ -878,6 +879,16 @@
 
             today = yyyy + '-' + mm + '-' + dd;
             document.getElementById("dttDateIni").setAttribute("min", today);
+            //----------------------------------------------------------------
+
+            //Mensaje de confirmacion--------------------
+            if ("@ViewBag.SuccessSave"!=""){
+                toastr.success("@ViewBag.SuccessSave");
+            }
+            if ("@ViewBag.ErrorSave" != ""){
+                toastr.error("@ViewBag.ErrorSave");
+            }
+            //-------------------------------------------
 
 
             showServiceType('@Html.Raw(Model.ServiceType)');

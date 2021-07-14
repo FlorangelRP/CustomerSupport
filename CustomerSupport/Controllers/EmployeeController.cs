@@ -16,6 +16,7 @@ namespace CustomerSupport.Controllers
     public class EmployeeController : Controller
     {
         // GET: Employee
+        [HttpGet]
         public ActionResult ListEmployee()
         {
             if (Session["Usuario"] == null)
@@ -32,7 +33,30 @@ namespace CustomerSupport.Controllers
                 }
             }
 
-            return View();
+            MPerson objMPerson = new MPerson();
+            return View(objMPerson);
+        }
+
+        [HttpPost]
+        public ActionResult ListEmployee(string submit, MPerson objMPerson)
+        {
+            if (objMPerson == null || objMPerson.IdPerson == 0)
+            {
+                return View();
+            }
+
+            TempData["DataPersonEmployee"] = objMPerson;
+
+            switch (submit)
+            {
+                case "searchRow":
+                    return RedirectToAction("DetailEmployee", "Employee");
+                case "editRow":
+                    return RedirectToAction("EditEmployee", "Employee");
+                default:
+                    return View();
+            }
+
         }
 
         public ActionResult GetListEmployee()
@@ -47,7 +71,7 @@ namespace CustomerSupport.Controllers
         // GET: Employee/DetailEmployee/5
         public ActionResult DetailEmployee(int? id)
         {
-            if (Session["Usuario"] == null || id == null)
+            if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -61,6 +85,24 @@ namespace CustomerSupport.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+
+            //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+            if (TempData["DataPersonEmployee"] != null)
+            {
+                if (((MPerson)TempData["DataPersonEmployee"]) != null && ((MPerson)TempData["DataPersonEmployee"]).IdPerson > 0)
+                {
+                    id = ((MPerson)TempData["DataPersonEmployee"]).IdPerson;
+                }
+                else
+                {
+                    return RedirectToAction("ListEmployee", "Employee");
+                }
+            }
+            if (id == null)
+            {
+                return RedirectToAction("ListEmployee", "Employee");
+            }
+            //-----------------------------------------------------   
 
             MPerson objPersonEmployee = new MPerson();
             objPersonEmployee = PersonController.fnListPerson(id, 2).First(); //2-empleado
@@ -122,6 +164,7 @@ namespace CustomerSupport.Controllers
                 }
                 else 
                 {
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objPersonEmployee);
                 }
                 
@@ -137,7 +180,7 @@ namespace CustomerSupport.Controllers
         // GET: Employee/EditEmployee/5
         public ActionResult EditEmployee(int? id)
         {
-            if (Session["Usuario"] == null || id == null)
+            if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -150,6 +193,25 @@ namespace CustomerSupport.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+
+            //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+            if (TempData["DataPersonEmployee"] != null)
+            {
+                if (((MPerson)TempData["DataPersonEmployee"]) != null && ((MPerson)TempData["DataPersonEmployee"]).IdPerson > 0)
+                {
+                    id = ((MPerson)TempData["DataPersonEmployee"]).IdPerson;
+                }
+                else
+                {
+                    return RedirectToAction("ListEmployee", "Employee");
+                }
+            }
+            if (id == null)
+            {
+                return RedirectToAction("ListEmployee", "Employee");
+            }
+            //----------------------------------------------------- 
+
             MPerson objPersonEmployee = new MPerson();
             objPersonEmployee = PersonController.fnListPerson(id, 2).First(); //2-empleado
 
@@ -178,7 +240,15 @@ namespace CustomerSupport.Controllers
                     if (resultDb != 0)
                     {
                         TempData["Success"] = mensaje;
-                        return RedirectToAction("EditEmployee", new { id = objPersonEmployee.IdPerson });
+
+                        //Para evitar que se vea el id en la Url------------
+                        MPerson objMPerson = new MPerson();
+                        objMPerson.IdPerson = objPersonEmployee.IdPerson;
+                        TempData["DataPersonEmployee"] = objMPerson;
+                        return RedirectToAction("EditEmployee");
+                        //---------------------------------------------------
+
+                        //return RedirectToAction("EditEmployee", new { id = objPersonEmployee.IdPerson });
                     }
                     else
                     {
@@ -188,6 +258,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objPersonEmployee);
                 }
 

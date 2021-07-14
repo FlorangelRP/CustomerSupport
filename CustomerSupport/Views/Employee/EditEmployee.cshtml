@@ -295,8 +295,8 @@
 
                     <div class="row">
                         <div class="col-md-10 text-center">
-                            <span class="text-success">@ViewBag.SuccessSave</span>
-                            <span class="text-danger">@ViewBag.ErrorSave</span>
+                            @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                            @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
                         </div>
                     </div>
 
@@ -330,6 +330,7 @@
 
         $(document).ready(function () {
 
+            //Validacion de fecha--------------------------------------------
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth() + 1; //January is 0!
@@ -343,6 +344,16 @@
 
             today = yyyy + '-' + mm + '-' + dd;
             document.getElementById("dttBirthday").setAttribute("max", today);
+            //----------------------------------------------------------------
+
+            //Mensaje de confirmacion--------------------
+            if ("@ViewBag.SuccessSave"!=""){
+                toastr.success("@ViewBag.SuccessSave");
+            }
+            if ("@ViewBag.ErrorSave" != ""){
+                toastr.error("@ViewBag.ErrorSave");
+            }
+            //-------------------------------------------
 
             $("#lst_Position").on('change', function () {
                 var selectValue = $(this).val();

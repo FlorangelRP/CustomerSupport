@@ -1,5 +1,5 @@
 ﻿@using CustomerSupport.Models
-@model MUser
+@model CustomerSupport.Models.MUser
 
 @{
     ViewBag.Title = "Listado de Usuario";
@@ -13,30 +13,34 @@
     </div>
     <div class="card-body">
 
-        <form>
-            @{ 
-                MUserAcces perm = null;
-                if (Session["Usuario"]!=null)
-                { 
-                 perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
-                }
+        @*<form>*@
+        @{
+            MUserAcces perm = null;
+            if (Session["Usuario"] != null)
+            {
+                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
             }
+        }
 
-             @if (perm!=null)
-             { 
-                if (perm.Create==true)
-                {
-                    <div class="row text-right">
-                        <div class="col-md-12">
-                            <div class="text-right">
-                                @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
-                                @*<a href="location.href='@Url.Action("AddUser", "User")';return false;" class="white_btn">Agregar</a>*@
-                                <button class="white_btn" onclick="location.href='@Url.Action("AddUser", "User")';return false;">Agregar</button>
-                            </div>
+        @if (perm != null)
+        {
+            if (perm.Create == true)
+            {
+                <div class="row text-right">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
+                            @*<a href="location.href='@Url.Action("AddUser", "User")';return false;" class="white_btn">Agregar</a>*@
+                            <button class="white_btn" onclick="location.href='@Url.Action("AddUser", "User")';return false;">Agregar</button>
                         </div>
                     </div>
-                }
-             }
+                </div>
+            }
+        }
+
+        @using (Html.BeginForm("ListUser", "User", FormMethod.Post))
+        {
+
             <div class="table-responsive">
                 <div class="container">
                     <table id="TUser" class="table table-bordered table-striped">
@@ -52,7 +56,7 @@
                                 {
                                     if (perm.Search == true || perm.Edit == true)
                                     {
-                                    <th class="text-center" colspan="2">Opciones</th>
+                                        <th class="text-center" colspan="2">Opciones</th>
                                     }
                                 }
                             </tr>
@@ -60,8 +64,13 @@
                     </table>
                 </div>
             </div>
+           
+            @Html.HiddenFor(model => model.IdUser, new { @id = "hidd_Iduser" })
+            @Html.Hidden("submit")
 
-        </form>
+        }
+
+        @*</form>*@
 
     </div>
 </div>
@@ -81,7 +90,7 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
     <script>
-       
+
         var Permis = @Html.Raw(Json.Encode(perm));
         Buscar = Permis.Search;
         Editar = Permis.Edit;
@@ -108,7 +117,10 @@
                                 if (row.IdUser == null) {
                                     return '';
                                 } else {
-                                    return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
+                                    ////return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';                                    
+                                    var link = '<div class="btn_option pt-0"><button class="editRow border-0" name="linkEdit_&"><i class="fas fa-edit"></i></button></div>';
+                                    link = link.replace("&", row.IdUser);
+                                    return link;
                                 }
                             }
                         }, 'autowidth': true
@@ -119,7 +131,10 @@
                                 if (row.IdUser == null ) {
                                     return '';
                                 } else {
-                                    return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
+                                    ////return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';                                    
+                                    var link = '<div class="btn_option pt-0"><button class="searchRow border-0" name="linkSearch_&"><i class="fas fa-search"></i></button></div>';
+                                    link = link.replace("&", row.IdUser);
+                                    return link;
                                 }
                             }
                         }, 'autowidth': true
@@ -172,20 +187,21 @@
 
         });
 
+        $('#TUser').on("click", "button.searchRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_Iduser").val(data.IdUser);
+            $("#submit").val("searchRow");
+            location.href = '@Url.Action("ListUser", "User")';
+            ////$(".searchRow").attr("href", 'Url.Action("DetailUser", "User")?id=' + data.IdUser);
+        });
 
+        $('#TUser').on("click", "button.editRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_Iduser").val(data.IdUser);
+            $("#submit").val("editRow");
+            location.href = '@Url.Action("ListUser", "User")';
+            ////$(".editRow").attr("href", 'Url.Action("EditUser", "User")?id=' + data.IdUser);
+        });
 
-        //var consultar = function (tbody, table) {
-        $('#TUser').on("click", "a.searchRow", function () {
-                var data = table.row($(this).parents("tr")).data();
-                $(".searchRow").attr("href", '@Url.Action("DetailUser", "User")?id=' + data.IdUser);
-            });
-        //}
-
-        $('#TUser').on("click", "a.editRow", function () {
-                var data = table.row($(this).parents("tr")).data();
-            $(".editRow").attr("href", '@Url.Action("EditUser", "User")?id=' + data.IdUser);
-         });
-
-        //consultar("#TUser tbody", table);
     </script>
 }

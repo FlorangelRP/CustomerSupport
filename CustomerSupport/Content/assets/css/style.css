@@ -2898,7 +2898,7 @@ tr.hide-table-padding td {
 	fill: #e3bf09;
 }
 
-.btn_option a {
+.btn_option a, .btn_option button {
 	width: 39px;
 	height: 39px;
 	/* background: #445b71; */
@@ -2919,15 +2919,15 @@ tr.hide-table-padding td {
 	text-align: center;
 }
 
-.btn_option a:hover i {
+.btn_option a:hover i, .btn_option button:hover i {
 	fill: #ad8f00;
 }
 
-.btn_option a {
+.btn_option a, .btn_option button {
 	box-shadow: none;
 }
 
-.btn_option a:hover {
+.btn_option a:hover, .btn_option button:hover {
 	background: #ad8f00;
 	box-shadow: 0px 0px 10px 0px rgba(68, 91, 113, 0.21);
 }

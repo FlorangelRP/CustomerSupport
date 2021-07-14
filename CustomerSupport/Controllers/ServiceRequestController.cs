@@ -12,6 +12,7 @@ namespace CustomerSupport.Controllers
     public class ServiceRequestController : Controller
     {
         // GET: ServiceRequest
+        [HttpGet]
         public ActionResult ListServiceRequest()
         {
             if (Session["Usuario"] == null)
@@ -27,9 +28,32 @@ namespace CustomerSupport.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            return View();
+
+            MServiceRequest objMServiceRequest = new MServiceRequest();
+            return View(objMServiceRequest);
         }
 
+        [HttpPost]
+        public ActionResult ListServiceRequest(string submit, MServiceRequest objMServiceRequest)
+        {
+            if (objMServiceRequest == null || objMServiceRequest.IdServiceRequest == 0)
+            {
+                return View();
+            }
+
+            TempData["DataServiceRequest"] = objMServiceRequest;
+
+            switch (submit)
+            {
+                case "searchRow":
+                    return RedirectToAction("DetailServiceRequest", "ServiceRequest");
+                case "editRow":
+                    return RedirectToAction("EditServiceRequest", "ServiceRequest");
+                default:
+                    return View();
+            }
+
+        }
         public ActionResult GetListServiceRequest()
         {
 
@@ -124,7 +148,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorSave = "Debe completar los datos requeridos.";
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objServiceRequest);
                 }
 
@@ -140,7 +164,7 @@ namespace CustomerSupport.Controllers
         // GET: ServiceRequest/EditServiceRequest/5
         public ActionResult EditServiceRequest(int? id)
         {
-            if (Session["Usuario"] == null || id == null)
+            if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -153,6 +177,24 @@ namespace CustomerSupport.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+
+            //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+            if (TempData["DataServiceRequest"] != null)
+            {
+                if (((MServiceRequest)TempData["DataServiceRequest"]) != null && ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest > 0)
+                {
+                    id = ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest;
+                }
+                else
+                {
+                    return RedirectToAction("ListServiceRequest", "ServiceRequest");
+                }
+            }
+            if (id == null)
+            {
+                return RedirectToAction("ListServiceRequest", "ServiceRequest");
+            }
+            //-----------------------------------------------------
 
             MServiceRequest objServiceRequest = new MServiceRequest();
             objServiceRequest = fnListServiceRequest(id,null).First();
@@ -217,7 +259,15 @@ namespace CustomerSupport.Controllers
                     if (resultDb != 0)
                     {
                         TempData["Success"] = mensaje;
-                        return RedirectToAction("EditServiceRequest", new { id = objServiceRequest.IdServiceRequest });
+
+                        //Para evitar que se vea el id en la Url------------
+                        MServiceRequest objMServiceRequest = new MServiceRequest();
+                        objMServiceRequest.IdServiceRequest = objServiceRequest.IdServiceRequest;
+                        TempData["DataServiceRequest"] = objMServiceRequest;
+                        return RedirectToAction("EditServiceRequest");
+                        //---------------------------------------------------
+
+                        //return RedirectToAction("EditServiceRequest", new { id = objServiceRequest.IdServiceRequest });
                     }
                     else
                     {
@@ -237,7 +287,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorSave = "Debe completar los datos requeridos.";
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objServiceRequest);
                 }
 
@@ -255,7 +305,9 @@ namespace CustomerSupport.Controllers
             List<MServiceRequest> ListServiceRequest = new List<MServiceRequest>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-             ListServiceRequest = (from d in db.GNListServiceRequest(IdServiceRequest, IdServiceType, IdServiceStatus, IdPerson, IdUser).ToList()
+            MUser objUser = new MUser();
+
+            ListServiceRequest = (from d in db.GNListServiceRequest(IdServiceRequest, IdServiceType, IdServiceStatus, IdPerson, IdUser).ToList()
                                     select new MServiceRequest
                                     {
                                         IdServiceRequest = d.IdServiceRequest,
@@ -272,11 +324,11 @@ namespace CustomerSupport.Controllers
                                                             PersonType = result2.PersonType,
                                                             IdIdentificationType = result2.IdIdentificationType,
                                                             IdentificationType = result2.IdentificationType,
-                                                            NumIdentification = result2.NumIdentification,
+                                                            NumIdentification = objUser.Desencriptar(result2.NumIdentification),
                                                             Name = result2.Name,
                                                             LastName = result2.LastName,
                                                             Birthday = result2.Birthday,
-                                                            Address = result2.Address,
+                                                            Address = objUser.Desencriptar(result2.Address),
                                                             Email = result2.Email,
                                                             IdContactType = result2.IdContactType,
                                                             ContactType = result2.ContactType,
@@ -695,11 +747,11 @@ namespace CustomerSupport.Controllers
                                 if (IdTask != 0)
                                 {
                                     //Se asocia la actividad con el servicio si esta insertando
-                                    if (TransactionType == "I")
+                                    if (paramTransactionType.Value.ToString() == "I") //TransactionType == "I"
                                     {
                                         SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceRequestTask @TransactionType, @IdTask, @IdServiceRequest ",
                                             new SqlParameter[]{
-                                                new SqlParameter("@TransactionType", TransactionType),
+                                                new SqlParameter("@TransactionType", paramTransactionType.Value.ToString()), //TransactionType
                                                 new SqlParameter("@IdTask", IdTask),
                                                 new SqlParameter("@IdServiceRequest", IdServiceRequest)
                                             }
@@ -742,7 +794,7 @@ namespace CustomerSupport.Controllers
         // GET: ServiceRequest/DetailServiceRequest/5
         public ActionResult DetailServiceRequest(int? id)
         {
-            if (Session["Usuario"] == null || id==null)
+            if (Session["Usuario"] == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -755,6 +807,24 @@ namespace CustomerSupport.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+
+            //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+            if (TempData["DataServiceRequest"] != null)
+            {
+                if (((MServiceRequest)TempData["DataServiceRequest"]) != null && ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest > 0)
+                {
+                    id = ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest;
+                }
+                else
+                {
+                    return RedirectToAction("ListServiceRequest", "ServiceRequest");
+                }
+            }
+            if (id == null)
+            {
+                return RedirectToAction("ListServiceRequest", "ServiceRequest");
+            }
+            //-----------------------------------------------------
 
             MServiceRequest objServiceRequest = new MServiceRequest();
             objServiceRequest = fnListServiceRequest(id,null,null,null,null).First();

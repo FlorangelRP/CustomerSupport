@@ -12,6 +12,7 @@ namespace CustomerSupport.Controllers
     public class UserController : Controller
     {
         // GET: User
+        [HttpGet]
         public ActionResult ListUser()
         {
             if (Session["Usuario"] == null)
@@ -31,14 +32,47 @@ namespace CustomerSupport.Controllers
                     }
                 }
 
+                MUser objUser = new MUser();
+                return View(objUser);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ListUser(string submit, MUser objMUser)
+        {
+            //var m = new MUser { IdUser = objMUser.IdUser };
+            //var mp = new { m, id="" };
+            //var objParameter = new MParameterUrl { Id = objMUser.IdUser };
+
+            if (objMUser==null || objMUser.IdUser==0) 
+            {
                 return View();
             }
+
+            TempData["DataUser"] = objMUser;
+
+            switch (submit)
+            {
+                case "searchRow":
+                    //return (DetailUser(objMUser));//RedirectToAction("DetailUser");                    
+                    //return RedirectToAction("DetailUser", objParameter);
+                    return RedirectToAction("DetailUser", "User");
+                case "editRow":
+                    //return (EditUser(objMUser,"")); //RedirectToAction("EditUser");
+                    //return RedirectToAction("EditUser", objParameter);
+                    return RedirectToAction("EditUser", "User");
+                default:
+                    return View();
+            }
+
         }
 
         public ActionResult GetListUser()
         {            
             List<MUser> ListUser = new List<MUser>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
+
+            MUser objUser = new MUser();
 
             ListUser = (from result in db.GNListUser(null).ToList()
                         select new MUser
@@ -56,11 +90,11 @@ namespace CustomerSupport.Controllers
                                                 PersonType = result2.PersonType,
                                                 IdIdentificationType = result2.IdIdentificationType,
                                                 IdentificationType = result2.IdentificationType,
-                                                NumIdentification = result2.NumIdentification,
+                                                NumIdentification = objUser.Desencriptar(result2.NumIdentification),
                                                 Name = result2.Name,
                                                 LastName = result2.LastName,
                                                 Birthday = result2.Birthday,
-                                                Address = result2.Address,
+                                                Address = objUser.Desencriptar(result2.Address),
                                                 Email = result2.Email,
                                                 IdContactType = result2.IdContactType,
                                                 ContactType = result2.ContactType,
@@ -135,11 +169,11 @@ namespace CustomerSupport.Controllers
                                                                           PersonType = result2.PersonType,
                                                                           IdIdentificationType = result2.IdIdentificationType,
                                                                           IdentificationType = result2.IdentificationType,
-                                                                          NumIdentification = result2.NumIdentification,
+                                                                          NumIdentification = ObjUser.Desencriptar(result2.NumIdentification),
                                                                           Name = result2.Name,
                                                                           LastName = result2.LastName,
                                                                           Birthday = result2.Birthday,
-                                                                          Address = result2.Address,
+                                                                          Address = ObjUser.Desencriptar(result2.Address),
                                                                           Email = result2.Email,
                                                                           IdContactType = result2.IdContactType,
                                                                           ContactType = result2.ContactType,
@@ -210,20 +244,7 @@ namespace CustomerSupport.Controllers
 
         }
 
-        public ActionResult Details(int id)
-        {
-            if (Session["Usuario"] == null)
-            {
-                return RedirectToAction("Login", "User");
-            }
-            else
-            {
-             
-                return View();
-            }
-        }
-
-        public ActionResult DetailUser(string id)
+        public ActionResult DetailUser(int? id) //string id / MUser objMUser / MParameterUrl objMParameter
         {
             if (Session["Usuario"] == null)
             {
@@ -241,10 +262,29 @@ namespace CustomerSupport.Controllers
                     }
                 }
 
+                //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+                if (TempData["DataUser"] != null) 
+                {
+                    if (((MUser)TempData["DataUser"]) != null && ((MUser)TempData["DataUser"]).IdUser > 0)
+                    {
+                        id = ((MUser)TempData["DataUser"]).IdUser;
+                    }
+                    else 
+                    {
+                        return RedirectToAction("ListUser", "User");
+                    }
+                }
+                if (id == null)
+                {
+                    return RedirectToAction("ListUser", "User");
+                }
+                //-----------------------------------------------------    
+
                 MUser ObjUser = new MUser();
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-                ObjUser = (from result in db.GNListUser(Convert.ToInt32(id)).ToList()
+                //Convert.ToInt32(id)
+                ObjUser = (from result in db.GNListUser(id).ToList()
                            select new MUser
                            {
                                IdUser = result.IdUser,
@@ -382,7 +422,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
-
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objUser);
                 }
 
@@ -398,24 +438,8 @@ namespace CustomerSupport.Controllers
 
         }
 
-        // POST: User/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: User/Edit/5int id
-        public ActionResult EditUser(string id)
+        public ActionResult EditUser(int? id) //string id / MUser objMuser, string id / FormCollection collection
         {
             if (Session["Usuario"] == null)
             {
@@ -433,10 +457,29 @@ namespace CustomerSupport.Controllers
                     }
                 }
 
+                //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
+                if (TempData["DataUser"] != null)
+                {
+                    if (((MUser)TempData["DataUser"]) != null && ((MUser)TempData["DataUser"]).IdUser > 0)
+                    {
+                        id = ((MUser)TempData["DataUser"]).IdUser;
+                    }
+                    else
+                    {
+                        return RedirectToAction("ListUser", "User");
+                    }
+                }
+                if (id == null)
+                {
+                    return RedirectToAction("ListUser", "User");
+                }
+                //-----------------------------------------------------
+
                 MUser ObjUser = new MUser();
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-                ObjUser = (from result in db.GNListUser(Convert.ToInt32(id)).ToList()
+                //Convert.ToInt32(objMParameter.Id)
+                ObjUser = (from result in db.GNListUser(id).ToList()
                            select new MUser
                            {
                                IdUser = result.IdUser,
@@ -453,11 +496,11 @@ namespace CustomerSupport.Controllers
                                                               PersonType = result2.PersonType,
                                                               IdIdentificationType = result2.IdIdentificationType,
                                                               IdentificationType = result2.IdentificationType,
-                                                              NumIdentification = result2.NumIdentification,
+                                                              NumIdentification = ObjUser.Desencriptar(result2.NumIdentification),
                                                               Name = result2.Name,
                                                               LastName = result2.LastName,
                                                               Birthday = result2.Birthday,
-                                                              Address = result2.Address,
+                                                              Address = ObjUser.Desencriptar(result2.Address),
                                                               Email = result2.Email,
                                                               IdContactType = result2.IdContactType,
                                                               ContactType = result2.ContactType,
@@ -522,7 +565,15 @@ namespace CustomerSupport.Controllers
                     {
 
                         TempData["Success"] = "Datos grabados exitosamente, Código de Usuario: (" + IdUser + ").";
-                        return RedirectToAction("EditUser", new { id = objUser.IdUser });
+
+                        //Para evitar que se vea el id en la Url------------
+                        MUser objMUser = new MUser();
+                        objMUser.IdUser = objUser.IdUser;
+                        TempData["DataUser"] = objMUser;
+                        return RedirectToAction("EditUser");
+                        //---------------------------------------------------
+
+                        //return RedirectToAction("EditUser", new { id = objUser.IdUser });
                     }
                     else
                     {
@@ -534,7 +585,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
-
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objUser);
                 }
 
@@ -549,34 +600,6 @@ namespace CustomerSupport.Controllers
             }
         }
 
-        // GET: User/Delete/5
-        public ActionResult Delete(int id)
-        {
-            if (Session["Usuario"] == null)
-            {
-                return RedirectToAction("Login", "User");
-            }
-            else
-            {
-                return View();
-            }
-        }
-
-        // POST: User/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         /// <summary>
         /// 

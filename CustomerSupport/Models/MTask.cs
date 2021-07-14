@@ -17,6 +17,8 @@ namespace CustomerSupport.Models
         public int IdUser { get; set; }
         public string UserName { get; set; } //opcional, se susa solo cuando se vaya a mostrar los datos en la vista
         public string UserLastName { get; set; } //opcional, se susa solo cuando se vaya a mostrar los datos en la vista
+
+        [StringLength(500, ErrorMessage = "La especificación de actividad no puede tener mas de 500 caracteres.")]
         public string Activity { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:d}")]
@@ -29,7 +31,10 @@ namespace CustomerSupport.Models
 
         public System.TimeSpan HourIni { get; set; }
         public System.TimeSpan HourEnd { get; set; }
+
+        [StringLength(300, ErrorMessage = "La especificación del lugar no puede tener mas de 300 caracteres.")]
         public string Place { get; set; }
+
         public bool Status { get; set; }
         public List<MTaskPerson> listTaskPerson { get; set; } //Esta lista es para los involucrados en la actividad
 

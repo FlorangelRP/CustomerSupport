@@ -10,6 +10,7 @@
     <link href="~/Content/assets/css/jquery.inputpicker.css?v3" rel="stylesheet" type="text/css">
 
     @Styles.Render("~/Content/css")
+    <link href="~/Content/toastr.css" rel="stylesheet" />
     @*@Scripts.Render("~/bundles/modernizr")*@
     @Scripts.Render("~/bundles/jquery")
 </head>
@@ -32,6 +33,7 @@
 
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/inputmask")
+    <script src="~/Scripts/toastr.js"></script>
     @RenderSection("Scripts", required: false)
 
 </body>
