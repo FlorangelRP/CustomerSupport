@@ -46,14 +46,14 @@
                     <div class="row">
                         <div class="col-md-10">
                             <div class="form-group">
-                                <label>Persona</label><br>
-                                @Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })
+                                <label>Empleado</label><br>
+                                <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
+                                @*@Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })*@
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
 
-                    <hr>
 
                     <div class="row">
                         <div class="col-md-5">
@@ -163,6 +163,7 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
 
     <script type="text/javascript">
 
@@ -208,28 +209,6 @@
 
         }
 
-        function cargarDataPerson(IdPerson, lstPersons) {
-
-            if (IdPerson == "" || IdPerson == "0") { return false; }
-
-            //debugger;
-            var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
-            var fecha = new Date();
-
-            $("#Birthday").val(fecha.toLocaleDateString("en-US")); //hidden del modelo*/
-            $("#IdContactType").val(1); //hidden del modelo
-            $("#IdPosition").val(objPerson.IdPosition); //hidden del modelo
-            $("#ClientPermission").val(objPerson.ClientPermission); //hidden del modelo
-            $("#IdPersonType").val(objPerson.IdPersonType); //hidden del modelo
-            $("#NumIdentification").val(objPerson.NumIdentification); //hidden del modelo
-            $("#LastName").val(objPerson.LastName); //hidden del modelo
-            $("#Name").val(objPerson.Name); //hidden del modelo
-            $("#Address").val(objPerson.Address); //hidden del modelo
-            $("#Email").val(objPerson.Email); //hidden del modelo
-            $("#IdIdentificationType").val(objPerson.IdIdentificationType); //hidden del modelo
-
-        }
-
         function ObtenerPersonas() {
 
             ListPersons = $.ajax({
@@ -245,24 +224,70 @@
                             itemArray.IdPerson = "";
                             itemArray.LastName = "";
                             itemArray.Name = "";
+                            itemArray.NumIdentification = "";
                             data.push(itemArray);
                             data.reverse();
                             return data;
                         }
             }).responseJSON;
 
-            //debugger;
-            if ($("#searchPerson").val() != "") {
-            cargarDataPerson($("#searchPerson").val(), ListPersons)
+        //debugger;
+        //if ($("#searchPerson").val() != "") {
+        //    cargarDataPerson($("#searchPerson").val(), ListPersons)
+        //}
+
+            var persona = $("#filtropersona")[0];
+        //debugger;
+        for (i = 0; i < ListPersons.length; i++) {
+
+            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                var Name = " ";
+                if (ListPersons[i].Name != "")
+                {
+                    Name = " "+ListPersons[i].Name;
+                }
+
+                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
             }
+
+        }
+        persona.value = "@Model.IdPerson";
+        filtrarPersona( "@Model.IdPerson");
+
 
         }
 
         function jsonToDate(date, format) {
             return moment(date).format(format);
-        }
+    }
 
         ObtenerPersonas();
+
+        function cargarDataPerson(IdPerson, lstPersons) {
+            if (IdPerson == "" || IdPerson == "0") { return false; }
+            //debugger;
+            var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
+            var fecha = new Date();
+
+            $("#Birthday").val(fecha.toLocaleDateString("en-US")); //hidden del modelo*/
+            $("#IdContactType").val(1); //hidden del modelo
+            $("#IdPosition").val(objPerson.IdPosition); //hidden del modelo
+            $("#ClientPermission").val(objPerson.ClientPermission); //hidden del modelo
+            $("#IdPersonType").val(objPerson.IdPersonType); //hidden del modelo
+            $("#NumIdentification").val(objPerson.NumIdentification); //hidden del modelo
+            $("#LastName").val(objPerson.LastName); //hidden del modelo
+            $("#Name").val(objPerson.Name); //hidden del modelo
+            $("#Address").val(objPerson.Address); //hidden del modelo
+            $("#Email").val(objPerson.Email); //hidden del modelo
+            $("#IdIdentificationType").val(objPerson.IdIdentificationType); //hidden del modelo
+        }
+
+        function filtrarPersona(person) {
+            /*debugger;*/
+            var SelecCodeValue = person.trim();
+            cargarDataPerson(SelecCodeValue, ListPersons);
+        }
 
         $(document).ready(function () {
 
@@ -275,10 +300,13 @@
             }
             //-------------------------------------------
 
-            $("#searchPerson").on('change', function () {
-                var IdPerson = $(this).val();
-                cargarDataPerson(IdPerson, ListPersons)
-            });
+            //$("#searchPerson").on('change', function () {
+            //    var IdPerson = $(this).val();
+
+            //    cargarDataPerson(IdPerson, ListPersons)
+            //});
+
+    		$('.select2').select2();
 
             // If the checkbox is checked, display the output text
             if ($("#chkStatus").checked == true) {
@@ -478,19 +506,18 @@
                 }
             });
 
-            $('#searchPerson').inputpicker({
-                data: ListPersons,
-                fields: ['Name', 'LastName'],
-                fieldText: 'Name',
-                fieldValue: 'IdPerson',
-                headShow: true,
-                filterOpen: true,
-                selectMode: null,
-                pagination: false,
-                responsive: true
-            });
-            $('#searchPerson').val("");
-
+            //$('#searchPerson').inputpicker({
+            //    data: ListPersons,
+            //    fields: ['Name', 'LastName'],
+            //    fieldText: 'Name',
+            //    fieldValue: 'IdPerson',
+            //    headShow: true,
+            //    filterOpen: true,
+            //    selectMode: null,
+            //    pagination: false,
+            //    responsive: true
+            //});
+            //$('#searchPerson').val("");
         });
 
     </script>

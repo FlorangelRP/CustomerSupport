@@ -300,7 +300,7 @@
                                                                                                             for (var i = 0; i < Model.listConstructionOption.Count; i++)
                                                                                                             {
                                                                                                                 idRow = "trConstructionOption" + i.ToString();
-                                                                                                                idCol= "listConstructionOption_" + i.ToString();
+                                                                                                                idCol = "listConstructionOption_" + i.ToString();
                                                                                                                 nameCol_IdConstructionOption = "listConstructionOption[" + i.ToString() + "].IdConstructionOption";
                                                                                                                 nameCol_ConstructionOption = "listConstructionOption[" + i.ToString() + "].ConstructionOption";
 
@@ -368,7 +368,7 @@
 
                                                             <label class="ss_radioButton">
                                                                 Si
-                                                                @if (Model.Beneficiaries==null || Model.Beneficiaries.Trim() == "")
+                                                                @if (Model.Beneficiaries == null || Model.Beneficiaries.Trim() == "")
                                                                 {
                                                                     <input id="btnRadioSI" type="radio" name="radio">
                                                                 }
@@ -499,7 +499,8 @@
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <label>Representante:</label><br>
-                                                                                @Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })
+                                                                                <select class="form-control select2 " onchange="filtrarEmployee(this.value)" id="filtroEmployee" data-placeholder="Seleccionar" name="listTask[0].IdPersonEmployee"></select>
+                                                                                @*@Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })*@
                                                                                 @*@Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })*@
                                                                                 @Html.HiddenFor(model => model.listTask[0].IdTask)
                                                                             </div>
@@ -614,6 +615,7 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
 
     <script type="text/javascript">
 
@@ -621,6 +623,13 @@
 
 
         //EMPLEADO--------------------------------------------------------------------------------
+
+        function filtrarEmployee(Employee) {
+            /*debugger;*/
+            var SelecCodeValue = Employee.trim();
+            cargarDataPersonEmployee(SelecCodeValue, ListPersonsEmployee);
+        }
+
         function cargarDataPersonEmployee(IdPersonEmployee, lstPersonsEmployee) {
 
             if (IdPersonEmployee === "" || IdPersonEmployee === "0") {
@@ -629,12 +638,15 @@
                 return false;
             }
 
-            var objPerson = lstPersonsEmployee.find((m) => m.IdPerson == IdPersonEmployee);
+            if (IdPersonEmployee != undefined) {
+                var objPerson = lstPersonsEmployee.find((m) => m.IdPerson == IdPersonEmployee);
 
-            document.getElementById('lbPersonEmployeeName').innerText = objPerson.Name;
-            document.getElementById('lbPersonEmployeeLastName').innerText = objPerson.LastName;
+                document.getElementById('lbPersonEmployeeName').innerText = objPerson.Name;
+                document.getElementById('lbPersonEmployeeLastName').innerText = objPerson.LastName;
+            }
 
         }
+
 
         function ObtenerPersonasEmployee() {
 
@@ -657,20 +669,40 @@
                          }
             }).responseJSON;
 
+            var employee = $("#filtroEmployee")[0];
+            //debugger;
+            for (i = 0; i < ListPersonsEmployee.length; i++) {
+
+                if (ListPersonsEmployee[i].IdPerson != "" && ListPersonsEmployee[i].LastName != "") {
+                    var Name = " ";
+                    if (ListPersonsEmployee[i].Name != "")
+                    {
+                        Name = " " + ListPersonsEmployee[i].Name;
+                    }
+
+                    employee[i + 1] = new Option(ListPersonsEmployee[i].NumIdentification + " - " + ListPersonsEmployee[i].LastName + Name, ListPersonsEmployee[i].IdPerson, "", "");
+
+                }
+
+            }
+
+           employee.value = "@Model.listTask[0].IdPersonEmployee";
+           filtrarEmployee( "@Model.listTask[0].IdPersonEmployee");
+
         }
         ObtenerPersonasEmployee();
 
-        $('#searchEmployee').inputpicker({
-            data: ListPersonsEmployee,
-            fields: ['Name', 'LastName'],
-            fieldText: 'Name',
-            fieldValue: 'IdPerson',
-            headShow: true,
-            filterOpen: true,
-            selectMode: null,
-            pagination: false,
-            responsive: true
-        });
+        //$('#searchEmployee').inputpicker({
+        //    data: ListPersonsEmployee,
+        //    fields: ['Name', 'LastName'],
+        //    fieldText: 'Name',
+        //    fieldValue: 'IdPerson',
+        //    headShow: true,
+        //    filterOpen: true,
+        //    selectMode: null,
+        //    pagination: false,
+        //    responsive: true
+        //});
         //$('#searchEmployee').val("");
         //FIN EMPLEADO---------------------------------------------------------------------------
 
@@ -904,12 +936,14 @@
             $('#Piti').inputmask("decimal");
             $('#Ratios').inputmask("decimal");
 
+            $('.select2').select2();
+
             //EMPLEADO INPUTPICKER
-            $("#searchEmployee").on('change', function () {
-                var IdPersonEmployee = $(this).val();
-                cargarDataPersonEmployee(IdPersonEmployee, ListPersonsEmployee)
-            });
-            cargarDataPersonEmployee($("#searchEmployee").val(), ListPersonsEmployee);
+            //$("#searchEmployee").on('change', function () {
+            //    var IdPersonEmployee = $(this).val();
+            //    cargarDataPersonEmployee(IdPersonEmployee, ListPersonsEmployee)
+            //});
+            //cargarDataPersonEmployee($("#searchEmployee").val(), ListPersonsEmployee);
 
 
             $("#lst_ServiceStatus").on('change', function () {

@@ -44,7 +44,8 @@
                                                 <div class="col-md-10">
                                                     <div class="form-group">
                                                         <label>Cliente:</label><br>
-                                                        @Html.TextBoxFor(model => model.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione" })
+                                                        <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
+                                                        @*@Html.TextBoxFor(model => model.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione" })*@
                                                         @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
 
 
@@ -267,13 +268,15 @@
                                                                     @* @Html.Partial("_PartialDetailTask")*@
 
                                                                     @*@{
-                                                                        Model.listTask.Add(new MTask());
-                                                                    }*@
+                                                                            Model.listTask.Add(new MTask());
+                                                                        }*@
                                                                     <div class="row">
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <label>Representante:</label><br>
-                                                                                @Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })
+                                                                                @*@Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })*@
+
+                                                                                <select class="form-control select2 " onchange="filtrarEmployee(this.value)" id="filtroEmployee" data-placeholder="Seleccionar" name="listTask[0].IdPersonEmployee"></select>
                                                                                 @*@Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })*@
                                                                             </div>
                                                                         </div>
@@ -391,6 +394,7 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
 
     <script type="text/javascript">
 
@@ -425,6 +429,13 @@
             $("#Email").val(objPerson.Email); //hidden del modelo
             $("#IdContactType").val(objPerson.IdContactType); //hidden del modelo
             $("#IdPosition").val(1); //hidden del modelo
+        }
+
+        function filtrarPersona(person) {
+                /*debugger;*/
+                var SelecCodeValue = person.trim();
+                cargarDataPerson(SelecCodeValue, ListPersons);
+
 
         }
 
@@ -443,30 +454,58 @@
                             itemArray.IdPerson = "";
                             itemArray.LastName = "";
                             itemArray.Name = "";
+                            itemArray.NumIdentification = "";
                             data.push(itemArray);
                             data.reverse();
                             return data;
                          }
             }).responseJSON;
 
+            var persona = $("#filtropersona")[0];
+            //debugger;
+            for (i = 0; i < ListPersons.length; i++) {
+
+                if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                    var Name = " ";
+                    if (ListPersons[i].Name != "")
+                    {
+                        Name = " "+ListPersons[i].Name;
+                    }
+
+                    persona[i + 1] = new Option(ListPersons[i].NumIdentification+" - "+ ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
+                }
+
+            }
+            persona.value = "@Model.IdPerson";
+            filtrarPersona( "@Model.IdPerson");
+
+
         }
         ObtenerPersonas();
 
-        $('#searchPerson').inputpicker({
-            data: ListPersons,
-            fields: ['Name', 'LastName'],
-            fieldText: 'Name',
-            fieldValue: 'IdPerson',
-            headShow: true,
-            filterOpen: true,
-            selectMode: null,
-            pagination: false,
-            responsive: true
-        });
+        //$('#searchPerson').inputpicker({
+        //    data: ListPersons,
+        //    fields: ['Name', 'LastName'],
+        //    fieldText: 'Name',
+        //    fieldValue: 'IdPerson',
+        //    headShow: true,
+        //    filterOpen: true,
+        //    selectMode: null,
+        //    pagination: false,
+        //    responsive: true
+        //});
         //$('#searchPerson').val("");
         //FIN CLIENTE---------------------------------------------------------------------------
 
         //EMPLEADO--------------------------------------------------------------------------------
+
+        function filtrarEmployee(Employee) {
+            /*debugger;*/
+            var SelecCodeValue = Employee.trim();
+            cargarDataPersonEmployee(SelecCodeValue, ListPersonsEmployee);
+        }
+
         function cargarDataPersonEmployee(IdPersonEmployee, lstPersonsEmployee) {
 
             if (IdPersonEmployee === "" || IdPersonEmployee === "0") {
@@ -475,10 +514,14 @@
                 return false;
             }
 
-            var objPerson = lstPersonsEmployee.find((m) => m.IdPerson == IdPersonEmployee);
+            if (IdPersonEmployee != undefined) {
 
-            document.getElementById('lbPersonEmployeeName').innerText = objPerson.Name;
-            document.getElementById('lbPersonEmployeeLastName').innerText = objPerson.LastName;
+                var objPerson = lstPersonsEmployee.find((m) => m.IdPerson == IdPersonEmployee);
+
+                document.getElementById('lbPersonEmployeeName').innerText = objPerson.Name;
+                document.getElementById('lbPersonEmployeeLastName').innerText = objPerson.LastName;
+            }
+
 
         }
 
@@ -497,26 +540,48 @@
                             itemArray.IdPerson = "";
                             itemArray.LastName = "";
                             itemArray.Name = "";
+                            itemArray.NumIdentification = "";
                             data.push(itemArray);
                             data.reverse();
                             return data;
                          }
             }).responseJSON;
 
+            var employee = $("#filtroEmployee")[0];
+            //debugger;
+            for (i = 0; i < ListPersonsEmployee.length; i++) {
+
+                if (ListPersonsEmployee[i].IdPerson != "" && ListPersonsEmployee[i].LastName != "") {
+                    var Name = " ";
+                    if (ListPersonsEmployee[i].Name != "")
+                    {
+                        Name = " " + ListPersonsEmployee[i].Name;
+                    }
+
+                    employee[i + 1] = new Option(ListPersonsEmployee[i].NumIdentification + " - " + ListPersonsEmployee[i].LastName + Name, ListPersonsEmployee[i].IdPerson, "", "");
+
+                }
+
+            }
+
+           employee.value = "@Model.listTask[0].IdPersonEmployee";
+           filtrarEmployee( "@Model.listTask[0].IdPersonEmployee");
+
+
         }
         ObtenerPersonasEmployee();
 
-        $('#searchEmployee').inputpicker({
-            data: ListPersonsEmployee,
-            fields: ['Name', 'LastName'],
-            fieldText: 'Name',
-            fieldValue: 'IdPerson',
-            headShow: true,
-            filterOpen: true,
-            selectMode: null,
-            pagination: false,
-            responsive: true
-        });
+        //$('#searchEmployee').inputpicker({
+        //    data: ListPersonsEmployee,
+        //    fields: ['Name', 'LastName'],
+        //    fieldText: 'Name',
+        //    fieldValue: 'IdPerson',
+        //    headShow: true,
+        //    filterOpen: true,
+        //    selectMode: null,
+        //    pagination: false,
+        //    responsive: true
+        //});
         //$('#searchEmployee').val("");
         //FIN EMPLEADO---------------------------------------------------------------------------
 
@@ -686,7 +751,7 @@
 
                 var colHid_indexCell = "<td style='display:none'><input name='listConstructionOption.Index' type = 'hidden' value = '" + index + "' /></td > ";
                 var colHid_IdConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].IdConstructionOption' type='hidden' value='" + strIdConstructionOption + "' /></td> ";
-                var colHid_ConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].ConstructionOption' type = 'hidden' value = '" + strConstructionOption + "' /></td> ";
+                var colHid_ConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].ConstructionOption' type = 'hidden' value = '" + strConstructionOption +IdPersonEmployee +"' /></td> ";
 
                 var colIdConstructionOption = "<td>" + strIdConstructionOption + "</td> ";
                 var colConstructionOption = "<td name='ConstOption'>" + strConstructionOption + "</td> ";
@@ -785,19 +850,21 @@
             $('#Piti').inputmask("decimal");
             $('#Ratios').inputmask("decimal");
 
-            //CLIENTE INPUTPICKER
-            $("#searchPerson").on('change', function () {
-                var IdPerson = $(this).val();
-                cargarDataPerson(IdPerson, ListPersons)
-            });
-            cargarDataPerson($("#searchPerson").val(), ListPersons);
+            $('.select2').select2();
+
+            ////CLIENTE INPUTPICKER
+            //$("#searchPerson").on('change', function () {
+            //    var IdPerson = $(this).val();
+            //    cargarDataPerson(IdPerson, ListPersons)
+            //});
+            //cargarDataPerson($("#searchPerson").val(), ListPersons);
 
             //EMPLEADO INPUTPICKER
-            $("#searchEmployee").on('change', function () {
-                var IdPersonEmployee = $(this).val();
-                cargarDataPersonEmployee(IdPersonEmployee, ListPersonsEmployee)
-            });
-            cargarDataPersonEmployee($("#searchEmployee").val(), ListPersonsEmployee);
+            //$("#searchEmployee").on('change', function () {
+            //    var IdPersonEmployee = $(this).val();
+            //    cargarDataPersonEmployee(IdPersonEmployee, ListPersonsEmployee)
+            //});
+            //cargarDataPersonEmployee($("#searchEmployee").val(), ListPersonsEmployee);
 
 
             $("#lst_ContactType").on('change', function () {
@@ -912,160 +979,6 @@
 
             });
 
-            @*$("#lst_ServiceType").on('blur', function () {
-
-                //si existe el elemento, llena los DropDown de las vistas parciales
-
-                if (!!document.getElementById('lst_PropertyType')) {
-                    $.ajax({
-                        type: "GET",
-                        url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PROPERTYTYPE",
-                        data: "{}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (msg) {
-
-                            //Si no hay opciones previamente
-                            if ($("#lst_PropertyType option").length == 0) {
-
-                                var option = $(document.createElement('option'));
-                                option.text("Seleccione");
-                                option.val("0");
-                                $("#lst_PropertyType").append(option);
-
-                                $(msg).each(function () {
-                                    var option = $(document.createElement('option'));
-                                    option.text(this.DetailDesc);
-                                    option.val(this.IdCatalogDetail); //Identity
-
-                                    $("#lst_PropertyType").append(option);
-                                });
-
-                            }
-
-                            document.getElementById('lst_PropertyType').value = "0";
-
-                            changeCodeInputHiddenList("lst_PropertyType", "inpIdPropertyType", "");
-                        },
-                        error: function (msg) {
-                            $("#error > span").text("Error al llenar lista de tipos de propiedad");
-                        }
-
-                    });
-                }
-
-                if (!!document.getElementById('lstBuild_PropertyType')) {
-                    $.ajax({
-                        type: "GET",
-                        url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PROPERTYTYPE",
-                        data: "{}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (msg) {
-
-                            //Si no hay opciones previamente
-                            if ($("#lstBuild_PropertyType option").length == 0) {
-
-                                var option = $(document.createElement('option'));
-                                option.text("Seleccione");
-                                option.val("0");
-                                $("#lstBuild_PropertyType").append(option);
-
-                                $(msg).each(function () {
-                                    var option = $(document.createElement('option'));
-                                    option.text(this.DetailDesc);
-                                    option.val(this.IdCatalogDetail); //Identitys
-
-                                    $("#lstBuild_PropertyType").append(option);
-                                });
-
-                            }
-
-                            document.getElementById('lstBuild_PropertyType').value = "0";
-
-                            changeCodeInputHiddenList("lstBuild_PropertyType", "inpBuild_IdPropertyType", "");
-                        },
-                        error: function (msg) {
-                            $("#error > span").text("Error al llenar lista de tipos de propiedad");
-                        }
-
-                    });
-
-                    $.ajax({
-                        type: "GET",
-                        url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"CONSTRUCTIONOPTION",
-                        data: "{}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (msg) {
-
-                            //Si no hay opciones previamente
-                            if ($("#lst_ConstructionOption option").length == 0) {
-
-                                var option = $(document.createElement('option'));
-                                option.text("Seleccione");
-                                option.val("");
-                                $("#lst_ConstructionOption").append(option);
-
-                                $(msg).each(function () {
-                                    var option = $(document.createElement('option'));
-                                    option.text(this.DetailDesc);
-                                    option.val(this.IdCatalogDetail); //Identity
-
-                                    $("#lst_ConstructionOption").append(option);
-                                });
-
-                            }
-
-                            document.getElementById('lst_ConstructionOption').value = "";
-                        },
-                        error: function (msg) {
-                            $("#error > span").text("Error al llenar lista de Opciones de Construccion");
-                        }
-
-                    });
-                }
-
-                if (!!document.getElementById('lstRefin_PropertyType')) {
-                    $.ajax({
-                        type: "GET",
-                        url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"PROPERTYTYPE",
-                        data: "{}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (msg) {
-
-                            //Si no hay opciones previamente
-                            if ($("#lstRefin_PropertyType option").length == 0) {
-
-                                var option = $(document.createElement('option'));
-                                option.text("Seleccione");
-                                option.val("0");
-                                $("#lstRefin_PropertyType").append(option);
-
-                                $(msg).each(function () {
-                                    var option = $(document.createElement('option'));
-                                    option.text(this.DetailDesc);
-                                    option.val(this.IdCatalogDetail); //Identity
-
-                                    $("#lstRefin_PropertyType").append(option);
-                                });
-
-                            }
-
-                            document.getElementById('lstRefin_PropertyType').value = "0";
-
-                            changeCodeInputHiddenList("lstRefin_PropertyType", "inpRefin_IdPropertyType", "");
-                        },
-                        error: function (msg) {
-                            $("#error > span").text("Error al llenar lista de tipos de propiedad");
-                        }
-
-                    });
-                }
-
-            });*@
-
 
         //Begin - Eventos de vistas parciales
 
@@ -1160,42 +1073,6 @@
 
             });
 
-            //$("#lstBuild_PropertyType").on('change', function () {
-            //    var selectValue = $(this).val();
-            //    alert(selectValue);
-            //    changeCodeInputHiddenList("lstBuild_PropertyType", "inpBuild_IdPropertyType", selectValue);
-            //});
-
-
-            //$("#lstRefin_PropertyType").on('change', function () {
-            //    var selectValue = $(this).val();
-            //    alert(selectValue);
-            //    changeCodeInputHiddenList("lstRefin_PropertyType", "inpRefin_IdPropertyType", selectValue);
-            //});
-
-        //End - Eventos de vistas parciales
-
-            //$("#inpBuy_Address").on('blur', function () {
-            //    var selecServiceType = $('select[id="lst_ServiceType"] option:selected').text();
-            //    var strAddress = $(this).val();
-            //    if (selecServiceType === "Compras") {
-            //        $("#PropertyAddress").val(strAddress);
-            //    }
-            //});
-            //$("#inpBuild_Address").on('blur', function () {
-            //    var selecServiceType = $('select[id="lst_ServiceType"] option:selected').text();
-            //    var strAddress = $(this).val();
-            //    if (selecServiceType === "Planos" || selecServiceType === "Construcción") {
-            //        $("#PropertyAddress").val(strAddress);
-            //    }
-            //});
-            //$("#inpRefin_Address").on('blur', function () {
-            //    var selecServiceType = $('select[id="lst_ServiceType"] option:selected').text();
-            //    var strAddress = $(this).val();
-            //    if (selecServiceType === "Refinanciamiento") {
-            //        $("#PropertyAddress").val(strAddress);
-            //    }
-            //});
 
         });
 
