@@ -30,11 +30,24 @@
                                 @Html.DisplayFor(model => model.IdUser, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.HiddenFor(model => model.IdUser, new { @id = "IdUser" })
                                 @Html.HiddenFor(model => model.IdPerson, new { @id = "IdPerson" })
-                                @Html.HiddenFor(model => model.PersonEmployee.Birthday, new { @id = "Birthday" })
+
+                                @*@Html.HiddenFor(model => model.PersonEmployee.Birthday, new { @id = "Birthday" })
                                 @Html.HiddenFor(model => model.PersonEmployee.IdContactType, new { @id = "IdContactType" })
                                 @Html.HiddenFor(model => model.PersonEmployee.IdPosition, new { @id = "IdPosition" })
                                 @Html.HiddenFor(model => model.PersonEmployee.ClientPermission)
-                                @Html.HiddenFor(model => model.PersonEmployee.IdPersonType)
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPersonType)*@
+
+                                @Html.HiddenFor(model => model.PersonEmployee.IdIdentificationType, new { @id = "IdIdentificationType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdentificationType, new { @id = "IdentificationType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.NumIdentification, new { @id = "NumIdentification" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Name, new { @id = "Name" })
+                                @Html.HiddenFor(model => model.PersonEmployee.LastName, new { @id = "LastName" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Birthday, new { @value = DateTime.Now, @id = "Birthday" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Address, new { @id = "Address" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Email, new { @id = "Email" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdContactType, new { @id = "IdContactType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPosition, new { @id = "IdPosition" })
+
                                 @Html.ValidationMessageFor(model => model.IdUser, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -45,39 +58,35 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label"> <b>Nombres:</b> </div>
-                                <div class="">
-                                    @Html.HiddenFor(model => model.PersonEmployee.Name, new { @id = "PersonEmployee.Name", @Name = "PersonEmployee.Name", @value = Model.PersonEmployee.Name })
-                                    @Html.DisplayFor(model => model.PersonEmployee.Name, new { @id = "PersonEmployee.Name",@Name = "PersonEmployee.Name", @value = Model.PersonEmployee.Name })
+                                <div class="">                                    
+                                    @Html.DisplayFor(model => model.PersonEmployee.Name, new { @id = "PersonEmployee.Name", @Name = "PersonEmployee.Name", @value = Model.PersonEmployee.Name })
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-4">
-                            <div class="form-group">
-                                @* <div class="input-group">*@
+                            <div class="form-group">                                
                                 <div class="control-label"><b>Apellidos:</b> </div>
-                                <div class="">
-                                    @Html.HiddenFor(model => model.PersonEmployee.LastName, new { @id = "PersonEmployee.LastName", @Name = "PersonEmployee.LastName", @value = Model.PersonEmployee.LastName })
+                                <div class="">                                    
                                     @Html.DisplayFor(model => model.PersonEmployee.LastName, new { @id = "PersonEmployee.LastName", @value = Model.PersonEmployee.LastName })
-
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-3">
-                            <div class="form-group">
-                                @*@Html.LabelFor(model => model.IdPosition, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            <div class="form-group">                                
                                 <div class="control-label"><b>Cargo:</b></div>
                                 <div class="">
-                                    @Html.HiddenFor(model => model.PersonEmployee.IdIdentificationType, new { @id = "PersonEmployee.IdIdentificationType", @Name = "PersonEmployee.IdIdentificationType", @value = Model.PersonEmployee.IdIdentificationType })
-                                    @Html.HiddenFor(model => model.PersonEmployee.IdIdentificationType, new { @id = "PersonEmployee.IdIdentificationType", @Name = "PersonEmployee.IdIdentificationType", @value = Model.PersonEmployee.IdIdentificationType })
-                                    @Html.HiddenFor(model => model.PersonEmployee.Address, new { @id = "PersonEmployee.Address", @Name = "PersonEmployee.Address", @value = Model.PersonEmployee.Address })
-                                    @Html.HiddenFor(model => model.PersonEmployee.NumIdentification, new { @id = "PersonEmployee.NumIdentification", @Name = "PersonEmployee.NumIdentification", @value = Model.PersonEmployee.NumIdentification })
-                                    @Html.HiddenFor(model => model.PersonEmployee.Position, new { @id = "PersonEmployee.Position", @Name = "PersonEmployee.Position", @value = Model.PersonEmployee.Position })
-                                    @Html.HiddenFor(model => model.PersonEmployee.Email, new { @id = "PersonEmployee.Email", @Name = "PersonEmployee.Email", @value = Model.PersonEmployee.Email })
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.IdIdentificationType, new { @id = "PersonEmployee.IdIdentificationType", @Name = "PersonEmployee.IdIdentificationType", @value = Model.PersonEmployee.IdIdentificationType })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.IdentificationType, new { @id = "PersonEmployee.IdentificationType", @Name = "PersonEmployee.IdIdentificationType", @value = Model.PersonEmployee.IdIdentificationType })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.Address, new { @id = "PersonEmployee.Address", @Name = "PersonEmployee.Address", @value = Model.PersonEmployee.Address })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.NumIdentification, new { @id = "PersonEmployee.NumIdentification", @Name = "PersonEmployee.NumIdentification", @value = Model.PersonEmployee.NumIdentification })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.Position, new { @id = "PersonEmployee.Position", @Name = "PersonEmployee.Position", @value = Model.PersonEmployee.Position })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.Email, new { @id = "PersonEmployee.Email", @Name = "PersonEmployee.Email", @value = Model.PersonEmployee.Email })*@
+                                    
                                     @Html.DisplayFor(model => model.PersonEmployee.Position, new { @id = "PersonEmployee.Position", @value = Model.PersonEmployee.Position })
 
-                                    @*@Html.ValidationMessageFor(model => model.IdPosition, "", new { @class = "text-danger" })*@
+                                    
                                 </div>
                             </div>
                         </div>
@@ -87,7 +96,7 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Login:</div>
-                                @Html.TextBoxFor(model => model.Login, new { @maxlength = "15",@class = "form-control" })
+                                @Html.TextBoxFor(model => model.Login, new { @maxlength = "15", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Login, "", new { @maxlength = "15", @class = "text-danger" })
                             </div>
                         </div>
@@ -166,12 +175,15 @@
                             <div class="form-group">
                                 <div class="text-center">
                                     <button class="white_btn" type="submit">Grabar</button>
-
                                 </div>
-                                <br />
-                                <label class="text-danger">@ViewBag.ErrorSave</label>
-                                <label  class="text-success">@ViewBag.SuccessSave</label>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 text-center">
+                            @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                            @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
                         </div>
                     </div>
 
@@ -207,14 +219,12 @@
         var OptionId = 0;
         var Item = 0;
 
-    function Chk(source) {
-
+        function Chk(source) {
             var isSelected = $(source).is(":checked");
-
             $(source).val(isSelected);
         }
 
-    function toggle(source, valor) {
+        function toggle(source, valor) {
 
             var isSelected = $(source).is(":checked");
 
@@ -238,8 +248,6 @@
                     break;
             }
 
-
-
             for (let i = 0; i < checkboxes.length; i++) {
                 checkboxes[i].checked = isSelected;
                 checkboxes[i].value = isSelected;
@@ -247,24 +255,31 @@
 
         }
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-
-        $("#chkStatus").on('click', function () {
-
-            var IsSelected = $('#chkStatus').is(":checked");
-
-            // If the checkbox is checked, display the output text
-            if (IsSelected == true) {
-                $("#labEstatus").text("Activo");
-            } else {
-                $("#labEstatus").text("Inactivo");
+            //Mensaje de confirmacion--------------------
+            if ("@ViewBag.SuccessSave"!=""){
+                toastr.success("@ViewBag.SuccessSave");
             }
+            if ("@ViewBag.ErrorSave" != ""){
+                toastr.error("@ViewBag.ErrorSave");
+            }
+            //-------------------------------------------
 
-        });
+            $("#chkStatus").on('click', function () {
 
+                var IsSelected = $('#chkStatus').is(":checked");
 
-        $('#TMenuOptions tbody td img').click(function () {
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#labEstatus").text("Activo");
+                } else {
+                    $("#labEstatus").text("Inactivo");
+                }
+
+            });
+
+            $('#TMenuOptions tbody td img').click(function () {
 
                 if (this.src.match('details_close')) {
 
@@ -325,7 +340,7 @@
                                 }
 
 
-                              /*  Item = index + 1;*/
+                                /*  Item = index + 1;*/
 
                                 objtable += "<tbody><tr  id='trMenuOptionsDetail" + item.IdOption + ">";
                                 objtable += "<td style='display:none'><input name='UserAcces.Index' type = 'hidden' value = '" + item.IdOption + "' /></td > ";
@@ -409,41 +424,41 @@
                 }
             });
 
-
-        /* Initialize table and make first column non-sortable*/
-        oTable = $('#TMenuOptions').dataTable({
-            "bJQueryUI": true,
-            "Columns": [{ "bSortable": false, "bSearchable": false,"Width":"5%" },
-                null
-            ],
-            "bAutoWidth": false,
-            "bInfo": false,
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "No existen Registros",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            /* Initialize table and make first column non-sortable*/
+            oTable = $('#TMenuOptions').dataTable({
+                "bJQueryUI": true,
+                "Columns": [{ "bSortable": false, "bSearchable": false,"Width":"5%" },
+                    null
+                ],
+                "bAutoWidth": false,
+                "bInfo": false,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No existen Registros",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
                 }
-            }
-        });
+            });
 
         });
+
     </script>
 }

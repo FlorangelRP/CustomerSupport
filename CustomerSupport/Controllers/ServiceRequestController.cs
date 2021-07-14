@@ -148,7 +148,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorSave = "Debe completar los datos requeridos.";
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objServiceRequest);
                 }
 
@@ -259,7 +259,15 @@ namespace CustomerSupport.Controllers
                     if (resultDb != 0)
                     {
                         TempData["Success"] = mensaje;
-                        return RedirectToAction("EditServiceRequest", new { id = objServiceRequest.IdServiceRequest });
+
+                        //Para evitar que se vea el id en la Url------------
+                        MServiceRequest objMServiceRequest = new MServiceRequest();
+                        objMServiceRequest.IdServiceRequest = objServiceRequest.IdServiceRequest;
+                        TempData["DataServiceRequest"] = objMServiceRequest;
+                        return RedirectToAction("EditServiceRequest");
+                        //---------------------------------------------------
+
+                        //return RedirectToAction("EditServiceRequest", new { id = objServiceRequest.IdServiceRequest });
                     }
                     else
                     {
@@ -279,7 +287,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorSave = "Debe completar los datos requeridos.";
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objServiceRequest);
                 }
 
@@ -297,7 +305,9 @@ namespace CustomerSupport.Controllers
             List<MServiceRequest> ListServiceRequest = new List<MServiceRequest>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-             ListServiceRequest = (from d in db.GNListServiceRequest(IdServiceRequest, IdServiceType, IdServiceStatus, IdPerson, IdUser).ToList()
+            MUser objUser = new MUser();
+
+            ListServiceRequest = (from d in db.GNListServiceRequest(IdServiceRequest, IdServiceType, IdServiceStatus, IdPerson, IdUser).ToList()
                                     select new MServiceRequest
                                     {
                                         IdServiceRequest = d.IdServiceRequest,
@@ -314,11 +324,11 @@ namespace CustomerSupport.Controllers
                                                             PersonType = result2.PersonType,
                                                             IdIdentificationType = result2.IdIdentificationType,
                                                             IdentificationType = result2.IdentificationType,
-                                                            NumIdentification = result2.NumIdentification,
+                                                            NumIdentification = objUser.Desencriptar(result2.NumIdentification),
                                                             Name = result2.Name,
                                                             LastName = result2.LastName,
                                                             Birthday = result2.Birthday,
-                                                            Address = result2.Address,
+                                                            Address = objUser.Desencriptar(result2.Address),
                                                             Email = result2.Email,
                                                             IdContactType = result2.IdContactType,
                                                             ContactType = result2.ContactType,

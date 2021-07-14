@@ -164,6 +164,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objPersonClient);
                 }
 
@@ -240,7 +241,15 @@ namespace CustomerSupport.Controllers
                     if (resultDb != 0)
                     {
                         TempData["Success"] = mensaje;
-                        return RedirectToAction("EditClient", new { id = objPersonClient.IdPerson });
+
+                        //Para evitar que se vea el id en la Url------------
+                        MPerson objMPerson = new MPerson();
+                        objMPerson.IdPerson = objPersonClient.IdPerson;
+                        TempData["DataPersonClient"] = objMPerson;
+                        return RedirectToAction("EditClient");
+                        //---------------------------------------------------
+
+                        //return RedirectToAction("EditClient", new { id = objPersonClient.IdPerson });
                     }
                     else
                     {
@@ -250,6 +259,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objPersonClient);
                 }
 

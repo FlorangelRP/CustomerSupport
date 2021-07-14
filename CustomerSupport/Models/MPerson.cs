@@ -22,7 +22,7 @@ namespace CustomerSupport.Models
         public string IdentificationType { get; set; } //descripcion del tipo de identificacion
 
         [Required(ErrorMessage = "*Requerido")]
-        [StringLength(15, ErrorMessage = "Número identificación no puede tener mas de 15 caracteres.")]
+        //[StringLength(15, ErrorMessage = "Número identificación no puede tener mas de 15 caracteres.")]
         public string NumIdentification { get; set; }
 
 

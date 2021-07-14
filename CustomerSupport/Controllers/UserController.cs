@@ -72,6 +72,8 @@ namespace CustomerSupport.Controllers
             List<MUser> ListUser = new List<MUser>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
+            MUser objUser = new MUser();
+
             ListUser = (from result in db.GNListUser(null).ToList()
                         select new MUser
                         {
@@ -88,11 +90,11 @@ namespace CustomerSupport.Controllers
                                                 PersonType = result2.PersonType,
                                                 IdIdentificationType = result2.IdIdentificationType,
                                                 IdentificationType = result2.IdentificationType,
-                                                NumIdentification = result2.NumIdentification,
+                                                NumIdentification = objUser.Desencriptar(result2.NumIdentification),
                                                 Name = result2.Name,
                                                 LastName = result2.LastName,
                                                 Birthday = result2.Birthday,
-                                                Address = result2.Address,
+                                                Address = objUser.Desencriptar(result2.Address),
                                                 Email = result2.Email,
                                                 IdContactType = result2.IdContactType,
                                                 ContactType = result2.ContactType,
@@ -167,11 +169,11 @@ namespace CustomerSupport.Controllers
                                                                           PersonType = result2.PersonType,
                                                                           IdIdentificationType = result2.IdIdentificationType,
                                                                           IdentificationType = result2.IdentificationType,
-                                                                          NumIdentification = result2.NumIdentification,
+                                                                          NumIdentification = ObjUser.Desencriptar(result2.NumIdentification),
                                                                           Name = result2.Name,
                                                                           LastName = result2.LastName,
                                                                           Birthday = result2.Birthday,
-                                                                          Address = result2.Address,
+                                                                          Address = ObjUser.Desencriptar(result2.Address),
                                                                           Email = result2.Email,
                                                                           IdContactType = result2.IdContactType,
                                                                           ContactType = result2.ContactType,
@@ -420,7 +422,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
-
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objUser);
                 }
 
@@ -494,11 +496,11 @@ namespace CustomerSupport.Controllers
                                                               PersonType = result2.PersonType,
                                                               IdIdentificationType = result2.IdIdentificationType,
                                                               IdentificationType = result2.IdentificationType,
-                                                              NumIdentification = result2.NumIdentification,
+                                                              NumIdentification = ObjUser.Desencriptar(result2.NumIdentification),
                                                               Name = result2.Name,
                                                               LastName = result2.LastName,
                                                               Birthday = result2.Birthday,
-                                                              Address = result2.Address,
+                                                              Address = ObjUser.Desencriptar(result2.Address),
                                                               Email = result2.Email,
                                                               IdContactType = result2.IdContactType,
                                                               ContactType = result2.ContactType,
@@ -563,7 +565,15 @@ namespace CustomerSupport.Controllers
                     {
 
                         TempData["Success"] = "Datos grabados exitosamente, Código de Usuario: (" + IdUser + ").";
-                        return RedirectToAction("EditUser", new { id = objUser.IdUser });
+
+                        //Para evitar que se vea el id en la Url------------
+                        MUser objMUser = new MUser();
+                        objMUser.IdUser = objUser.IdUser;
+                        TempData["DataUser"] = objMUser;
+                        return RedirectToAction("EditUser");
+                        //---------------------------------------------------
+
+                        //return RedirectToAction("EditUser", new { id = objUser.IdUser });
                     }
                     else
                     {
@@ -575,7 +585,7 @@ namespace CustomerSupport.Controllers
                 }
                 else
                 {
-
+                    ViewBag.ErrorSave = "Error al grabar, Por favor verifique los datos ingresados.";
                     return View(objUser);
                 }
 
