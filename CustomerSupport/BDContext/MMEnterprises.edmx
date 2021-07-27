@@ -52,11 +52,11 @@
           <Property Name="IdPerson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdPersonType" Type="int" Nullable="false" />
           <Property Name="IdIdentificationType" Type="int" Nullable="false" />
-          <Property Name="NumIdentification" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="NumIdentification" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Birthday" Type="datetime" />
-          <Property Name="Address" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IdContactType" Type="int" />
           <Property Name="IdPosition" Type="int" />
@@ -71,7 +71,7 @@
           <Property Name="IdPerson" Type="int" Nullable="false" />
           <Property Name="IdPhoneNumberType" Type="int" Nullable="false" />
           <Property Name="IdIsoCountry" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonTask">
@@ -167,8 +167,8 @@
           <Property Name="Edit" Type="bit" Nullable="false" />
           <Property Name="Delete" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="VWListCatalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -824,11 +824,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="IdPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdPersonType" Type="Int32" Nullable="false" />
           <Property Name="IdIdentificationType" Type="Int32" Nullable="false" />
-          <Property Name="NumIdentification" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumIdentification" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Birthday" Type="DateTime" Precision="3" />
-          <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdContactType" Type="Int32" />
           <Property Name="IdPosition" Type="Int32" />
@@ -851,7 +851,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="IdPerson" Type="Int32" Nullable="false" />
           <Property Name="IdPhoneNumberType" Type="Int32" Nullable="false" />
           <Property Name="IdIsoCountry" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="PersonContact" ToRole="CatalogDetail" />
           <NavigationProperty Name="Country" Relationship="Self.FK_PersonContact_Country" FromRole="PersonContact" ToRole="Country" />

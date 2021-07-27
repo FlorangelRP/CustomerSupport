@@ -187,11 +187,11 @@ h3.ss_h3_center:before {
 }
 /* ===ss_header=== */
 
-.ss_index_one{
-	background-image:url(../images/banner1.png),linear-gradient( -180deg, rgb(6,23,54) 0%, rgb(51,61,96) 100%);
+.ss_index_one {
+	background-image: url(../../Content/assets/images/banner1.png),linear-gradient( -180deg, rgb(6,23,54) 0%, rgb(51,61,96) 100%);
 }
-.ss_index_two{
-	background-image:url(../images/banner2.png);
+.ss_index_two {
+	background-image: url(../../Content/assets/images/banner2.png);
 	background-color: #1c8fc6;
 }
 .ss_index_two .ss_banner_right {
@@ -1137,13 +1137,13 @@ h3.ss_h3_center:before {
 /* ===Section Footer=== */
 
 .ss_footer_news {
-    padding: 82px 100px;
-    border-radius: 10px;
-    z-index: 10;
-    position: relative;
-    margin-bottom: -140px;
-    background-image: url(../images/line_shape.png),linear-gradient(-55deg , #fff450, #061736);
-    background-repeat: no-repeat;
+	padding: 82px 100px;
+	border-radius: 10px;
+	z-index: 10;
+	position: relative;
+	margin-bottom: -140px;
+	background-image: url(../../Content/assets/images/line_shape.png),linear-gradient(-55deg, #fff450, #061736);
+	background-repeat: no-repeat;
 }
 .ss_foot_news_one h1{
 	margin-bottom:15px;
@@ -1362,15 +1362,15 @@ h2.ss_foot_head {
 } */
 
 .s_login {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-	background-image:url(../images/banner1.png),linear-gradient( -180deg, rgb(6,23,54) 0%, rgb(51,61,96) 100%);
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-image: url(../../Content/assets/images/banner1.png),linear-gradient( -180deg, rgb(6,23,54) 0%, rgb(51,61,96) 100%);
 }
 
 .s_login .ss_box_bg{
