@@ -3,6 +3,7 @@ using CustomerSupport.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -84,6 +85,8 @@ namespace CustomerSupport.Controllers
         {
             try
             {
+                TextInfo ti = CultureInfo.CurrentCulture.TextInfo; //para capitalizar textos
+
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
                 int IdPerson;
@@ -136,8 +139,8 @@ namespace CustomerSupport.Controllers
                             new SqlParameter("@IdPersonType", objPerson.IdPersonType),
                             new SqlParameter("@IdIdentificationType", objPerson.IdIdentificationType),
                             new SqlParameter("@strNumIdentification",objUser.Encriptar(objPerson.NumIdentification)),
-                            new SqlParameter("@strName", objPerson.Name),
-                            new SqlParameter("@strLastName", objPerson.LastName),
+                            new SqlParameter("@strName", ti.ToTitleCase(objPerson.Name)),
+                            new SqlParameter("@strLastName", ti.ToTitleCase(objPerson.LastName)),
                             new SqlParameter("@dttBirthday", objPerson.Birthday),
                             new SqlParameter("@strAddress", objUser.Encriptar(objPerson.Address)),
                             new SqlParameter("@strEmail", objPerson.Email),
