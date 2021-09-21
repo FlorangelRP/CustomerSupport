@@ -642,16 +642,11 @@
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <Content Include="Scripts\bootstrap.esm.js.map" />
     <Content Include="Scripts\bootstrap.esm.min.js.map" />
-    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\inputmask.js" />
     <Content Include="Scripts\inputmask\inputmask.min.js" />
     <Content Include="Scripts\inputmask\jquery.inputmask.js" />
     <Content Include="Scripts\inputmask\jquery.inputmask.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
-    <Content Include="Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\jquery-3.6.0.min.map" />
     <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -956,8 +951,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
