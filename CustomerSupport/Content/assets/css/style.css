@@ -33,6 +33,10 @@ Author: Kamleshyadav
 26. Forgot Css / .s_forgot
 27. Reset Password Css / .s_reset
 --------------------------------------------------------------------*/
+html {
+	min-height: 100%;
+	position: relative;
+}
 
 body{
 	font-size:16px;
@@ -40,6 +44,8 @@ body{
 	font-family: 'Poppins', sans-serif;
 	color:#8f979a;
 	line-height:24px;
+	margin-bottom: 25px;
+	padding-bottom: 25px;
 }
 h1,h2,h3,h4,h5,h6{
 	font-family: 'Quicksand', sans-serif;
@@ -533,6 +539,12 @@ h3.ss_h3_center:before {
 }
 .ss_header .ss_menu{
 	text-align:right;
+}
+.dot {
+	height: 10px;
+	width: 10px;
+	border-radius: 50%;
+	display: inline-block;
 }
 
 /* ===scrollbar-track start=== */
@@ -1237,10 +1249,13 @@ h2.ss_foot_head {
     width: 100%;
 }
 .ss_copywrite {
-    /* background: #445b71; */
+	/* background: #445b71; */
 	background: #000012;
-    padding: 17px 15px 15px;
-    text-align: center;
+	padding: 17px 15px 15px;
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }
 .ss_copywrite p {
     color: #b9bdbf;
@@ -3089,6 +3104,99 @@ tr.hide-table-padding td {
 		opacity: 1;
 	}*/
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.btn-flotante {
+	position: fixed;
+	bottom: 5px;
+	right: 40px;
+	transition: all 300ms ease 0ms;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	z-index: 99;
+}
+
+	.btn-flotante:hover {
+		box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+		transform: translateY(-7px);
+	}
+
+.comment-widgets {
+	position: relative;
+	margin-bottom: 10px
+}
+
+	.comment-widgets .comment-row {
+		border-bottom: 1px solid transparent;
+		padding: 14px;
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		margin: 10px 0
+	}
+
+.p-2 {
+	padding: 0.5rem !important
+}
+
+.comment-text {
+	padding-left: 15px
+}
+
+.w-100 {
+	width: 100% !important
+}
+
+.m-b-15 {
+	margin-bottom: 15px
+}
+
+.btn-sm {
+	padding: 0.25rem 0.5rem;
+	font-size: 0.76563rem;
+	line-height: 1.5;
+	border-radius: 1px
+}
+
+.btn-cyan {
+	color: #fff;
+	background-color: #27a9e3;
+	border-color: #27a9e3
+}
+
+	.btn-cyan:hover {
+		color: #fff;
+		background-color: #1a93ca;
+		border-color: #198bbe
+	}
+
+.comment-widgets .comment-row:hover {
+	background: rgba(0, 0, 0, 0.05)
+}
+@media only screen and (max-width: 600px) {
+	.btn-flotante {
+		font-size: 14px;
+		padding: 12px 20px;
+		bottom: 20px;
+		right: 20px;
+	}
+}
+
+/* ===inputs dentro de celdas de tabla css=== */
+td.cell-Input input {
+	width: 100%;
+	background-color:transparent;
+	padding: 0px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+td.cell-Label label {
+	display:normal;
+}
 
 /* ===responsive css=== */
 @media screen and (min-width: 1921px) {
@@ -3109,6 +3217,9 @@ tr.hide-table-padding td {
 	}
 	.ss_search_input.ss_open_search {
 		width: 790px;
+	}
+	td.cell-Label {
+		display: none;
 	}
 }
 @media screen and (max-width: 1599px){

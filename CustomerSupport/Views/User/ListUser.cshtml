@@ -51,6 +51,7 @@
                                 <th>Nombres</th>
                                 <th>Apellidos</th>
                                 <th>Cargo</th>
+                                <th>Roles</th>
                                 <th>Estado</th>
                                 @if (perm != null)
                                 {
@@ -89,7 +90,7 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-    <script>
+    <script type="text/javascript">
 
         var Permis = @Html.Raw(Json.Encode(perm));
         Buscar = Permis.Search;
@@ -110,6 +111,7 @@
                     { 'data': 'PersonEmployee.Name', 'autowidth': true },
                     { 'data': 'PersonEmployee.LastName', 'autowidth': true },
                     { 'data': 'PersonEmployee.Position', 'autowidth': true },
+                    { 'data': 'UserRolesNames', 'autowidth': true },
                     { 'data': 'StatusDesc', 'autowidth': true },
                     {
                         'data': null, render: function (data, type, row) {
@@ -155,8 +157,8 @@
         "columnDefs":
             [
                 { "targets": 0, "bVisible": false, "orderable": false },
-                { "targets": 6, "bVisible": Editar },
-                { "targets": 7, "bVisible": Buscar }
+                { "targets": 7, "bVisible": Editar },
+                { "targets": 8, "bVisible": Buscar }
             ],
             "bAutoWidth": false,
             "bInfo": false,

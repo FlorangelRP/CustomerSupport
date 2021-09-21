@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Catalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -22,6 +22,31 @@
           <Property Name="IdCatalog" Type="int" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'MMEnterprises.dbo.Colors' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Colors">
+          <Property Name="backgroundColor" Type="varchar" MaxLength="50" />
+          <Property Name="borderColor" Type="varchar" MaxLength="50" />
+        </EntityType>-->
+        <EntityType Name="CommentTask">
+          <Key>
+            <PropertyRef Name="IdComment" />
+          </Key>
+          <Property Name="IdComment" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTask" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="varchar(max)" Nullable="false" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConfigurationParameter">
+          <Key>
+            <PropertyRef Name="IdConfig" />
+          </Key>
+          <Property Name="IdConfig" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Abbreviation" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -52,16 +77,17 @@
           <Property Name="IdPerson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdPersonType" Type="int" Nullable="false" />
           <Property Name="IdIdentificationType" Type="int" Nullable="false" />
-          <Property Name="NumIdentification" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="NumIdentification" Type="varchar" MaxLength="100" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Birthday" Type="datetime" />
-          <Property Name="Address" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="500" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IdContactType" Type="int" />
           <Property Name="IdPosition" Type="int" />
           <Property Name="ClientPermission" Type="bit" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="IdDepartment" Type="int" />
         </EntityType>
         <EntityType Name="PersonContact">
           <Key>
@@ -71,7 +97,7 @@
           <Property Name="IdPerson" Type="int" Nullable="false" />
           <Property Name="IdPhoneNumberType" Type="int" Nullable="false" />
           <Property Name="IdIsoCountry" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="PhoneNumber" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="100" />
           <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonTask">
@@ -81,6 +107,27 @@
           </Key>
           <Property Name="IdTask" Type="int" Nullable="false" />
           <Property Name="IdPerson" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="IdRole" />
+          </Key>
+          <Property Name="IdRole" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameRole" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoleAcces">
+          <Key>
+            <PropertyRef Name="IdRole" />
+            <PropertyRef Name="IdOption" />
+          </Key>
+          <Property Name="IdRole" Type="int" Nullable="false" />
+          <Property Name="IdOption" Type="int" Nullable="false" />
+          <Property Name="Visible" Type="bit" Nullable="false" />
+          <Property Name="Create" Type="bit" Nullable="false" />
+          <Property Name="Search" Type="bit" Nullable="false" />
+          <Property Name="Edit" Type="bit" Nullable="false" />
+          <Property Name="Delete" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ServiceConstructionOption">
           <Key>
@@ -142,7 +189,12 @@
           <Property Name="HourIni" Type="time" Precision="7" Nullable="false" />
           <Property Name="HourEnd" Type="time" Precision="7" Nullable="false" />
           <Property Name="Place" Type="varchar" MaxLength="300" Nullable="false" />
-          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="IdFatherTask" Type="int" />
+          <Property Name="IdResponsable" Type="int" />
+          <Property Name="Tittle" Type="varchar" MaxLength="500" />
+          <Property Name="IdPriority" Type="int" />
+          <Property Name="IdStatus" Type="int" />
+          <Property Name="IdTypeTask" Type="int" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -167,8 +219,16 @@
           <Property Name="Edit" Type="bit" Nullable="false" />
           <Property Name="Delete" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="IdRole" />
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdRole" Type="int" Nullable="false" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="VWListCatalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -210,6 +270,42 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CommentTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="CommentTask" Type="Self.CommentTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="CommentTask">
+              <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentTask_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="CommentTask" Type="Self.CommentTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="CommentTask">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FatherTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="0..1" />
+          <End Role="Task1" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="Task1">
+              <PropertyRef Name="IdFatherTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Person_ContactType">
           <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
           <End Role="Person" Type="Self.Person" Multiplicity="*" />
@@ -219,6 +315,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Principal>
             <Dependent Role="Person">
               <PropertyRef Name="IdContactType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Department">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdDepartment" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -315,6 +423,30 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Principal>
             <Dependent Role="PersonTask">
               <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleAcces_OptionMenu">
+          <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="1" />
+          <End Role="RoleAcces" Type="Self.RoleAcces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OptionMenu">
+              <PropertyRef Name="IdOption" />
+            </Principal>
+            <Dependent Role="RoleAcces">
+              <PropertyRef Name="IdOption" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleAcces_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RoleAcces" Type="Self.RoleAcces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="IdRole" />
+            </Principal>
+            <Dependent Role="RoleAcces">
+              <PropertyRef Name="IdRole" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -438,6 +570,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Task_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="IdResponsable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Task_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
@@ -486,10 +630,67 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserRole_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="IdRole" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="GNAuthenticationUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strLogin" Type="varchar" Mode="In" />
           <Parameter Name="strPassword" Type="varchar" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="GNLisChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ByEmployee" Type="bit" Mode="In" />
+          <Parameter Name="IdEmployee" Type="int" Mode="In" />
+          <Parameter Name="ByDepartment" Type="bit" Mode="In" />
+          <Parameter Name="IdDepartment" Type="int" Mode="In" />
+          <Parameter Name="ByMonth" Type="bit" Mode="In" />
+          <Parameter Name="Year" Type="int" Mode="In" />
+          <Parameter Name="XYear" Type="bit" Mode="In" />
+          <Parameter Name="YearInicio" Type="int" Mode="In" />
+          <Parameter Name="YearFin" Type="int" Mode="In" />
+          <Parameter Name="XDate" Type="bit" Mode="In" />
+          <Parameter Name="DateIni" Type="datetime" Mode="In" />
+          <Parameter Name="DateEnd" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="GNLisColor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GNListBitacora" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdTask" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListCatalog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCatalog" Type="int" Mode="In" />
+          <Parameter Name="IdTable" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GNListCatalogDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCatalog" Type="int" Mode="In" />
+          <Parameter Name="IdTable" Type="varchar" Mode="In" />
+          <Parameter Name="IdCatalogDetail" Type="int" Mode="In" />
+          <Parameter Name="IdTableDetail" Type="varchar" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNListCommentTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdTask" Type="int" Mode="In" />
+          <Parameter Name="IdComment" Type="int" Mode="In" />
         </Function>
         <Function Name="GNListCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdCountry" Type="int" Mode="In" />
@@ -499,6 +700,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Parameter Name="IdPerson" Type="int" Mode="In" />
           <Parameter Name="IdPersonType" Type="int" Mode="In" />
           <Parameter Name="Status" Type="bit" Mode="In" />
+          <Parameter Name="IdDepartment" Type="int" Mode="In" />
         </Function>
         <Function Name="GNListPersonContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdPerson" Type="int" Mode="In" />
@@ -508,6 +710,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
         <Function Name="GNListPersonTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdTask" Type="int" Mode="In" />
           <Parameter Name="IdPerson" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdRole" Type="int" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNListRoleAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdRole" Type="int" Mode="In" />
+          <Parameter Name="IdAssociated" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListRoleUserPermission" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="IdAssociated" Type="int" Mode="In" />
         </Function>
         <Function Name="GNListServiceConstructionOption" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
@@ -521,18 +735,53 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Parameter Name="IdUser" Type="int" Mode="In" />
         </Function>
         <Function Name="GNListTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="SelectType" Type="varchar" Mode="In" />
           <Parameter Name="IdTask" Type="int" Mode="In" />
+          <Parameter Name="dttDateIni" Type="date" Mode="In" />
+          <Parameter Name="dttDateEnd" Type="date" Mode="In" />
+          <Parameter Name="IdResponsable" Type="int" Mode="In" />
+          <Parameter Name="strTittle" Type="varchar" Mode="In" />
+          <Parameter Name="IdPriority" Type="int" Mode="In" />
+          <Parameter Name="IdStatus" Type="int" Mode="In" />
+          <Parameter Name="IdTypeTask" Type="int" Mode="In" />
           <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
-          <Parameter Name="Status" Type="bit" Mode="In" />
+          <Parameter Name="IdFatherTask" Type="int" Mode="In" />
         </Function>
         <Function Name="GNListUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
         </Function>
         <Function Name="GNListUserAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUser" Type="int" Mode="In" />
           <Parameter Name="IdAssociated" Type="int" Mode="In" />
+          <Parameter Name="Roles" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GNListUserRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdRole" Type="int" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranCatalog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdCatalog" Type="int" Mode="InOut" />
+          <Parameter Name="IdTable" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GNTranCatalogDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdCatalogDetail" Type="int" Mode="InOut" />
+          <Parameter Name="IdTableDetail" Type="varchar" Mode="In" />
+          <Parameter Name="IdCatalog" Type="int" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNTranCommentTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdComment" Type="int" Mode="InOut" />
+          <Parameter Name="IdTask" Type="int" Mode="In" />
+          <Parameter Name="strComment" Type="varchar(max)" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="dttDate" Type="datetime" Mode="In" />
         </Function>
         <Function Name="GNTranPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TransactionType" Type="char" Mode="In" />
@@ -549,6 +798,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Parameter Name="IdPosition" Type="int" Mode="In" />
           <Parameter Name="btClientPermission" Type="bit" Mode="In" />
           <Parameter Name="btStatus" Type="bit" Mode="In" />
+          <Parameter Name="IdDepartment" Type="int" Mode="In" />
         </Function>
         <Function Name="GNTranPersonContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TransactionType" Type="char" Mode="In" />
@@ -563,6 +813,21 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Parameter Name="TransactionType" Type="char" Mode="In" />
           <Parameter Name="IdTask" Type="int" Mode="In" />
           <Parameter Name="IdPerson" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdRole" Type="int" Mode="InOut" />
+          <Parameter Name="NameRole" Type="varchar" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNTranRoleAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdRole" Type="int" Mode="In" />
+          <Parameter Name="IdOption" Type="int" Mode="In" />
+          <Parameter Name="blnVisible" Type="int" Mode="In" />
+          <Parameter Name="blnCreate" Type="int" Mode="In" />
+          <Parameter Name="blnSearch" Type="int" Mode="In" />
+          <Parameter Name="blnEdit" Type="int" Mode="In" />
+          <Parameter Name="blnDelete" Type="int" Mode="In" />
         </Function>
         <Function Name="GNTranServiceConstructionOption" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TransactionType" Type="char" Mode="In" />
@@ -606,13 +871,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Parameter Name="TransactionType" Type="char" Mode="In" />
           <Parameter Name="IdTask" Type="int" Mode="InOut" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
-          <Parameter Name="Activity" Type="varchar" Mode="In" />
-          <Parameter Name="DateIni" Type="date" Mode="In" />
-          <Parameter Name="DateEnd" Type="date" Mode="In" />
-          <Parameter Name="HourIni" Type="time" Mode="In" />
-          <Parameter Name="HourEnd" Type="time" Mode="In" />
-          <Parameter Name="Place" Type="varchar" Mode="In" />
-          <Parameter Name="Status" Type="bit" Mode="In" />
+          <Parameter Name="dttDateIni" Type="datetime" Mode="In" />
+          <Parameter Name="dttDateEnd" Type="datetime" Mode="In" />
+          <Parameter Name="tHourIni" Type="time" Mode="In" />
+          <Parameter Name="tHourEnd" Type="time" Mode="In" />
+          <Parameter Name="strPlace" Type="varchar" Mode="In" />
+          <Parameter Name="IdFatherTask" Type="int" Mode="In" />
+          <Parameter Name="IdResponsable" Type="int" Mode="In" />
+          <Parameter Name="strTittle" Type="varchar" Mode="In" />
+          <Parameter Name="IdPriority" Type="int" Mode="In" />
+          <Parameter Name="IdStatus" Type="int" Mode="In" />
+          <Parameter Name="IdTypeTask" Type="int" Mode="In" />
+          <Parameter Name="strActivity" Type="varchar" Mode="In" />
         </Function>
         <Function Name="GNTranUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdPerson" Type="int" Mode="In" />
@@ -623,6 +893,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Parameter Name="btStatus" Type="bit" Mode="In" />
         </Function>
         <Function Name="GNTranUserAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
           <Parameter Name="IdOption" Type="int" Mode="In" />
           <Parameter Name="blnVisible" Type="int" Mode="In" />
@@ -631,20 +902,30 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Parameter Name="blnEdit" Type="int" Mode="In" />
           <Parameter Name="blnDelete" Type="int" Mode="In" />
         </Function>
+        <Function Name="GNTranUserRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="IdRole" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="MMEnterprisesModelStoreContainer">
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommentTask" EntityType="Self.CommentTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConfigurationParameter" EntityType="Self.ConfigurationParameter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OptionMenu" EntityType="Self.OptionMenu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonContact" EntityType="Self.PersonContact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonTask" EntityType="Self.PersonTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleAcces" EntityType="Self.RoleAcces" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceConstructionOption" EntityType="Self.ServiceConstructionOption" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceRequest" EntityType="Self.ServiceRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceRequestTask" EntityType="Self.ServiceRequestTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAcces" EntityType="Self.UserAcces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VWListCatalog" EntityType="Self.VWListCatalog" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [VWListCatalog].[IdCatalog] AS [IdCatalog], 
@@ -664,7 +945,23 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <End Role="Catalog" EntitySet="Catalog" />
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
           </AssociationSet>
+          <AssociationSet Name="FK_CommentTask_Task" Association="Self.FK_CommentTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="CommentTask" EntitySet="CommentTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentTask_User" Association="Self.FK_CommentTask_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="CommentTask" EntitySet="CommentTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FatherTask_Task" Association="Self.FK_FatherTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="Task1" EntitySet="Task" />
+          </AssociationSet>
           <AssociationSet Name="FK_Person_ContactType" Association="Self.FK_Person_ContactType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Department" Association="Self.FK_Person_Department">
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
             <End Role="Person" EntitySet="Person" />
           </AssociationSet>
@@ -699,6 +996,14 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <AssociationSet Name="FK_PersonTask_Task" Association="Self.FK_PersonTask_Task">
             <End Role="Task" EntitySet="Task" />
             <End Role="PersonTask" EntitySet="PersonTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleAcces_OptionMenu" Association="Self.FK_RoleAcces_OptionMenu">
+            <End Role="OptionMenu" EntitySet="OptionMenu" />
+            <End Role="RoleAcces" EntitySet="RoleAcces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleAcces_Role" Association="Self.FK_RoleAcces_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RoleAcces" EntitySet="RoleAcces" />
           </AssociationSet>
           <AssociationSet Name="FK_ServiceConstructionOption_ServiceRequest" Association="Self.FK_ServiceConstructionOption_ServiceRequest">
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
@@ -740,6 +1045,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <End Role="Task" EntitySet="Task" />
             <End Role="ServiceRequestTask" EntitySet="ServiceRequestTask" />
           </AssociationSet>
+          <AssociationSet Name="FK_Task_Person" Association="Self.FK_Task_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
           <AssociationSet Name="FK_Task_User" Association="Self.FK_Task_User">
             <End Role="User" EntitySet="User" />
             <End Role="Task" EntitySet="Task" />
@@ -756,8 +1065,17 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <End Role="User" EntitySet="User" />
             <End Role="UserAcces" EntitySet="UserAcces" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_User" Association="Self.FK_UserRole_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MMEnterprisesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -781,15 +1099,37 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Catalog" Relationship="Self.FK_CatalogDetail_Catalog" FromRole="CatalogDetail" ToRole="Catalog" />
           <NavigationProperty Name="Person" Relationship="Self.FK_Person_ContactType" FromRole="CatalogDetail" ToRole="Person" />
-          <NavigationProperty Name="Person1" Relationship="Self.FK_Person_IdentificationType" FromRole="CatalogDetail" ToRole="Person" />
-          <NavigationProperty Name="Person2" Relationship="Self.FK_Person_PersonType" FromRole="CatalogDetail" ToRole="Person" />
-          <NavigationProperty Name="Person3" Relationship="Self.FK_Person_Position" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person1" Relationship="Self.FK_Person_Department" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person2" Relationship="Self.FK_Person_IdentificationType" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person3" Relationship="Self.FK_Person_PersonType" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person4" Relationship="Self.FK_Person_Position" FromRole="CatalogDetail" ToRole="Person" />
           <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="CatalogDetail" ToRole="PersonContact" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_ContactType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
           <NavigationProperty Name="ServiceRequest1" Relationship="Self.FK_ServiceRequest_PropertyType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
           <NavigationProperty Name="ServiceRequest2" Relationship="Self.FK_ServiceRequest_ServiceStatus" FromRole="CatalogDetail" ToRole="ServiceRequest" />
           <NavigationProperty Name="ServiceRequest3" Relationship="Self.FK_ServiceRequest_ServiceType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
           <NavigationProperty Name="ServiceRequest4" Relationship="Self.ServiceConstructionOption" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+        </EntityType>
+        <EntityType Name="CommentTask">
+          <Key>
+            <PropertyRef Name="IdComment" />
+          </Key>
+          <Property Name="IdComment" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTask" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_CommentTask_Task" FromRole="CommentTask" ToRole="Task" />
+          <NavigationProperty Name="User" Relationship="Self.FK_CommentTask_User" FromRole="CommentTask" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ConfigurationParameter">
+          <Key>
+            <PropertyRef Name="IdConfig" />
+          </Key>
+          <Property Name="IdConfig" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Abbreviation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -815,6 +1155,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Name="Controller" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="OptionMenu1" Relationship="Self.FK_AssociatedMenu_OptionMenu" FromRole="OptionMenu" ToRole="OptionMenu1" />
           <NavigationProperty Name="OptionMenu2" Relationship="Self.FK_AssociatedMenu_OptionMenu" FromRole="OptionMenu1" ToRole="OptionMenu" />
+          <NavigationProperty Name="RoleAcces" Relationship="Self.FK_RoleAcces_OptionMenu" FromRole="OptionMenu" ToRole="RoleAcces" />
           <NavigationProperty Name="UserAcces" Relationship="Self.FK_UserAcces_OptionMenu" FromRole="OptionMenu" ToRole="UserAcces" />
         </EntityType>
         <EntityType Name="Person">
@@ -824,24 +1165,27 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Name="IdPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdPersonType" Type="Int32" Nullable="false" />
           <Property Name="IdIdentificationType" Type="Int32" Nullable="false" />
-          <Property Name="NumIdentification" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumIdentification" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Birthday" Type="DateTime" Precision="3" />
-          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdContactType" Type="Int32" />
           <Property Name="IdPosition" Type="Int32" />
           <Property Name="ClientPermission" Type="Boolean" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="IdDepartment" Type="Int32" />
           <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_Person_ContactType" FromRole="Person" ToRole="CatalogDetail" />
-          <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_Person_IdentificationType" FromRole="Person" ToRole="CatalogDetail" />
-          <NavigationProperty Name="CatalogDetail2" Relationship="Self.FK_Person_PersonType" FromRole="Person" ToRole="CatalogDetail" />
-          <NavigationProperty Name="CatalogDetail3" Relationship="Self.FK_Person_Position" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_Person_Department" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail2" Relationship="Self.FK_Person_IdentificationType" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail3" Relationship="Self.FK_Person_PersonType" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail4" Relationship="Self.FK_Person_Position" FromRole="Person" ToRole="CatalogDetail" />
           <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_Person" FromRole="Person" ToRole="PersonContact" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_Person" FromRole="Person" ToRole="ServiceRequest" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_Task_Person" FromRole="Person" ToRole="Task" />
           <NavigationProperty Name="User" Relationship="Self.FK_User_Person" FromRole="Person" ToRole="User" />
-          <NavigationProperty Name="Task" Relationship="Self.PersonTask" FromRole="Person" ToRole="Task" />
+          <NavigationProperty Name="Task1" Relationship="Self.PersonTask" FromRole="Person" ToRole="Task" />
         </EntityType>
         <EntityType Name="PersonContact">
           <Key>
@@ -851,11 +1195,36 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Name="IdPerson" Type="Int32" Nullable="false" />
           <Property Name="IdPhoneNumberType" Type="Int32" Nullable="false" />
           <Property Name="IdIsoCountry" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="PersonContact" ToRole="CatalogDetail" />
           <NavigationProperty Name="Country" Relationship="Self.FK_PersonContact_Country" FromRole="PersonContact" ToRole="Country" />
           <NavigationProperty Name="Person" Relationship="Self.FK_PersonContact_Person" FromRole="PersonContact" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="IdRole" />
+          </Key>
+          <Property Name="IdRole" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameRole" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="RoleAcces" Relationship="Self.FK_RoleAcces_Role" FromRole="Role" ToRole="RoleAcces" />
+          <NavigationProperty Name="User" Relationship="Self.UserRole" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="RoleAcces">
+          <Key>
+            <PropertyRef Name="IdRole" />
+            <PropertyRef Name="IdOption" />
+          </Key>
+          <Property Name="IdRole" Type="Int32" Nullable="false" />
+          <Property Name="IdOption" Type="Int32" Nullable="false" />
+          <Property Name="Visible" Type="Boolean" Nullable="false" />
+          <Property Name="Create" Type="Boolean" Nullable="false" />
+          <Property Name="Search" Type="Boolean" Nullable="false" />
+          <Property Name="Edit" Type="Boolean" Nullable="false" />
+          <Property Name="Delete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="OptionMenu" Relationship="Self.FK_RoleAcces_OptionMenu" FromRole="RoleAcces" ToRole="OptionMenu" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_RoleAcces_Role" FromRole="RoleAcces" ToRole="Role" />
         </EntityType>
         <EntityType Name="ServiceRequest">
           <Key>
@@ -909,9 +1278,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Name="HourIni" Type="Time" Nullable="false" Precision="7" />
           <Property Name="HourEnd" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Place" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="IdFatherTask" Type="Int32" />
+          <Property Name="IdResponsable" Type="Int32" />
+          <Property Name="Tittle" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IdPriority" Type="Int32" />
+          <Property Name="IdStatus" Type="Int32" />
+          <Property Name="IdTypeTask" Type="Int32" />
+          <NavigationProperty Name="CommentTask" Relationship="Self.FK_CommentTask_Task" FromRole="Task" ToRole="CommentTask" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Task_Person" FromRole="Task" ToRole="Person" />
+          <NavigationProperty Name="Task1" Relationship="Self.FK_FatherTask_Task" FromRole="Task" ToRole="Task1" />
+          <NavigationProperty Name="Task2" Relationship="Self.FK_FatherTask_Task" FromRole="Task1" ToRole="Task" />
           <NavigationProperty Name="User" Relationship="Self.FK_Task_User" FromRole="Task" ToRole="User" />
-          <NavigationProperty Name="Person" Relationship="Self.PersonTask" FromRole="Task" ToRole="Person" />
+          <NavigationProperty Name="Person1" Relationship="Self.PersonTask" FromRole="Task" ToRole="Person" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.ServiceRequestTask" FromRole="Task" ToRole="ServiceRequest" />
         </EntityType>
         <EntityType Name="User">
@@ -923,10 +1301,12 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Name="Login" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CommentTask" Relationship="Self.FK_CommentTask_User" FromRole="User" ToRole="CommentTask" />
           <NavigationProperty Name="Person" Relationship="Self.FK_User_Person" FromRole="User" ToRole="Person" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_User" FromRole="User" ToRole="ServiceRequest" />
           <NavigationProperty Name="Task" Relationship="Self.FK_Task_User" FromRole="User" ToRole="Task" />
           <NavigationProperty Name="UserAcces" Relationship="Self.FK_UserAcces_User" FromRole="User" ToRole="UserAcces" />
+          <NavigationProperty Name="Role" Relationship="Self.UserRole" FromRole="User" ToRole="Role" />
         </EntityType>
         <EntityType Name="UserAcces">
           <Key>
@@ -981,6 +1361,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Principal>
             <Dependent Role="Person">
               <PropertyRef Name="IdContactType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Department">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdDepartment" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1080,6 +1472,30 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CommentTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="CommentTask" Type="Self.CommentTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="CommentTask">
+              <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentTask_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="CommentTask" Type="Self.CommentTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="CommentTask">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PersonContact_Country">
           <End Role="Country" Type="Self.Country" Multiplicity="1" />
           <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
@@ -1101,6 +1517,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Principal>
             <Dependent Role="OptionMenu1">
               <PropertyRef Name="IdAssociated" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleAcces_OptionMenu">
+          <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="1" />
+          <End Role="RoleAcces" Type="Self.RoleAcces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OptionMenu">
+              <PropertyRef Name="IdOption" />
+            </Principal>
+            <Dependent Role="RoleAcces">
+              <PropertyRef Name="IdOption" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1140,6 +1568,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Task_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="IdResponsable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
@@ -1152,6 +1592,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RoleAcces_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RoleAcces" Type="Self.RoleAcces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="IdRole" />
+            </Principal>
+            <Dependent Role="RoleAcces">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ServiceRequest_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
@@ -1161,6 +1613,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             </Principal>
             <Dependent Role="ServiceRequest">
               <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FatherTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="0..1" />
+          <End Role="Task1" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="Task1">
+              <PropertyRef Name="IdFatherTask" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1200,13 +1664,21 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
         </Association>
+        <Association Name="UserRole">
+          <End Role="Role" Type="Self.Role" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="MMEnterprisesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Catalog" EntityType="Self.Catalog" />
           <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" />
+          <EntitySet Name="CommentTask" EntityType="Self.CommentTask" />
+          <EntitySet Name="ConfigurationParameter" EntityType="Self.ConfigurationParameter" />
           <EntitySet Name="Country" EntityType="Self.Country" />
           <EntitySet Name="OptionMenu" EntityType="Self.OptionMenu" />
           <EntitySet Name="Person" EntityType="Self.Person" />
           <EntitySet Name="PersonContact" EntityType="Self.PersonContact" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="RoleAcces" EntityType="Self.RoleAcces" />
           <EntitySet Name="ServiceRequest" EntityType="Self.ServiceRequest" />
           <EntitySet Name="Task" EntityType="Self.Task" />
           <EntitySet Name="User" EntityType="Self.User" />
@@ -1217,6 +1689,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_Person_ContactType" Association="Self.FK_Person_ContactType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Department" Association="Self.FK_Person_Department">
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
             <End Role="Person" EntitySet="Person" />
           </AssociationSet>
@@ -1252,6 +1728,14 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
           </AssociationSet>
+          <AssociationSet Name="FK_CommentTask_Task" Association="Self.FK_CommentTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="CommentTask" EntitySet="CommentTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentTask_User" Association="Self.FK_CommentTask_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="CommentTask" EntitySet="CommentTask" />
+          </AssociationSet>
           <AssociationSet Name="FK_PersonContact_Country" Association="Self.FK_PersonContact_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="PersonContact" EntitySet="PersonContact" />
@@ -1259,6 +1743,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <AssociationSet Name="FK_AssociatedMenu_OptionMenu" Association="Self.FK_AssociatedMenu_OptionMenu">
             <End Role="OptionMenu" EntitySet="OptionMenu" />
             <End Role="OptionMenu1" EntitySet="OptionMenu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleAcces_OptionMenu" Association="Self.FK_RoleAcces_OptionMenu">
+            <End Role="OptionMenu" EntitySet="OptionMenu" />
+            <End Role="RoleAcces" EntitySet="RoleAcces" />
           </AssociationSet>
           <AssociationSet Name="FK_UserAcces_OptionMenu" Association="Self.FK_UserAcces_OptionMenu">
             <End Role="OptionMenu" EntitySet="OptionMenu" />
@@ -1272,13 +1760,25 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <End Role="Person" EntitySet="Person" />
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
           </AssociationSet>
+          <AssociationSet Name="FK_Task_Person" Association="Self.FK_Task_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
           <AssociationSet Name="FK_User_Person" Association="Self.FK_User_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
+          <AssociationSet Name="FK_RoleAcces_Role" Association="Self.FK_RoleAcces_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RoleAcces" EntitySet="RoleAcces" />
+          </AssociationSet>
           <AssociationSet Name="FK_ServiceRequest_User" Association="Self.FK_ServiceRequest_User">
             <End Role="User" EntitySet="User" />
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FatherTask_Task" Association="Self.FK_FatherTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="Task1" EntitySet="Task" />
           </AssociationSet>
           <AssociationSet Name="FK_Task_User" Association="Self.FK_Task_User">
             <End Role="User" EntitySet="User" />
@@ -1300,10 +1800,47 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
             <End Role="Task" EntitySet="Task" />
           </AssociationSet>
+          <AssociationSet Name="UserRole" Association="Self.UserRole">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
           <FunctionImport Name="GNAuthenticationUser">
             <Parameter Name="strLogin" Mode="In" Type="String" />
             <Parameter Name="strPassword" Mode="In" Type="String" />
             <Parameter Name="IdUser" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNLisChart" ReturnType="Collection(MMEnterprisesModel.GNLisChart_Result)">
+            <Parameter Name="ByEmployee" Mode="In" Type="Boolean" />
+            <Parameter Name="IdEmployee" Mode="In" Type="Int32" />
+            <Parameter Name="ByDepartment" Mode="In" Type="Boolean" />
+            <Parameter Name="IdDepartment" Mode="In" Type="Int32" />
+            <Parameter Name="ByMonth" Mode="In" Type="Boolean" />
+            <Parameter Name="Year" Mode="In" Type="Int32" />
+            <Parameter Name="XYear" Mode="In" Type="Boolean" />
+            <Parameter Name="YearInicio" Mode="In" Type="Int32" />
+            <Parameter Name="YearFin" Mode="In" Type="Int32" />
+            <Parameter Name="XDate" Mode="In" Type="Boolean" />
+            <Parameter Name="DateIni" Mode="In" Type="DateTime" />
+            <Parameter Name="DateEnd" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="GNLisColor" ReturnType="Collection(MMEnterprisesModel.GNLisColor_Result)" />
+          <FunctionImport Name="GNListBitacora" ReturnType="Collection(MMEnterprisesModel.GNListBitacora_Result)">
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListCatalog" ReturnType="Collection(MMEnterprisesModel.GNListCatalog_Result)">
+            <Parameter Name="IdCatalog" Mode="In" Type="Int32" />
+            <Parameter Name="IdTable" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GNListCatalogDetail" ReturnType="Collection(MMEnterprisesModel.GNListCatalogDetail_Result)">
+            <Parameter Name="IdCatalog" Mode="In" Type="Int32" />
+            <Parameter Name="IdTable" Mode="In" Type="String" />
+            <Parameter Name="IdCatalogDetail" Mode="In" Type="Int32" />
+            <Parameter Name="IdTableDetail" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNListCommentTask" ReturnType="Collection(MMEnterprisesModel.GNListCommentTask_Result)">
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdComment" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListCountry" ReturnType="Collection(MMEnterprisesModel.GNListCountry_Result)">
             <Parameter Name="IdCountry" Mode="In" Type="Int32" />
@@ -1313,11 +1850,28 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
             <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
             <Parameter Name="Status" Mode="In" Type="Boolean" />
+            <Parameter Name="IdDepartment" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListPersonContact" ReturnType="Collection(MMEnterprisesModel.GNListPersonContact_Result)">
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
             <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
             <Parameter Name="IdContact" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListPersonTask" ReturnType="Collection(MMEnterprisesModel.GNListPersonTask_Result)">
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListRole" ReturnType="Collection(MMEnterprisesModel.GNListRole_Result)">
+            <Parameter Name="IdRole" Mode="In" Type="Int32" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNListRoleAcces" ReturnType="Collection(MMEnterprisesModel.GNListRoleAcces_Result)">
+            <Parameter Name="IdRole" Mode="In" Type="Int32" />
+            <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListRoleUserPermission" ReturnType="Collection(MMEnterprisesModel.GNListRoleUserPermission_Result)">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListServiceConstructionOption" ReturnType="Collection(MMEnterprisesModel.GNListServiceConstructionOption_Result)">
             <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
@@ -1331,18 +1885,53 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListTask" ReturnType="Collection(MMEnterprisesModel.GNListTask_Result)">
-            <Parameter Name="SelectType" Mode="In" Type="String" />
             <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="dttDateIni" Mode="In" Type="DateTime" />
+            <Parameter Name="dttDateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="IdResponsable" Mode="In" Type="Int32" />
+            <Parameter Name="strTittle" Mode="In" Type="String" />
+            <Parameter Name="IdPriority" Mode="In" Type="Int32" />
+            <Parameter Name="IdStatus" Mode="In" Type="Int32" />
+            <Parameter Name="IdTypeTask" Mode="In" Type="Int32" />
             <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
-            <Parameter Name="Status" Mode="In" Type="Boolean" />
+            <Parameter Name="IdFatherTask" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
-          <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListUserAcces" ReturnType="Collection(MMEnterprisesModel.GNListUserAcces_Result)">
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
             <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
+            <Parameter Name="Roles" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GNListUserRole" ReturnType="Collection(MMEnterprisesModel.GNListUserRole_Result)">
+            <Parameter Name="IdRole" Mode="In" Type="Int32" />
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranCatalog">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdCatalog" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdTable" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranCatalogDetail">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdCatalogDetail" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdTableDetail" Mode="In" Type="String" />
+            <Parameter Name="IdCatalog" Mode="In" Type="Int32" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranCommentTask">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdComment" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="strComment" Mode="In" Type="String" />
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="dttDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="GNTranPerson">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
@@ -1359,6 +1948,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <Parameter Name="IdPosition" Mode="In" Type="Int32" />
             <Parameter Name="btClientPermission" Mode="In" Type="Boolean" />
             <Parameter Name="btStatus" Mode="In" Type="Boolean" />
+            <Parameter Name="IdDepartment" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNTranPersonContact">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
@@ -1373,6 +1963,21 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <Parameter Name="TransactionType" Mode="In" Type="String" />
             <Parameter Name="IdTask" Mode="In" Type="Int32" />
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranRole">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdRole" Mode="InOut" Type="Int32" />
+            <Parameter Name="NameRole" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranRoleAcces">
+            <Parameter Name="IdRole" Mode="In" Type="Int32" />
+            <Parameter Name="IdOption" Mode="In" Type="Int32" />
+            <Parameter Name="blnVisible" Mode="In" Type="Int32" />
+            <Parameter Name="blnCreate" Mode="In" Type="Int32" />
+            <Parameter Name="blnSearch" Mode="In" Type="Int32" />
+            <Parameter Name="blnEdit" Mode="In" Type="Int32" />
+            <Parameter Name="blnDelete" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNTranServiceConstructionOption">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
@@ -1416,13 +2021,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <Parameter Name="TransactionType" Mode="In" Type="String" />
             <Parameter Name="IdTask" Mode="InOut" Type="Int32" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
-            <Parameter Name="Activity" Mode="In" Type="String" />
-            <Parameter Name="DateIni" Mode="In" Type="DateTime" />
-            <Parameter Name="DateEnd" Mode="In" Type="DateTime" />
-            <Parameter Name="HourIni" Mode="In" Type="Time" />
-            <Parameter Name="HourEnd" Mode="In" Type="Time" />
-            <Parameter Name="Place" Mode="In" Type="String" />
-            <Parameter Name="Status" Mode="In" Type="Boolean" />
+            <Parameter Name="dttDateIni" Mode="In" Type="DateTime" />
+            <Parameter Name="dttDateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="tHourIni" Mode="In" Type="Time" />
+            <Parameter Name="tHourEnd" Mode="In" Type="Time" />
+            <Parameter Name="strPlace" Mode="In" Type="String" />
+            <Parameter Name="IdFatherTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdResponsable" Mode="In" Type="Int32" />
+            <Parameter Name="strTittle" Mode="In" Type="String" />
+            <Parameter Name="IdPriority" Mode="In" Type="Int32" />
+            <Parameter Name="IdStatus" Mode="In" Type="Int32" />
+            <Parameter Name="IdTypeTask" Mode="In" Type="Int32" />
+            <Parameter Name="strActivity" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GNTranUser">
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
@@ -1433,6 +2043,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <Parameter Name="btStatus" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GNTranUserAcces">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
             <Parameter Name="IdOption" Mode="In" Type="Int32" />
             <Parameter Name="blnVisible" Mode="In" Type="Int32" />
@@ -1441,11 +2052,51 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
             <Parameter Name="blnEdit" Mode="In" Type="Int32" />
             <Parameter Name="blnDelete" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GNListPersonTask" ReturnType="Collection(MMEnterprisesModel.GNListPersonTask_Result)">
-            <Parameter Name="IdTask" Mode="In" Type="Int32" />
-            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+          <FunctionImport Name="GNTranUserRole">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdRole" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="GNLisChart_Result">
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="StatusTask" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="Cantidad" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GNLisColor_Result">
+          <Property Type="String" Name="backgroundColor" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="borderColor" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GNListBitacora_Result">
+          <Property Type="Int32" Name="IdComment" Nullable="true" />
+          <Property Type="Int32" Name="IdTask" Nullable="true" />
+          <Property Type="String" Name="Comment" Nullable="true" />
+          <Property Type="Int32" Name="IdUser" Nullable="true" />
+          <Property Type="String" Name="UserName" Nullable="true" />
+          <Property Type="String" Name="DateOperation" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GNListCatalog_Result">
+          <Property Type="Int32" Name="IdCatalog" Nullable="false" />
+          <Property Type="String" Name="IdTable" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="GNListCatalogDetail_Result">
+          <Property Type="Int32" Name="IdCatalog" Nullable="false" />
+          <Property Type="String" Name="IdTable" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TableDesc" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="IdCatalogDetail" Nullable="false" />
+          <Property Type="String" Name="IdTableDetail" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DetailDesc" Nullable="false" MaxLength="200" />
+          <Property Type="Boolean" Name="DetailStatus" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListCommentTask_Result">
+          <Property Type="Int32" Name="IdComment" Nullable="false" />
+          <Property Type="Int32" Name="IdTask" Nullable="false" />
+          <Property Type="String" Name="Comment" Nullable="false" />
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+        </ComplexType>
         <ComplexType Name="GNListCountry_Result">
           <Property Type="Int32" Name="IdCountry" Nullable="false" />
           <Property Type="String" Name="IdIsoCountry" Nullable="false" MaxLength="6" />
@@ -1459,11 +2110,11 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Type="String" Name="PersonType" Nullable="false" MaxLength="200" />
           <Property Type="Int32" Name="IdIdentificationType" Nullable="false" />
           <Property Type="String" Name="IdentificationType" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="NumIdentification" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="NumIdentification" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="LastName" Nullable="false" MaxLength="100" />
           <Property Type="DateTime" Name="Birthday" Nullable="true" Precision="23" />
-          <Property Type="String" Name="Address" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="IdContactType" Nullable="true" />
           <Property Type="String" Name="ContactType" Nullable="true" MaxLength="200" />
@@ -1471,6 +2122,8 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Type="String" Name="Position" Nullable="true" MaxLength="200" />
           <Property Type="Boolean" Name="ClientPermission" Nullable="false" />
           <Property Type="Boolean" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="IdDepartment" Nullable="true" />
+          <Property Type="String" Name="Department" Nullable="true" MaxLength="200" />
         </ComplexType>
         <ComplexType Name="GNListPersonContact_Result">
           <Property Type="Int32" Name="IdPersonType" Nullable="false" />
@@ -1480,8 +2133,44 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Type="String" Name="CountryAreaCode" Nullable="false" MaxLength="10" />
           <Property Type="Int32" Name="IdPhoneNumberType" Nullable="false" />
           <Property Type="String" Name="PhoneNumberType" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="PhoneNumber" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="PhoneNumber" Nullable="true" MaxLength="100" />
           <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListPersonTask_Result">
+          <Property Type="Int32" Name="IdTask" Nullable="false" />
+          <Property Type="Int32" Name="IdPersonEmployee" Nullable="false" />
+          <Property Type="String" Name="PersonEmployeeName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PersonEmployeeLastName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NumIdentification" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GNListRole_Result">
+          <Property Type="Int32" Name="IdRole" Nullable="false" />
+          <Property Type="String" Name="NameRole" Nullable="false" MaxLength="60" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListRoleAcces_Result">
+          <Property Type="Int32" Name="IdOption" Nullable="true" />
+          <Property Type="String" Name="OptionName" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="Visible" Nullable="true" />
+          <Property Type="Boolean" Name="Create" Nullable="true" />
+          <Property Type="Boolean" Name="Search" Nullable="true" />
+          <Property Type="Boolean" Name="Edit" Nullable="true" />
+          <Property Type="Boolean" Name="Delete" Nullable="true" />
+          <Property Type="String" Name="Action" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Controller" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdAssociated" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GNListRoleUserPermission_Result">
+          <Property Type="Int32" Name="IdOption" Nullable="true" />
+          <Property Type="String" Name="OptionName" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="Visible" Nullable="true" />
+          <Property Type="Boolean" Name="Create" Nullable="true" />
+          <Property Type="Boolean" Name="Search" Nullable="true" />
+          <Property Type="Boolean" Name="Edit" Nullable="true" />
+          <Property Type="Boolean" Name="Delete" Nullable="true" />
+          <Property Type="String" Name="Action" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Controller" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdAssociated" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GNListServiceConstructionOption_Result">
           <Property Type="Int32" Name="IdServiceRequest" Nullable="false" />
@@ -1524,15 +2213,26 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
         <ComplexType Name="GNListTask_Result">
           <Property Type="Int32" Name="IdTask" Nullable="false" />
           <Property Type="Int32" Name="IdUser" Nullable="false" />
-          <Property Type="String" Name="Activity" Nullable="false" MaxLength="500" />
           <Property Type="DateTime" Name="DateIni" Nullable="false" />
           <Property Type="DateTime" Name="DateEnd" Nullable="false" />
           <Property Type="Time" Name="HourIni" Nullable="false" />
           <Property Type="Time" Name="HourEnd" Nullable="false" />
           <Property Type="String" Name="Place" Nullable="false" MaxLength="300" />
-          <Property Type="Boolean" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="IdStatus" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="UserLastName" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="IdFatherTask" Nullable="true" />
+          <Property Type="String" Name="Tittle" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="IdServiceRequest" Nullable="true" />
+          <Property Type="Int32" Name="IdTypeTask" Nullable="true" />
+          <Property Type="String" Name="TypeTask" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdPriority" Nullable="true" />
+          <Property Type="String" Name="PriorityTask" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdResponsable" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Activity" Nullable="false" MaxLength="500" />
         </ComplexType>
         <ComplexType Name="GNListUser_Result">
           <Property Type="Int32" Name="IdUser" Nullable="false" />
@@ -1553,11 +2253,12 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
           <Property Type="String" Name="Controller" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="IdAssociated" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="GNListPersonTask_Result">
-          <Property Type="Int32" Name="IdTask" Nullable="false" />
-          <Property Type="Int32" Name="IdPersonEmployee" Nullable="false" />
-          <Property Type="String" Name="PersonEmployeeName" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="PersonEmployeeLastName" Nullable="false" MaxLength="100" />
+        <ComplexType Name="GNListUserRole_Result">
+          <Property Type="Int32" Name="IdRole" Nullable="false" />
+          <Property Type="String" Name="NameRole" Nullable="false" MaxLength="60" />
+          <Property Type="Boolean" Name="StatusRole" Nullable="false" />
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="Boolean" Name="StatusUser" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1582,6 +2283,27 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
                 <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentTask">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.CommentTask">
+              <MappingFragment StoreEntitySet="CommentTask">
+                <ScalarProperty Name="IdComment" ColumnName="IdComment" />
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConfigurationParameter">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.ConfigurationParameter">
+              <MappingFragment StoreEntitySet="ConfigurationParameter">
+                <ScalarProperty Name="IdConfig" ColumnName="IdConfig" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1625,6 +2347,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
                 <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
                 <ScalarProperty Name="ClientPermission" ColumnName="ClientPermission" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IdDepartment" ColumnName="IdDepartment" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1637,6 +2360,28 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
                 <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="NameRole" ColumnName="NameRole" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleAcces">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.RoleAcces">
+              <MappingFragment StoreEntitySet="RoleAcces">
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="IdOption" ColumnName="IdOption" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Create" ColumnName="Create" />
+                <ScalarProperty Name="Search" ColumnName="Search" />
+                <ScalarProperty Name="Edit" ColumnName="Edit" />
+                <ScalarProperty Name="Delete" ColumnName="Delete" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1684,7 +2429,12 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
                 <ScalarProperty Name="HourIni" ColumnName="HourIni" />
                 <ScalarProperty Name="HourEnd" ColumnName="HourEnd" />
                 <ScalarProperty Name="Place" ColumnName="Place" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IdFatherTask" ColumnName="IdFatherTask" />
+                <ScalarProperty Name="IdResponsable" ColumnName="IdResponsable" />
+                <ScalarProperty Name="Tittle" ColumnName="Tittle" />
+                <ScalarProperty Name="IdPriority" ColumnName="IdPriority" />
+                <ScalarProperty Name="IdStatus" ColumnName="IdStatus" />
+                <ScalarProperty Name="IdTypeTask" ColumnName="IdTypeTask" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1749,7 +2499,78 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
               <ScalarProperty Name="IdTask" ColumnName="IdTask" />
             </EndProperty>
           </AssociationSetMapping>
+          <AssociationSetMapping Name="UserRole" TypeName="MMEnterprisesModel.UserRole" StoreEntitySet="UserRole">
+            <EndProperty Name="Role">
+              <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+            </EndProperty>
+          </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="GNAuthenticationUser" FunctionName="MMEnterprisesModel.Store.GNAuthenticationUser" />
+          <FunctionImportMapping FunctionImportName="GNLisChart" FunctionName="MMEnterprisesModel.Store.GNLisChart">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisChart_Result">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="StatusTask" ColumnName="StatusTask" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNLisColor" FunctionName="MMEnterprisesModel.Store.GNLisColor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisColor_Result">
+                <ScalarProperty Name="backgroundColor" ColumnName="backgroundColor" />
+                <ScalarProperty Name="borderColor" ColumnName="borderColor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListBitacora" FunctionName="MMEnterprisesModel.Store.GNListBitacora">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListBitacora_Result">
+                <ScalarProperty Name="IdComment" ColumnName="IdComment" />
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="DateOperation" ColumnName="DateOperation" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListCatalog" FunctionName="MMEnterprisesModel.Store.GNListCatalog">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCatalog_Result">
+                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
+                <ScalarProperty Name="IdTable" ColumnName="IdTable" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListCatalogDetail" FunctionName="MMEnterprisesModel.Store.GNListCatalogDetail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCatalogDetail_Result">
+                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
+                <ScalarProperty Name="IdTable" ColumnName="IdTable" />
+                <ScalarProperty Name="TableDesc" ColumnName="TableDesc" />
+                <ScalarProperty Name="IdCatalogDetail" ColumnName="IdCatalogDetail" />
+                <ScalarProperty Name="IdTableDetail" ColumnName="IdTableDetail" />
+                <ScalarProperty Name="DetailDesc" ColumnName="DetailDesc" />
+                <ScalarProperty Name="DetailStatus" ColumnName="DetailStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListCommentTask" FunctionName="MMEnterprisesModel.Store.GNListCommentTask">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCommentTask_Result">
+                <ScalarProperty Name="IdComment" ColumnName="IdComment" />
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GNListCountry" FunctionName="MMEnterprisesModel.Store.GNListCountry">
             <ResultMapping>
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCountry_Result">
@@ -1781,6 +2602,8 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
                 <ScalarProperty Name="Position" ColumnName="Position" />
                 <ScalarProperty Name="ClientPermission" ColumnName="ClientPermission" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IdDepartment" ColumnName="IdDepartment" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1796,6 +2619,58 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
                 <ScalarProperty Name="PhoneNumberType" ColumnName="PhoneNumberType" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListPersonTask" FunctionName="MMEnterprisesModel.Store.GNListPersonTask">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPersonTask_Result">
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="IdPersonEmployee" ColumnName="IdPersonEmployee" />
+                <ScalarProperty Name="PersonEmployeeName" ColumnName="PersonEmployeeName" />
+                <ScalarProperty Name="PersonEmployeeLastName" ColumnName="PersonEmployeeLastName" />
+                <ScalarProperty Name="NumIdentification" ColumnName="NumIdentification" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListRole" FunctionName="MMEnterprisesModel.Store.GNListRole">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListRole_Result">
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="NameRole" ColumnName="NameRole" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListRoleAcces" FunctionName="MMEnterprisesModel.Store.GNListRoleAcces">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListRoleAcces_Result">
+                <ScalarProperty Name="IdOption" ColumnName="IdOption" />
+                <ScalarProperty Name="OptionName" ColumnName="OptionName" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Create" ColumnName="Create" />
+                <ScalarProperty Name="Search" ColumnName="Search" />
+                <ScalarProperty Name="Edit" ColumnName="Edit" />
+                <ScalarProperty Name="Delete" ColumnName="Delete" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="IdAssociated" ColumnName="IdAssociated" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListRoleUserPermission" FunctionName="MMEnterprisesModel.Store.GNListRoleUserPermission">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListRoleUserPermission_Result">
+                <ScalarProperty Name="IdOption" ColumnName="IdOption" />
+                <ScalarProperty Name="OptionName" ColumnName="OptionName" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Create" ColumnName="Create" />
+                <ScalarProperty Name="Search" ColumnName="Search" />
+                <ScalarProperty Name="Edit" ColumnName="Edit" />
+                <ScalarProperty Name="Delete" ColumnName="Delete" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="IdAssociated" ColumnName="IdAssociated" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1850,15 +2725,26 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListTask_Result">
                 <ScalarProperty Name="IdTask" ColumnName="IdTask" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
-                <ScalarProperty Name="Activity" ColumnName="Activity" />
                 <ScalarProperty Name="DateIni" ColumnName="DateIni" />
                 <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
                 <ScalarProperty Name="HourIni" ColumnName="HourIni" />
                 <ScalarProperty Name="HourEnd" ColumnName="HourEnd" />
                 <ScalarProperty Name="Place" ColumnName="Place" />
+                <ScalarProperty Name="IdStatus" ColumnName="IdStatus" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />
+                <ScalarProperty Name="IdFatherTask" ColumnName="IdFatherTask" />
+                <ScalarProperty Name="Tittle" ColumnName="Tittle" />
+                <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
+                <ScalarProperty Name="IdTypeTask" ColumnName="IdTypeTask" />
+                <ScalarProperty Name="TypeTask" ColumnName="TypeTask" />
+                <ScalarProperty Name="IdPriority" ColumnName="IdPriority" />
+                <ScalarProperty Name="PriorityTask" ColumnName="PriorityTask" />
+                <ScalarProperty Name="IdResponsable" ColumnName="IdResponsable" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1889,25 +2775,32 @@ advertencia 6002: La tabla o vista 'MMEnterprises_Test.dbo.VWListCatalog' no tie
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListUserRole" FunctionName="MMEnterprisesModel.Store.GNListUserRole">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListUserRole_Result">
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="NameRole" ColumnName="NameRole" />
+                <ScalarProperty Name="StatusRole" ColumnName="StatusRole" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="StatusUser" ColumnName="StatusUser" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNTranCatalog" FunctionName="MMEnterprisesModel.Store.GNTranCatalog" />
+          <FunctionImportMapping FunctionImportName="GNTranCatalogDetail" FunctionName="MMEnterprisesModel.Store.GNTranCatalogDetail" />
+          <FunctionImportMapping FunctionImportName="GNTranCommentTask" FunctionName="MMEnterprisesModel.Store.GNTranCommentTask" />
           <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
           <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
           <FunctionImportMapping FunctionImportName="GNTranPersonTask" FunctionName="MMEnterprisesModel.Store.GNTranPersonTask" />
+          <FunctionImportMapping FunctionImportName="GNTranRole" FunctionName="MMEnterprisesModel.Store.GNTranRole" />
+          <FunctionImportMapping FunctionImportName="GNTranRoleAcces" FunctionName="MMEnterprisesModel.Store.GNTranRoleAcces" />
           <FunctionImportMapping FunctionImportName="GNTranServiceConstructionOption" FunctionName="MMEnterprisesModel.Store.GNTranServiceConstructionOption" />
           <FunctionImportMapping FunctionImportName="GNTranServiceRequest" FunctionName="MMEnterprisesModel.Store.GNTranServiceRequest" />
           <FunctionImportMapping FunctionImportName="GNTranServiceRequestTask" FunctionName="MMEnterprisesModel.Store.GNTranServiceRequestTask" />
           <FunctionImportMapping FunctionImportName="GNTranTask" FunctionName="MMEnterprisesModel.Store.GNTranTask" />
           <FunctionImportMapping FunctionImportName="GNTranUser" FunctionName="MMEnterprisesModel.Store.GNTranUser" />
           <FunctionImportMapping FunctionImportName="GNTranUserAcces" FunctionName="MMEnterprisesModel.Store.GNTranUserAcces" />
-          <FunctionImportMapping FunctionImportName="GNListPersonTask" FunctionName="MMEnterprisesModel.Store.GNListPersonTask">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPersonTask_Result">
-                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
-                <ScalarProperty Name="IdPersonEmployee" ColumnName="IdPersonEmployee" />
-                <ScalarProperty Name="PersonEmployeeName" ColumnName="PersonEmployeeName" />
-                <ScalarProperty Name="PersonEmployeeLastName" ColumnName="PersonEmployeeLastName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNTranUserRole" FunctionName="MMEnterprisesModel.Store.GNTranUserRole" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
