@@ -30,11 +30,14 @@ namespace CustomerSupport
                     "~/Content/assets/js/jquery.magnific-popup.min.js",
                     "~/Content/assets/js/isotope.pkgd.min.js",
                     "~/Content/assets/js/swiper.min.js",
+                    "~/Content/assets/js/swiper.min.map.js", //Para Servidor
                     "~/Content/assets/js/wow.min.js",
                     "~/Content/assets/js/script.js",
                     "~/Content/assets/js/respond.js",
                     "~/Scripts/tinymce/tinymce.min.js",
-                    "~/Scripts/tinymce/jquery.tinymce.min.js"));
+                    "~/Scripts/tinymce/jquery.tinymce.min.js",
+                    "~/Scripts/tinymce/themes/silver/theme.min.js" //Para Servidor
+                    ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                     "~/Content/assets/css/bootstrap.min.css",
@@ -46,7 +49,8 @@ namespace CustomerSupport
                     "~/Content/assets/css/dataTables/demo_table.css",
                     "~/Content/assets/css/dataTables/demo_table_jui.css",
                     "~/Content/assets/css/style.css",
-                    "~/Content/assets/plugins/select2/css/select2.css"));
+                    "~/Content/assets/plugins/select2/css/select2.css",
+                    "~/Content/assets/css/jquery-ui.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
                         "~/Scripts/inputmask/jquery.inputmask.min.js"));
