@@ -41,13 +41,13 @@ namespace CustomerSupport.Controllers
 
             try
             {
-                int? idtask = null;
+                int? idResponsable = null;
                 if(id!=null && id>0)
                 {
-                    idtask = id;
+                    idResponsable = id;
                 }
                 // Loading.
-                List<MCalendar> data = fnListCalendar(idtask, null, null, null, null, null, null, null, null, null,null);
+                List<MCalendar> data = fnListCalendar(null, null, null, idResponsable, null, null, null, null, null, null,null);
 
                 // Processing.
                 result = this.Json(data, JsonRequestBehavior.AllowGet);
@@ -79,9 +79,11 @@ namespace CustomerSupport.Controllers
                                          IdTask = tsk.IdTask,
                                          Tittle = tsk.Tittle,
                                          Activity = tsk.Activity,
-                                         DateIni = tsk.DateIni.ToString("yyyy-MM-dd") ,
-                                         DateEnd = tsk.DateEnd.ToString("yyyy-MM-dd") ,
-                                         StatusTask = tsk.Status,
+                                         DateIni = tsk.DateIni.ToString("yyyy-MM-dd"),
+                                         DateEnd = tsk.DateEnd.ToString("yyyy-MM-dd"),
+                                         HourIni = tsk.HourIni.ToString(),
+                                         HourEnd = tsk.HourEnd.ToString(),
+                                         StatusTask = tsk.Status
                                      }).ToList();
             return listMCalendar;
 
