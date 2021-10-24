@@ -19,7 +19,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTask").First();
             if (ObjAcces != null)
@@ -30,7 +30,6 @@ namespace CustomerSupport.Controllers
                 }
             }
 
-            //MTask objMTask = new MTask();
             return View();
         }
 
@@ -46,8 +45,11 @@ namespace CustomerSupport.Controllers
                 {
                     idResponsable = id;
                 }
+
+                int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
+
                 // Loading.
-                List<MCalendar> data = fnListCalendar(null, null, null, idResponsable, null, null, null, null, null, null,null);
+                List<MCalendar> data = fnListCalendar(null, null, null, idResponsable, null, null, null, null, null, IdUser, null);
 
                 // Processing.
                 result = this.Json(data, JsonRequestBehavior.AllowGet);

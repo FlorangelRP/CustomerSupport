@@ -12,13 +12,13 @@
     </div>
     <div class="card-body">
 
-        @{
-            MUserAcces perm = null;
+        @*@{
+            MSerAcces perm = null;
             if (Session["Usuario"] != null)
             {
-                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+                perm = (((MSerUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
             }
-        }
+        }*@
 
         <div class="row shadow-sm p-3 m-1 bg-white rounded">
 
@@ -145,7 +145,7 @@
         function ObtenerPersonas() {
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                url: '@Url.Action("GetListPerson", "Person")?idPersonType=2&blnUser=true', 
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -540,7 +540,7 @@
             recreateFC($(window).width());
 
             calendar = new FullCalendar.Calendar(calendarEl, optionsViewFC);
-            calendar.render();            
+            calendar.render();
             calendar.updateSize();
         }
 
@@ -592,7 +592,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            FiltrarCalender();            
+            FiltrarCalender();
         });
 
         $(window).resize(function () {
