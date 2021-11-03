@@ -236,6 +236,9 @@
     <Compile Include="BDContext\PersonContact.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\PersonTask.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\Position.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
