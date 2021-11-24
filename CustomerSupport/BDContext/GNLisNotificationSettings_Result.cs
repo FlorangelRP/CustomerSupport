@@ -10,17 +10,16 @@
 namespace CustomerSupport.BDContext
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class CommentTask
+    public partial class GNLisNotificationSettings_Result
     {
-        public int IdComment { get; set; }
-        public int IdTask { get; set; }
-        public string Comment { get; set; }
+        public int IdSetting { get; set; }
+        public bool SendResponsable { get; set; }
+        public bool SendColaborator { get; set; }
+        public bool SendFollower { get; set; }
+        public bool SendAddComment { get; set; }
+        public bool SendEditComment { get; set; }
         public int IdUser { get; set; }
-        public System.DateTime Date { get; set; }
-    
-        public virtual Task Task { get; set; }
-        public virtual User User { get; set; }
+        public string Email { get; set; }
     }
 }

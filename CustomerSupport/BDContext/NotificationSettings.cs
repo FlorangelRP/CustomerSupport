@@ -12,22 +12,27 @@ namespace CustomerSupport.BDContext
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class NotificationSettings
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public NotificationSettings()
         {
-            this.RoleAcces = new HashSet<RoleAcces>();
-            this.User = new HashSet<User>();
+            this.NotificationSettingsPriority = new HashSet<NotificationSettingsPriority>();
+            this.NotificationSettingsStatus = new HashSet<NotificationSettingsStatus>();
         }
     
-        public int IdRole { get; set; }
-        public string NameRole { get; set; }
-        public bool Status { get; set; }
+        public int IdSetting { get; set; }
+        public bool SendResponsable { get; set; }
+        public bool SendColaborator { get; set; }
+        public bool SendFollower { get; set; }
+        public bool SendAddComment { get; set; }
+        public bool SendEditComment { get; set; }
+        public int IdUser { get; set; }
     
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RoleAcces> RoleAcces { get; set; }
+        public virtual ICollection<NotificationSettingsPriority> NotificationSettingsPriority { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> User { get; set; }
+        public virtual ICollection<NotificationSettingsStatus> NotificationSettingsStatus { get; set; }
     }
 }

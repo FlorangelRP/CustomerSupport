@@ -12,15 +12,11 @@ namespace CustomerSupport.BDContext
     using System;
     using System.Collections.Generic;
     
-    public partial class CommentTask
+    public partial class NotificationSettingsPriority
     {
-        public int IdComment { get; set; }
-        public int IdTask { get; set; }
-        public string Comment { get; set; }
-        public int IdUser { get; set; }
-        public System.DateTime Date { get; set; }
+        public int IdSetting { get; set; }
+        public int IdPriority { get; set; }
     
-        public virtual Task Task { get; set; }
-        public virtual User User { get; set; }
+        public virtual NotificationSettings NotificationSettings { get; set; }
     }
 }
