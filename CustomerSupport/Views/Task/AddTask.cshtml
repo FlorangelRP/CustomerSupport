@@ -91,7 +91,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="control-label">Descripción:</div>
-                                @Html.TextAreaFor(model => model.Activity, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                @Html.TextAreaFor(model => model.Activity, new { @class = "form-control", @rows = 3, @cols = 12 })
                                 @Html.ValidationMessageFor(model => model.Activity, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -553,11 +553,11 @@
             $('.select2').select2({ width: '100%' });
 
             $("#lst_Priority").on('change', function () {
-               /* debugger;*/
+                //debugger;
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_Priority", "inIdPriority", selectValue);
-                /*debugger;*/
+                //debugger;
                 var combo = document.getElementById("lst_Priority");
                 var selected = combo.options[combo.selectedIndex].text;
                 $("#strPriorityTask").val(selected);
@@ -740,7 +740,7 @@
                 var IniHour = $('#HourIni').val();
                 var IniEnd = $('#HourEnd').val();
 
-                if (startDate = endDate && IniHour > IniEnd) {
+                if (startDate = endDate && IniHour > IniEnd ){
 
                     $('#HourEnd').val($('#HourIni').val());
 

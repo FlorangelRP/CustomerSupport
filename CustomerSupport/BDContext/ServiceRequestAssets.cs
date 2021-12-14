@@ -10,11 +10,18 @@
 namespace CustomerSupport.BDContext
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class GNListCatalog_Result
+    public partial class ServiceRequestAssets
     {
-        public int IdCatalog { get; set; }
-        public string IdTable { get; set; }
+        public int IdAsset { get; set; }
+        public int IdServiceRequest { get; set; }
+        public int IdAssetsType { get; set; }
         public string Description { get; set; }
+        public string Beneficiaries { get; set; }
+        public string Administrators { get; set; }
+    
+        public virtual CatalogDetail CatalogDetail { get; set; }
+        public virtual ServiceRequest ServiceRequest { get; set; }
     }
 }

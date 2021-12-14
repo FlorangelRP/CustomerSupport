@@ -11,10 +11,14 @@ namespace CustomerSupport.BDContext
 {
     using System;
     
-    public partial class GNListCatalog_Result
+    public partial class GNListServiceRequestAssets_Result
     {
-        public int IdCatalog { get; set; }
-        public string IdTable { get; set; }
+        public int IdAsset { get; set; }
+        public int IdServiceRequest { get; set; }
+        public int IdAssetsType { get; set; }
+        public string AssetsType { get; set; }
         public string Description { get; set; }
+        public string Beneficiaries { get; set; }
+        public string Administrators { get; set; }
     }
 }
