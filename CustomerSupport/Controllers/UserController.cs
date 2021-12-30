@@ -398,7 +398,7 @@ namespace CustomerSupport.Controllers
                             Login = result.Login,
                             Status = result.Status,
                             StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null,null).ToList()
+                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, 2, null, null,null).ToList()
                                                        select new MPerson
                                                        {
                                                            //IdPerson = result2.IdPerson,
@@ -406,7 +406,7 @@ namespace CustomerSupport.Controllers
                                                            //PersonType = result2.PersonType,
                                                            //IdIdentificationType = result2.IdIdentificationType,
                                                            //IdentificationType = result2.IdentificationType,
-                                                           //NumIdentification = ObjUser.Desencriptar(result2.NumIdentification),
+                                                           NumIdentification = ObjUser.Desencriptar(result2.NumIdentification),
                                                            Name = result2.Name,
                                                            LastName = result2.LastName,
                                                            //Birthday = result2.Birthday,
@@ -418,7 +418,7 @@ namespace CustomerSupport.Controllers
                                                            Position = result2.Position //,
                                                            //ClientPermission = result2.ClientPermission,
                                                            //Status = result2.Status
-                                                       }).ToList().First(),
+                                                       }).ToList().FirstOrDefault(),
                             UserRolesNames = String.Join(",", db.GNListUserRole(null, result.IdUser).Select(c => c.NameRole).ToList())
                             
                                                   
@@ -449,7 +449,7 @@ namespace CustomerSupport.Controllers
                             Password = objMUser.Desencriptar(result.Password),
                             Status = result.Status,
                             StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null,null).ToList()
+                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, 2, null, null,null).ToList()
                                                        select new MPerson
                                                        {
                                                            IdPerson = result2.IdPerson,
@@ -527,7 +527,7 @@ namespace CustomerSupport.Controllers
                         {
                             IdUser = result.IdUser,
                             Login = result.Login,
-                            PersonEmployee = (MSerPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null,null).ToList()
+                            PersonEmployee = (MSerPerson)(from result2 in db.GNListPerson(result.IdPerson, 2, null, null,null).ToList()
                                                        select new MSerPerson
                                                        {
                                                            IdPerson = result2.IdPerson,
@@ -716,6 +716,15 @@ namespace CustomerSupport.Controllers
             ListPersonWithoutUser = ListPerson.Where(p => ListUser.All(p2 => p2.IdPerson != p.IdPerson)).ToList();
 
             return Json(ListPersonWithoutUser, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetListUserConfigTkOnBehalfOf(int? IdUserSession = null, int? IdUser = null, bool? Status = null, int? IdPerson = null)
+        {
+            List<MUser> ListUser = new List<MUser>();
+
+            ListUser = fnListUser(IdUser, Status, IdPerson).Where(s => s.IdUser != IdUserSession && s.Login.Trim().ToLower() != "admin").ToList();
+            
+            return Json(ListUser, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Close()

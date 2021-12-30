@@ -40,5 +40,6 @@ namespace CustomerSupport.BDContext
         public string Seguidor { get; set; }
         public Nullable<System.DateTime> OperationDate { get; set; }
         public Nullable<System.DateTime> CreationDate { get; set; }
+        public Nullable<int> IdCreatedBy { get; set; }
     }
 }

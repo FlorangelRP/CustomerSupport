@@ -47,6 +47,14 @@ warning 6013: The table/view 'MMEnterprises.dbo.Colors' does not have a primary 
           <Property Name="IdUser" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="ConfigTkOnBehalfOf">
+          <Key>
+            <PropertyRef Name="IdConfig" />
+          </Key>
+          <Property Name="IdConfig" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUserOnBehalfOf" Type="int" Nullable="false" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ConfigurationParameter">
           <Key>
             <PropertyRef Name="IdConfig" />
@@ -285,6 +293,7 @@ warning 6013: The table/view 'MMEnterprises.dbo.Colors' does not have a primary 
           <Property Name="IdTypeTask" Type="int" />
           <Property Name="confidential" Type="bit" Nullable="false" />
           <Property Name="CreationDate" Type="datetime" />
+          <Property Name="IdCreatedBy" Type="int" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -405,6 +414,30 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Principal>
             <Dependent Role="CommentTask">
               <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConfigTkOnBehalfOf_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ConfigTkOnBehalfOf" Type="Self.ConfigTkOnBehalfOf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="ConfigTkOnBehalfOf">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConfigTkOnBehalfOf_UserOnBehalfOf">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ConfigTkOnBehalfOf" Type="Self.ConfigTkOnBehalfOf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="ConfigTkOnBehalfOf">
+              <PropertyRef Name="IdUserOnBehalfOf" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -965,6 +998,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="IdTask" Type="int" Mode="In" />
           <Parameter Name="IdComment" Type="int" Mode="In" />
         </Function>
+        <Function Name="GNListConfigTkOnBehalfOf" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="IdUserOnBehalfOf" Type="int" Mode="In" />
+          <Parameter Name="IdConfig" Type="int" Mode="In" />
+        </Function>
         <Function Name="GNListCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdCountry" Type="int" Mode="In" />
           <Parameter Name="IdIsoCountry" Type="varchar" Mode="In" />
@@ -1075,6 +1113,12 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="strComment" Type="varchar(max)" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
           <Parameter Name="dttDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="GNTranConfigTkOnBehalfOf" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdConfig" Type="int" Mode="InOut" />
+          <Parameter Name="IdUserOnBehalfOf" Type="int" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="In" />
         </Function>
         <Function Name="GNTranNotificationSettings" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="blnSendResponsable" Type="bit" Mode="In" />
@@ -1221,6 +1265,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="IdTypeTask" Type="int" Mode="In" />
           <Parameter Name="strActivity" Type="varchar" Mode="In" />
           <Parameter Name="blnConfidential" Type="bit" Mode="In" />
+          <Parameter Name="IdCreatedBy" Type="int" Mode="In" />
         </Function>
         <Function Name="GNTranUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdPerson" Type="int" Mode="In" />
@@ -1250,6 +1295,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CommentTask" EntityType="Self.CommentTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConfigTkOnBehalfOf" EntityType="Self.ConfigTkOnBehalfOf" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConfigurationParameter" EntityType="Self.ConfigurationParameter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationSettings" EntityType="Self.NotificationSettings" Schema="dbo" store:Type="Tables" />
@@ -1306,6 +1352,14 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <AssociationSet Name="FK_CommentTask_User" Association="Self.FK_CommentTask_User">
             <End Role="User" EntitySet="User" />
             <End Role="CommentTask" EntitySet="CommentTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConfigTkOnBehalfOf_User" Association="Self.FK_ConfigTkOnBehalfOf_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ConfigTkOnBehalfOf" EntitySet="ConfigTkOnBehalfOf" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConfigTkOnBehalfOf_UserOnBehalfOf" Association="Self.FK_ConfigTkOnBehalfOf_UserOnBehalfOf">
+            <End Role="User" EntitySet="User" />
+            <End Role="ConfigTkOnBehalfOf" EntitySet="ConfigTkOnBehalfOf" />
           </AssociationSet>
           <AssociationSet Name="FK_FatherTask_Task" Association="Self.FK_FatherTask_Task">
             <End Role="Task" EntitySet="Task" />
@@ -1523,6 +1577,16 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Task" Relationship="Self.FK_CommentTask_Task" FromRole="CommentTask" ToRole="Task" />
           <NavigationProperty Name="User" Relationship="Self.FK_CommentTask_User" FromRole="CommentTask" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ConfigTkOnBehalfOf">
+          <Key>
+            <PropertyRef Name="IdConfig" />
+          </Key>
+          <Property Name="IdConfig" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUserOnBehalfOf" Type="Int32" Nullable="false" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_ConfigTkOnBehalfOf_User" FromRole="ConfigTkOnBehalfOf" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_ConfigTkOnBehalfOf_UserOnBehalfOf" FromRole="ConfigTkOnBehalfOf" ToRole="User" />
         </EntityType>
         <EntityType Name="ConfigurationParameter">
           <Key>
@@ -1777,6 +1841,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="IdTypeTask" Type="Int32" />
           <Property Name="confidential" Type="Boolean" Nullable="false" />
           <Property Name="CreationDate" Type="DateTime" Precision="3" />
+          <Property Name="IdCreatedBy" Type="Int32" />
           <NavigationProperty Name="CommentTask" Relationship="Self.FK_CommentTask_Task" FromRole="Task" ToRole="CommentTask" />
           <NavigationProperty Name="Person" Relationship="Self.FK_Task_Person" FromRole="Task" ToRole="Person" />
           <NavigationProperty Name="PersonTask" Relationship="Self.FK_PersonTask_Task" FromRole="Task" ToRole="PersonTask" />
@@ -1795,6 +1860,8 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CommentTask" Relationship="Self.FK_CommentTask_User" FromRole="User" ToRole="CommentTask" />
+          <NavigationProperty Name="ConfigTkOnBehalfOf" Relationship="Self.FK_ConfigTkOnBehalfOf_User" FromRole="User" ToRole="ConfigTkOnBehalfOf" />
+          <NavigationProperty Name="ConfigTkOnBehalfOf1" Relationship="Self.FK_ConfigTkOnBehalfOf_UserOnBehalfOf" FromRole="User" ToRole="ConfigTkOnBehalfOf" />
           <NavigationProperty Name="NotificationSettings" Relationship="Self.FK_NotificationSettings_User" FromRole="User" ToRole="NotificationSettings" />
           <NavigationProperty Name="Person" Relationship="Self.FK_User_Person" FromRole="User" ToRole="Person" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_User" FromRole="User" ToRole="ServiceRequest" />
@@ -2011,6 +2078,30 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Principal>
             <Dependent Role="CommentTask">
               <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConfigTkOnBehalfOf_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ConfigTkOnBehalfOf" Type="Self.ConfigTkOnBehalfOf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="ConfigTkOnBehalfOf">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConfigTkOnBehalfOf_UserOnBehalfOf">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ConfigTkOnBehalfOf" Type="Self.ConfigTkOnBehalfOf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="ConfigTkOnBehalfOf">
+              <PropertyRef Name="IdUserOnBehalfOf" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2282,6 +2373,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <EntitySet Name="Catalog" EntityType="Self.Catalog" />
           <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" />
           <EntitySet Name="CommentTask" EntityType="Self.CommentTask" />
+          <EntitySet Name="ConfigTkOnBehalfOf" EntityType="Self.ConfigTkOnBehalfOf" />
           <EntitySet Name="ConfigurationParameter" EntityType="Self.ConfigurationParameter" />
           <EntitySet Name="Country" EntityType="Self.Country" />
           <EntitySet Name="NotificationSettings" EntityType="Self.NotificationSettings" />
@@ -2359,6 +2451,14 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <AssociationSet Name="FK_CommentTask_User" Association="Self.FK_CommentTask_User">
             <End Role="User" EntitySet="User" />
             <End Role="CommentTask" EntitySet="CommentTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConfigTkOnBehalfOf_User" Association="Self.FK_ConfigTkOnBehalfOf_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ConfigTkOnBehalfOf" EntitySet="ConfigTkOnBehalfOf" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConfigTkOnBehalfOf_UserOnBehalfOf" Association="Self.FK_ConfigTkOnBehalfOf_UserOnBehalfOf">
+            <End Role="User" EntitySet="User" />
+            <End Role="ConfigTkOnBehalfOf" EntitySet="ConfigTkOnBehalfOf" />
           </AssociationSet>
           <AssociationSet Name="FK_PersonContact_Country" Association="Self.FK_PersonContact_Country">
             <End Role="Country" EntitySet="Country" />
@@ -2529,6 +2629,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="IdTask" Mode="In" Type="Int32" />
             <Parameter Name="IdComment" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GNListConfigTkOnBehalfOf" ReturnType="Collection(MMEnterprisesModel.GNListConfigTkOnBehalfOf_Result)">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdUserOnBehalfOf" Mode="In" Type="Int32" />
+            <Parameter Name="IdConfig" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="GNListCountry" ReturnType="Collection(MMEnterprisesModel.GNListCountry_Result)">
             <Parameter Name="IdCountry" Mode="In" Type="Int32" />
             <Parameter Name="IdIsoCountry" Mode="In" Type="String" />
@@ -2639,6 +2744,12 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="strComment" Mode="In" Type="String" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
             <Parameter Name="dttDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranConfigTkOnBehalfOf">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdConfig" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdUserOnBehalfOf" Mode="In" Type="Int32" />
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNTranNotificationSettings">
             <Parameter Name="blnSendResponsable" Mode="In" Type="Boolean" />
@@ -2785,6 +2896,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="IdTypeTask" Mode="In" Type="Int32" />
             <Parameter Name="strActivity" Mode="In" Type="String" />
             <Parameter Name="blnConfidential" Mode="In" Type="Boolean" />
+            <Parameter Name="IdCreatedBy" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNTranUser">
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
@@ -2880,6 +2992,17 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="String" Name="Comment" Nullable="false" />
           <Property Type="Int32" Name="IdUser" Nullable="false" />
           <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GNListConfigTkOnBehalfOf_Result">
+          <Property Type="Int32" Name="IdUserOnBehalfOf" Nullable="false" />
+          <Property Type="String" Name="NumIdentificationOnBehalfOf" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="NameOnBehalfOf" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LastNameOnBehalfOf" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="String" Name="NumIdentification" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="IdConfig" Nullable="false" />
         </ComplexType>
         <ComplexType Name="GNListCountry_Result">
           <Property Type="Int32" Name="IdCountry" Nullable="false" />
@@ -3058,10 +3181,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="Activity" Nullable="true" />
           <Property Type="Boolean" Name="confidential" Nullable="true" />
-          <Property Type="String" Name="Colaborator" Nullable="true" MaxLength="201" />
-          <Property Type="String" Name="Seguidor" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="Colaborator" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Seguidor" Nullable="true" MaxLength="200" />
           <Property Type="DateTime" Name="OperationDate" Nullable="true" Precision="23" />
           <Property Type="DateTime" Name="CreationDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="IdCreatedBy" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GNListUser_Result">
           <Property Type="Int32" Name="IdUser" Nullable="false" />
@@ -3123,6 +3247,15 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConfigTkOnBehalfOf">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.ConfigTkOnBehalfOf">
+              <MappingFragment StoreEntitySet="ConfigTkOnBehalfOf">
+                <ScalarProperty Name="IdConfig" ColumnName="IdConfig" />
+                <ScalarProperty Name="IdUserOnBehalfOf" ColumnName="IdUserOnBehalfOf" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3341,6 +3474,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="IdTypeTask" ColumnName="IdTypeTask" />
                 <ScalarProperty Name="confidential" ColumnName="confidential" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="IdCreatedBy" ColumnName="IdCreatedBy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3545,6 +3679,21 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListConfigTkOnBehalfOf" FunctionName="MMEnterprisesModel.Store.GNListConfigTkOnBehalfOf">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListConfigTkOnBehalfOf_Result">
+                <ScalarProperty Name="IdUserOnBehalfOf" ColumnName="IdUserOnBehalfOf" />
+                <ScalarProperty Name="NumIdentificationOnBehalfOf" ColumnName="NumIdentificationOnBehalfOf" />
+                <ScalarProperty Name="NameOnBehalfOf" ColumnName="NameOnBehalfOf" />
+                <ScalarProperty Name="LastNameOnBehalfOf" ColumnName="LastNameOnBehalfOf" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="NumIdentification" ColumnName="NumIdentification" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="IdConfig" ColumnName="IdConfig" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -3779,6 +3928,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="Seguidor" ColumnName="Seguidor" />
                 <ScalarProperty Name="OperationDate" ColumnName="OperationDate" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="IdCreatedBy" ColumnName="IdCreatedBy" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -3823,6 +3973,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <FunctionImportMapping FunctionImportName="GNTranCatalog" FunctionName="MMEnterprisesModel.Store.GNTranCatalog" />
           <FunctionImportMapping FunctionImportName="GNTranCatalogDetail" FunctionName="MMEnterprisesModel.Store.GNTranCatalogDetail" />
           <FunctionImportMapping FunctionImportName="GNTranCommentTask" FunctionName="MMEnterprisesModel.Store.GNTranCommentTask" />
+          <FunctionImportMapping FunctionImportName="GNTranConfigTkOnBehalfOf" FunctionName="MMEnterprisesModel.Store.GNTranConfigTkOnBehalfOf" />
           <FunctionImportMapping FunctionImportName="GNTranNotificationSettings" FunctionName="MMEnterprisesModel.Store.GNTranNotificationSettings" />
           <FunctionImportMapping FunctionImportName="GNTranNotificationSettingsPriority" FunctionName="MMEnterprisesModel.Store.GNTranNotificationSettingsPriority" />
           <FunctionImportMapping FunctionImportName="GNTraNotificationSettingsStatus" FunctionName="MMEnterprisesModel.Store.GNTraNotificationSettingsStatus" />

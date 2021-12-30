@@ -30,6 +30,7 @@ namespace CustomerSupport.BDContext
         public virtual DbSet<Catalog> Catalog { get; set; }
         public virtual DbSet<CatalogDetail> CatalogDetail { get; set; }
         public virtual DbSet<CommentTask> CommentTask { get; set; }
+        public virtual DbSet<ConfigTkOnBehalfOf> ConfigTkOnBehalfOf { get; set; }
         public virtual DbSet<ConfigurationParameter> ConfigurationParameter { get; set; }
         public virtual DbSet<Country> Country { get; set; }
         public virtual DbSet<NotificationSettings> NotificationSettings { get; set; }
@@ -266,6 +267,23 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdComment", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCommentTask_Result>("GNListCommentTask", idTaskParameter, idCommentParameter);
+        }
+    
+        public virtual ObjectResult<GNListConfigTkOnBehalfOf_Result> GNListConfigTkOnBehalfOf(Nullable<int> idUser, Nullable<int> idUserOnBehalfOf, Nullable<int> idConfig)
+        {
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
+    
+            var idUserOnBehalfOfParameter = idUserOnBehalfOf.HasValue ?
+                new ObjectParameter("IdUserOnBehalfOf", idUserOnBehalfOf) :
+                new ObjectParameter("IdUserOnBehalfOf", typeof(int));
+    
+            var idConfigParameter = idConfig.HasValue ?
+                new ObjectParameter("IdConfig", idConfig) :
+                new ObjectParameter("IdConfig", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListConfigTkOnBehalfOf_Result>("GNListConfigTkOnBehalfOf", idUserParameter, idUserOnBehalfOfParameter, idConfigParameter);
         }
     
         public virtual ObjectResult<GNListCountry_Result> GNListCountry(Nullable<int> idCountry, string idIsoCountry)
@@ -641,6 +659,23 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("dttDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranCommentTask", transactionTypeParameter, idComment, idTaskParameter, strCommentParameter, idUserParameter, dttDateParameter);
+        }
+    
+        public virtual int GNTranConfigTkOnBehalfOf(string transactionType, ObjectParameter idConfig, Nullable<int> idUserOnBehalfOf, Nullable<int> idUser)
+        {
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
+            var idUserOnBehalfOfParameter = idUserOnBehalfOf.HasValue ?
+                new ObjectParameter("IdUserOnBehalfOf", idUserOnBehalfOf) :
+                new ObjectParameter("IdUserOnBehalfOf", typeof(int));
+    
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranConfigTkOnBehalfOf", transactionTypeParameter, idConfig, idUserOnBehalfOfParameter, idUserParameter);
         }
     
         public virtual int GNTranNotificationSettings(Nullable<bool> blnSendResponsable, Nullable<bool> blnSendColaborator, Nullable<bool> blnSendFollower, Nullable<bool> blnSendAddComment, Nullable<bool> blnSendEditComment, Nullable<int> intIdUser, string transactionType, ObjectParameter idSetting)
@@ -1095,7 +1130,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranServiceRequestTask", transactionTypeParameter, idTaskParameter, idServiceRequestParameter);
         }
     
-        public virtual int GNTranTask(string transactionType, ObjectParameter idTask, Nullable<int> idUser, Nullable<System.DateTime> dttDateIni, Nullable<System.DateTime> dttDateEnd, Nullable<System.TimeSpan> tHourIni, Nullable<System.TimeSpan> tHourEnd, string strPlace, Nullable<int> idFatherTask, Nullable<int> idResponsable, string strTittle, Nullable<int> idPriority, Nullable<int> idStatus, Nullable<int> idTypeTask, string strActivity, Nullable<bool> blnConfidential)
+        public virtual int GNTranTask(string transactionType, ObjectParameter idTask, Nullable<int> idUser, Nullable<System.DateTime> dttDateIni, Nullable<System.DateTime> dttDateEnd, Nullable<System.TimeSpan> tHourIni, Nullable<System.TimeSpan> tHourEnd, string strPlace, Nullable<int> idFatherTask, Nullable<int> idResponsable, string strTittle, Nullable<int> idPriority, Nullable<int> idStatus, Nullable<int> idTypeTask, string strActivity, Nullable<bool> blnConfidential, Nullable<int> idCreatedBy)
         {
             var transactionTypeParameter = transactionType != null ?
                 new ObjectParameter("TransactionType", transactionType) :
@@ -1157,7 +1192,11 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("blnConfidential", blnConfidential) :
                 new ObjectParameter("blnConfidential", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranTask", transactionTypeParameter, idTask, idUserParameter, dttDateIniParameter, dttDateEndParameter, tHourIniParameter, tHourEndParameter, strPlaceParameter, idFatherTaskParameter, idResponsableParameter, strTittleParameter, idPriorityParameter, idStatusParameter, idTypeTaskParameter, strActivityParameter, blnConfidentialParameter);
+            var idCreatedByParameter = idCreatedBy.HasValue ?
+                new ObjectParameter("IdCreatedBy", idCreatedBy) :
+                new ObjectParameter("IdCreatedBy", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranTask", transactionTypeParameter, idTask, idUserParameter, dttDateIniParameter, dttDateEndParameter, tHourIniParameter, tHourEndParameter, strPlaceParameter, idFatherTaskParameter, idResponsableParameter, strTittleParameter, idPriorityParameter, idStatusParameter, idTypeTaskParameter, strActivityParameter, blnConfidentialParameter, idCreatedByParameter);
         }
     
         public virtual int GNTranUser(Nullable<int> idPerson, string strLogin, string strPassword, string transactionType, ObjectParameter idUser, Nullable<bool> btStatus)

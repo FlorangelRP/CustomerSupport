@@ -18,6 +18,8 @@ namespace CustomerSupport.BDContext
         public User()
         {
             this.CommentTask = new HashSet<CommentTask>();
+            this.ConfigTkOnBehalfOf = new HashSet<ConfigTkOnBehalfOf>();
+            this.ConfigTkOnBehalfOf1 = new HashSet<ConfigTkOnBehalfOf>();
             this.NotificationSettings = new HashSet<NotificationSettings>();
             this.ServiceRequest = new HashSet<ServiceRequest>();
             this.Task = new HashSet<Task>();
@@ -33,6 +35,10 @@ namespace CustomerSupport.BDContext
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CommentTask> CommentTask { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConfigTkOnBehalfOf> ConfigTkOnBehalfOf { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConfigTkOnBehalfOf> ConfigTkOnBehalfOf1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NotificationSettings> NotificationSettings { get; set; }
         public virtual Person Person { get; set; }
